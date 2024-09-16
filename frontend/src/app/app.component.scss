@@ -1,0 +1,19 @@
+.app-container {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    width: 100%;
+
+    .login-component {
+        width: 75%;
+    }
+    .registration-component {
+        width: 100%;
+        margin: 5%;
+    }
+
+    .edit-profile-component {
+        width: 100%;
+        margin: 5%;
+    }
+}
