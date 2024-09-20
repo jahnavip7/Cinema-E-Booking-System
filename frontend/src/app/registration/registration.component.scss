@@ -28,6 +28,17 @@
         }
     }
 
+    .sign-up-promos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 2rem;
+        
+        .promo-checkbox {
+            margin-right: 10px;
+        }
+    }
+
     .payment{
         display: flex;
         gap: auto;

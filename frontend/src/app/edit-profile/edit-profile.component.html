@@ -13,44 +13,28 @@
             <label class="form-label">Last Name<p style="color: red;">*</p></label>
             <input class="edit-profile-input form-control" placeholder="Last Name">
         </div>
-    </div>
-
-    <div class="edit-profile-inputs-2"> 
-        <div class="edit-profile-input-label">
-            <label class="form-label">Email<p style="color: red;">*</p></label>
-            <input class="edit-profile-input form-control" placeholder="Email">
-        </div>
         <div class="edit-profile-input-label">
             <label class="form-label">Phone Number<p style="color: red;">*</p></label>
             <input class="edit-profile-input form-control" placeholder="Phone No.">
         </div>
     </div>
 
-    <div class="edit-profile-inputs-2"> 
-        <div class="edit-profile-input-label">
-            <label class="form-label">Password<p style="color: red;">*</p></label>
-            <input class="edit-profile-input form-control" placeholder="Password">
+    <div class="edit-profile-inputs-2" style="justify-content: space-between;">
+        <div class="pay-card">
+            <label class="form-label">Add Payment</label>
+            <app-payment-information></app-payment-information>
+            <button class="btn btn-primary">Add Card</button>
         </div>
-        <div class="edit-profile-input-label">
-            <label class="form-label">Confirm Password<p style="color: red;">*</p></label>
-            <input class="edit-profile-input form-control" placeholder="Confirm Password">
+        <div class="delete-card">
+            <label class="form-label">Delete Payment</label>
+            <select class="form-select" name="Existing Card(s)" style="width: 50%;">
+                <option>Card 1</option>
+                <option>Card 2</option>
+                <option>Card 3</option>
+            </select>
+            <button class="btn btn-primary" style="background-color: red;">Delete Card</button>
         </div>
-    </div>
 
-    <label class="form-label">Payment Information (Optional)</label>
-    <div class="payment">
-        <div class="pay-card">
-            <app-payment-information></app-payment-information>
-            <button class="btn btn-primary add-card">Add Card</button>
-        </div>
-        <div class="pay-card">
-            <app-payment-information></app-payment-information>
-            <button class="btn btn-primary add-card">Add Card</button>
-        </div>
-        <div class="pay-card">
-            <app-payment-information></app-payment-information>
-            <button class="btn btn-primary add-card">Add Card</button>
-        </div>
     </div>
 
     <div class="edit-profile-inputs-2"> 
@@ -75,7 +59,18 @@
         </div>
     </div>
 
-    <div class="save">
-        <button class="btn btn-primary">Save</button>
+    <div class="receive-promos">
+        <input class="form-check-input promo-checkbox" type="checkbox">
+        <label class="form-check-label">
+          Receive promotions
+        </label>
+    </div>
+
+    <div class="edit-profile-inputs-2">
+        <!-- <div class="save"> -->
+            <button class="btn btn-primary">Save</button>
+        <!-- </div> -->
+         <button class="btn btn-primary" style="background-color:blueviolet;">Change Password</button>
+        
     </div>
 </form>

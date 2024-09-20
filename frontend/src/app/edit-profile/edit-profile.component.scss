@@ -28,19 +28,38 @@
         }
     }
 
-    .payment{
+    .receive-promos {
         display: flex;
-        gap: auto;
         justify-content: center;
-        gap: 5%;
-        padding-bottom: 5%;
+        align-items: center;
+        padding-bottom: 2rem;
+        
+        .promo-checkbox {
+            margin-right: 10px;
+        }
+    }
+
+    // .payment{
+    //     display: flex;
+    //     gap: auto;
+    //     // justify-content: center;
+    //     gap: 5%;
+    //     padding-bottom: 5%;
 
         .pay-card {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             gap: 10px;
         }
+    // }
+
+    .delete-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        gap: 10px;
     }
 
     .save {
