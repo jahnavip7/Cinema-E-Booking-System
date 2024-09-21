@@ -1,65 +1,67 @@
-.registration-form {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    flex-direction: column;
-    // gap: 100%;
 
-    .registration-heading{
+    .registration-form {
         display: flex;
-        justify-content: center;
-        padding-bottom: 5%;
-    }
-
-    .registration-inputs-2 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
         width: 100%;
-        gap: 5%;
-        padding-bottom: 5%;
-
-        .reg-input-label{
+        justify-content: center;
+        flex-direction: column;
+        padding: 5%;
+    
+        .registration-heading{
+            display: flex;
+            justify-content: center;
+            padding-bottom: 5%;
+        }
+    
+        .registration-inputs-2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
-
-            .form-label{
-                margin-left: 10px;
+            gap: 5%;
+            padding-bottom: 5%;
+    
+            .reg-input-label{
+                width: 100%;
+    
+                .form-label{
+                    margin-left: 10px;
+                }
             }
         }
-    }
-
-    .sign-up-promos {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 2rem;
-        
-        .promo-checkbox {
-            margin-right: 10px;
-        }
-    }
-
-    .payment{
-        display: flex;
-        gap: auto;
-        justify-content: center;
-        gap: 5%;
-        padding-bottom: 5%;
-
-        .pay-card {
+    
+        .sign-up-promos {
             display: flex;
-            flex-direction: column;
             justify-content: center;
-            gap: 10px;
+            align-items: center;
+            padding-bottom: 2rem;
+            
+            .promo-checkbox {
+                margin-right: 10px;
+            }
         }
+    
+        .payment{
+            display: flex;
+            gap: auto;
+            justify-content: center;
+            gap: 5%;
+            padding-bottom: 5%;
+    
+            .pay-card {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 10px;
+            }
+        }
+    
+        .register {
+            display: flex;
+            justify-content: center;
+        }
+    
     }
 
-    .register {
-        display: flex;
-        justify-content: center;
-    }
-
-}
 
 p {
     display: inline;
