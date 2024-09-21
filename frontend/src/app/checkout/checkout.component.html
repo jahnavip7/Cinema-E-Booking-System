@@ -1,0 +1,47 @@
+<div class="checkout-container">
+    <div class="checkout-heading">
+        <h2>Checkout</h2>
+    </div>
+    <div class="checkout">
+        <div class="payment-info">
+            <h3 class="heading">Add Payment Information</h3>
+            <app-payment-information></app-payment-information>
+            <button class="btn btn-primary">Use Card</button>
+            <label class="form-label">Or, use existing card:</label>
+            <select class="form-select card-dropdown" name="Existing Card(s)">
+                <option>Card 1</option>
+                <option>Card 2</option>
+            </select>
+        </div>
+
+        <div class="order-total">
+            <h3 class="heading">Order</h3>
+            <div class="prices">
+                <div class="price-category">
+                    <p class="price-text">Child:</p>
+                    <p class="price-text">Adult:</p>
+                    <p class="price-text">Senior:</p>
+                    <p class="price-text">Booking Fees:</p>
+                    <p class="price-text">Tax:</p>
+                    <div class="promo-div">
+                        <input class="form-control promo-input" placeholder="Promo Code">
+                    </div>
+                    <p class="price-text">Discount:</p>
+                    <p class="price-text">Total:</p>
+                </div>
+                <div class="price">
+                    <p class="price-text">$5</p>
+                    <p class="price-text">$10</p>
+                    <p class="price-text">$0</p>
+                    <p class="price-text">$1</p>
+                    <p class="price-text">$2</p>
+                    <div class="promo-div">
+                        <button class="btn btn-primary apply-btn">Apply</button>
+                    </div>
+                    <p class="price-text">$0</p>
+                    <p class="price-text">$17</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

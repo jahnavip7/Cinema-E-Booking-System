@@ -1,0 +1,33 @@
+.promotions {
+    display: flex;
+    padding: 5%;
+
+    .heading {
+        padding-bottom: 10%;
+    }
+
+    .manage-promos {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+
+        .promo {
+            display: flex;
+            width: 100%;
+            justify-content: space-evenly;
+            padding-bottom: 5%;
+        }
+    }
+
+    .add-promos {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50%;
+
+        .form-control {
+            margin-bottom: 5%;
+        }
+    }
+}

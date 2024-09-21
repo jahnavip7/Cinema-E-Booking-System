@@ -1,0 +1,74 @@
+.edit-profile-form {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+    padding: 5%;
+
+    .edit-profile-heading{
+        display: flex;
+        justify-content: center;
+        padding-bottom: 5%;
+    }
+
+    .edit-profile-inputs-2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        gap: 5%;
+        padding-bottom: 5%;
+
+        .edit-profile-input-label{
+            width: 100%;
+
+            .form-label{
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .receive-promos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 2rem;
+        
+        .promo-checkbox {
+            margin-right: 10px;
+        }
+    }
+
+    // .payment{
+    //     display: flex;
+    //     gap: auto;
+    //     // justify-content: center;
+    //     gap: 5%;
+    //     padding-bottom: 5%;
+
+        .pay-card {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    // }
+
+    .delete-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        gap: 10px;
+    }
+
+    .save {
+        display: flex;
+        justify-content: center;
+    }
+
+}
+
+p {
+    display: inline;
+}

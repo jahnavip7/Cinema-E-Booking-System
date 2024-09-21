@@ -1,0 +1,96 @@
+.checkout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    padding: 5%;
+
+    .checkout-heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 5%;
+    }
+
+    .checkout {
+        display: flex;
+        gap: 5%;
+        width: 100%;
+        justify-content: space-evenly;
+
+        .heading {
+            padding-bottom: 5%;
+        }
+
+        .payment-info {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+
+ 
+
+            .card-dropdown {
+                width: 25%;
+            }
+        }
+        .order-total {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            
+
+            .prices{
+                display: flex;
+                flex-direction: row;
+                width: 75%;
+
+                .promo-div {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+    
+                .price-text {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 2rem;
+                }
+    
+                .price-category{
+                    display: flex;
+                    flex-direction: column;
+                    width: 50%;
+                    gap: 1rem;
+
+                    .promo-input {
+                        width: 50%;
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+    
+                .price{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    width: 50%;
+                    gap: 1rem;
+
+                    .apply-btn {
+                        width: 25%;
+                    }
+    
+                }
+            }
+        }
+    }
+
+
+}

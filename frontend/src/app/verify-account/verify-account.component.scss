@@ -1,0 +1,32 @@
+.verify-account {
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+
+
+    .thank-you-heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 5%;
+    }
+
+
+    .verify-input {
+        // width: 25%;
+        padding-bottom: 25px;
+
+        .form-label {
+            padding-bottom: 10px;;
+        }
+
+        .form-control {
+            width: 15%;
+        }
+    }
+
+
+    .verify-button {
+        // margin-left: 10px;
+    }
+}

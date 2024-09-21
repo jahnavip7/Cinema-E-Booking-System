@@ -1,0 +1,30 @@
+.add-movie-form {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 5%;
+
+    .add-movie-heading {
+        padding-bottom: 5%;
+    }
+
+    .add-movie-inputs{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 75%;
+        gap: 5%;
+        padding-bottom: 5%;
+    }
+
+    .form-label {
+        align-self: flex-start;
+        margin-left: 10px;
+    }
+}
+p {
+    display: inline;
+}
