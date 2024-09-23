@@ -1,0 +1,106 @@
+/* Header styles */
+/* Main container for the order summary */
+.order-summary-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns with equal width */
+  gap: 20px; /* Space between components */
+  padding: 20px;
+  margin-top: 30px; /* Top margin for the main container */
+  width: 80%; /* Width of the main container centered */
+  margin: 0 auto; /* Center the grid horizontally */
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Uniform styling for each card/component */
+.component-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Aligns items from top to bottom within the container */
+}
+
+/* Header within components */
+h2 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  background-color: #e95a5a;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #e72929;
+}
+
+/* Button group for action buttons */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between buttons */
+}
+
+/* Specific styles for ticket action buttons */
+.ticket-actions {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px; /* Padding above the button row */
+}
+
+.ticket-actions button {
+  padding: 10px 20px;
+  background-color: #e95a5a;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ticket-actions button:hover {
+  background-color: #e72929;
+}
+
+
+
+/* Header styles */
+.header {
+  background-color: #e95a5a; /* Green color */
+  color: rgb(0, 0, 0);
+  padding: 10px 0;
+  text-align: center;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.navbar a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 1.2rem; /* Increase font size for links */
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+.navbar span {
+  margin-right: 20px;
+  font-size: 1.2rem; /* Increase font size for user name */
+}

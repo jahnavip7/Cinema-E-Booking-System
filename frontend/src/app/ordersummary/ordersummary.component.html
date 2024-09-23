@@ -1,0 +1,57 @@
+<!-- <div class="header">
+    <div class="navbar">
+      <div class="navbar-left">
+        <h1>CineQuest</h1>
+      </div>
+      <div class="navbar-right">
+        <span>Welcome, {{ userName }}</span>
+        <a href="#">Home</a>
+        <a href="#">Logout</a>
+      </div>
+    </div>
+  </div> -->
+  
+ <!-- Order Summary Container -->
+<div class="order-summary-container">
+
+  <!-- Movie Information Component -->
+  <div class="component-container">
+    <h2>Movie Information</h2>
+    <p><strong>Movie Title:</strong> {{ movieTitle }}</p>
+    <p><strong>Show Time:</strong> {{ showTime | date: 'medium' }}</p>
+  </div>
+
+  <!-- Ticket Information Component -->
+  <div class="component-container"> <!-- Added the missing component-container class -->
+    <h2>Ticket Information</h2>
+    <p><strong>Children Tickets:</strong> {{ ticketInfo.children }} x {{ prices.child }}</p>
+    <p><strong>Adult Tickets:</strong> {{ ticketInfo.adult }} x {{ prices.adult }}</p>
+    <p><strong>Senior Tickets:</strong> {{ ticketInfo.senior }} x {{ prices.senior }}</p>
+    <p><strong>Total Ticket Cost:</strong> {{ ticketTotal | currency }}</p>
+    <div class="ticket-actions">
+      <button (click)="addTicket()">Add Ticket</button>
+      <button (click)="deleteTicket()">Delete Ticket</button>
+      <button (click)="editBooking()">Edit Booking</button>
+    </div>
+  </div>
+
+  <!-- Order Total Component -->
+  <div class="component-container">
+    <h2>Order Total</h2>
+    <p><strong>Ticket Total:</strong> {{ ticketTotal | currency }}</p>
+    <p><strong>Online Fee:</strong> {{ onlineFee | currency }}</p>
+    <p><strong>Sales Tax:</strong> {{ salesTax | currency }}</p>
+    <p><strong>Total Cost:</strong> {{ totalCost | currency }}</p>
+    <button (click)="cancelOrder()">Cancel</button>
+    <button (click)="proceedToCheckout()">Proceed to Checkout</button>
+  </div>
+
+  <!-- Ticket Pricing Component -->
+  <div class="component-container">
+    <h2>Ticket Pricing</h2>
+    <p><strong>Child Ticket:</strong> {{ prices.child | currency }}</p>
+    <p><strong>Adult Ticket:</strong> {{ prices.adult | currency }}</p>
+    <p><strong>Senior Ticket:</strong> {{ prices.senior | currency }}</p>
+  </div>
+
+</div>

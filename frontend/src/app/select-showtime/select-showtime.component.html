@@ -1,0 +1,30 @@
+<!-- <div class="header">
+  <div class="navbar">
+    <div class="navbar-left">
+      <h1>CineQuest</h1>
+    </div>
+    <div class="navbar-right">
+      <span>Welcome, {{ userName }}</span>
+      <a href="#">Home</a>
+      <a href="#">Logout</a>
+    </div>
+  </div>
+</div> -->
+
+<div class="container">
+  <h2>Select Showtime</h2>
+  <label for="showtimeSelect">Choose a showtime:</label>
+  <select id="showtimeSelect" [(ngModel)]="selectedShowtime">
+    <option *ngFor="let showtime of showtimes" [value]="showtime">
+      {{ showtime }}
+    </option>
+  </select>
+
+  <div class="details">
+    <h3>You selected:</h3>
+    <p>{{ selectedShowtime }}</p>
+  </div>
+
+  <button routerLink="/select-seat">Next</button>
+</div>
+
