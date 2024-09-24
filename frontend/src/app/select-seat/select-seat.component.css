@@ -25,7 +25,7 @@
   border-radius: 50px; /* Rounded edges for a theater-like screen */
   text-align: center;
   font-size: 1.5rem;
-  height: 20px; /* Add a fixed height to make the screen slimmer */
+  height: 50px; /* Add a fixed height to make the screen slimmer */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.9); /* Shadow to enhance screen visibility */
 }
 

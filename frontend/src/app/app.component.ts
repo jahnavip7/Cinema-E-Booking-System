@@ -12,6 +12,14 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { VerifyAccountComponent } from './verify-account/verify-account.component';
 import { ManagePromotionsComponent } from './manage-promotions/manage-promotions.component';
+import { ManageMoviesComponent } from './manage-movies/manage-movies.component';
+import { HeaderComponent } from './header/header.component';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { SelectSeatComponent } from './select-seat/select-seat.component';
+import { SelectShowtimeComponent } from './select-showtime/select-showtime.component';
+import { OrderSummaryComponent } from './ordersummary/ordersummary.component';
 
 
 @Component({
@@ -19,7 +27,8 @@ import { ManagePromotionsComponent } from './manage-promotions/manage-promotions
   standalone: true,
   imports: [RouterOutlet, LoginComponent, RegistrationComponent, PaymentInformationComponent, EditProfileComponent, 
     OrderDetailsComponent, AdminPortalComponent, AddMovieComponent, EditMovieComponent, CheckoutComponent, ChangePasswordComponent, 
-    VerifyAccountComponent, ManagePromotionsComponent],
+    VerifyAccountComponent, ManagePromotionsComponent, ManageMoviesComponent, HeaderComponent, RouterModule, FormsModule,CommonModule, SelectSeatComponent
+  , SelectShowtimeComponent, OrderSummaryComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

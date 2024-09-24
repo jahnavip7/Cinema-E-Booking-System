@@ -1,0 +1,35 @@
+.manage-movies {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    padding: 5%;
+
+    .manage-movies-heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 5%;
+    }
+
+    .add-movie-button {
+        padding-bottom: 20px;
+    }
+
+    .edit-movie {
+
+        .form-label {
+            margin-left: 5px;
+        }
+
+        .movie-dropdown {
+            width: 25%;
+            margin-bottom: 20px;
+        }
+    }
+
+    .manage-buttons {
+        display: flex;
+        gap: 5%;
+    }
+}

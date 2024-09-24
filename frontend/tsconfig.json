@@ -22,8 +22,15 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+
+    "baseUrl": "./",  // Add this to specify the base directory
+    "paths": {
+      "@shared/*": ["src/app/shared/*"], // Add this for shared folder alias
+      "@assets/*": ["src/assets/*"] // Add this if you want an alias for assets folder
+    },
   },
+  
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

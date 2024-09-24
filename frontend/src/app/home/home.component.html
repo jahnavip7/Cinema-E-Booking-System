@@ -1,0 +1,45 @@
+
+<div class="container">
+  <!-- Search Bar -->
+  <div class="row">
+    <div class="col-md-12">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search for movies..."
+        [(ngModel)]="searchTerm"
+        (input)="filterMovies()"
+      />
+    </div>
+  </div>
+
+  <h2>Now Playing</h2>
+  <div class="row">
+    <div class="col-md-3" *ngFor="let movie of filteredNowPlayingMovies">
+      <div class="card mb-3">
+        <img [src]="movie.imageUrl" class="card-img-top" alt="{{ movie.movieName }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.movieName }}</h5>
+          <p class="card-text">{{ movie.description }}</p>
+          <a [routerLink]="['/movie', movie.id]" class="btn btn-primary">View Details</a>
+          <a [routerLink]="['/book', movie.id]" class="btn btn-success">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Coming Soon</h2>
+  <div class="row">
+    <div class="col-md-3" *ngFor="let movie of filteredComingSoonMovies">
+      <div class="card mb-3">
+        <img [src]="movie.imageUrl" class="card-img-top" alt="{{ movie.movieName }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ movie.movieName }}</h5>
+          <p class="card-text">{{ movie.description }}</p>
+          <a [routerLink]="['/movie', movie.id]" class="btn btn-primary">View Details</a>
+          <a [routerLink]="['/book', movie.id]" class="btn btn-success">Book Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
