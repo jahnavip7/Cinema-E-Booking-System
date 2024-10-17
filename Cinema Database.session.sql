@@ -1,32 +1,19 @@
 -- @block
 CREATE TABLE Movie(
-    movie_id INT PRIMARY KEY AUTO_INCREMENT,
-    movie_title VARCHAR(179) NOT NULL UNIQUE,
-    movie_category VARCHAR(15) NOT NULL,
-    movie_director VARCHAR(20) NOT NULL,   -- possibly add producer table and foreign key
-    movie_producer VARCHAR(20) NOT NULL,   -- possibly add producer table and foreign key
-    movie_synopsis VARCHAR(255) NOT NULL,
-    movie_picture VARCHAR(255) NOT NULL,   -- url
-    movie_video VARCHAR(255) NOT NULL,     -- url
-    movie_rating VARCHAR(5) NOT NULL,
-    now_playing TINYINT(1) NOT NULL,       -- determines if movie is now_playing (0=ComingSoon, 1=NowPlaying)
-)
-
--- reviews and cast for movies stored in separate tables
-
-CREATE TABLE Movie_Cast(
-    movie_id INT NOT NULL,
-    actor_id INT NOT NULL,
-    character_name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (movie_id, actor_id),
-    FOREIGN KEY (movie_id) REFERENCES Movie(movie_id),
-    FOREIGN KEY (actor_id) REFERENCES Actor(actor_id),
-)
-
-CREATE TABLE Actor(
-    actor_id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    duration INT,
+    genre ENUM('ACTION', 'ANIMATION', 'COMEDY', 'DRAMA'),         -- Fill in rest of ENUM
+    language ENUM('CHINESE', 'ENGLISH', 'HINDI', 'KOREAN'),       -- Fill in rest of ENUM
+    movie_name VARCHAR(255) NOT NULL,                             -- 255 -> 179
+    rating VARCHAR(5),                                            -- VARCHAR or DECIMAL?
+    release_date DATE, 
+    cast VARCHAR(255),
+    description VARCHAR(255),
+    director VARCHAR(255),                                        -- 255 -> 20          
+    image_url VARCHAR(255),
+    trailer_url VARCHAR(255),
+    category ENUM('COMING_SOON','NOW_PLAYING'),
+    -- movie_producer VARCHAR(20),                                -- Need to add producer as well
 )
 
 CREATE TABLE Review(
@@ -34,7 +21,7 @@ CREATE TABLE Review(
     user_id INT NOT NULL,
     review VARCHAR(255) NOT NULL,
     PRIMARY KEY (movie_id, user_id),
-    FOREIGN KEY (movie_id) REFERENCES Movie(movie_id),
+    FOREIGN KEY (movie_id) REFERENCES Movie(id),
     FOREIGN KEY (user_id) REFERENCES User(user_id),
 )
 
@@ -50,7 +37,7 @@ CREATE TABLE Seat(
     seat_number INT NOT NULL,
     room_id INT NOT NULL,
     -- show_id INT NOT NULL,
-    reserved TINYINT(1) NOT NULL,                          -- determines if seat is open or not (0=Open, 1=Reserved)
+    reserved ENUM('RESERVED', 'AVAILABLE') NOT NULL,
     FOREIGN KEY (room_id) REFERENCES ShowRoom(room_id),
     -- FOREIGN KEY (show_id) REFERENCES ShowTime(show_id),
 )
@@ -62,7 +49,7 @@ CREATE TABLE ShowTime(
     room_id INT NOT NULL,
     movie_id INT NOT NULL,
     FOREIGN KEY (room_id) REFERENCES ShowRoom(room_id),
-    FOREIGN KEY (movie_id) REFERENCES Movie(movie_id),
+    FOREIGN KEY (movie_id) REFERENCES Movie(id),
 )
 
 CREATE TABLE Ticket(
@@ -80,7 +67,7 @@ CREATE TABLE Ticket(
 
 CREATE TABLE Ticket_Price(
     price_id INT PRIMARY KEY AUTO_INCREMENT,
-    ticket_type VARCHAR(6) NOT NULL,           -- adult, senior, or child 
+    ticket_type ENUM('ADULT', 'SENIOR', 'CHILD') NOT NULL,
     price DECIMAL NOT NULL,
 )
 
@@ -112,6 +99,7 @@ CREATE TABLE Fee(
     tax DECIMAL NOT NULL,                -- Percentage or set value?
 )
 
+-- Add verification code to User
 CREATE TABLE User(
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(25) NOT NULL,
@@ -119,18 +107,11 @@ CREATE TABLE User(
     user_password NOT NULL,
     user_email VARCHAR(255) NOT NULL UNIQUE,
     user_phone_number VARCHAR(15) NOT NULL,
-    home_address VARCHAR(255),                  -- possibly add address table
-    verification_status TINYINT(1) NOT NULL,    -- determines if user is verified (0=UnVerified, 1=Verified)
-    login_status TINYINT(1) NOT NULL,           -- determines if user is logged in (0=NotLoggedIn, 1=LoggedIn)
-    promotion_status TINYINT(1) NOT NULL,       -- determines if user is subscribed to promos (0=UnSubscribed, 1=Subscribed)
-    suspend_status TINYINT(1) NOT NULL,         -- determines if user is suspended (0=UnSuspended, 1=Suspended)
-)
-
-CREATE TABLE Verification(
-    verification_code VARCHAR(8) NOT NULL,
-    user_id INT NOT NULL,
-    PRIMARY KEY(verification_code, user_id)
-    FOREIGN KEY (user_id) REFERENCES User(user_id)
+    -- home_address VARCHAR(255),                  -- possibly add address table
+    verification_status ENUM('VERIFIED', 'UNVERIFIED') NOT NULL,
+    login_status ENUM('LOGGED_IN', 'LOGGED_OUT') NOT NULL,
+    promotion_status ENUM('SUBSCRIBED', 'NOT_SUBSCRIBED') NOT NULL,
+    suspend_status ENUM('SUSPENDED', 'ACTIVE') NOT NULL,
 )
 
 -- User subdivided into Admin and Customer OR have User Table and Admin Tables?
