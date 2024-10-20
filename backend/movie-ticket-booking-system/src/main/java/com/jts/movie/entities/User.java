@@ -1,130 +1,81 @@
 package com.jts.movie.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
+import lombok.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.List;
-
-import com.jts.movie.enums.gender;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private String firstName;
 
-    private Integer age;
+	@Column(nullable = false)
+	private String lastName;
 
-    private String address;
+	@Column(unique = true, nullable = false)
+	@Email(message = "Email is invalid")
+	private String emailId;
 
-    @Enumerated(value = EnumType.STRING)
-    private gender gender;
+	@Size(max = 10, message = "Mobile number should not exceed 10 characters")
+	@Column(nullable = false)
+	private String mobileNo;
 
-    private String mobileNo;
+	@Size(min = 8, message = "Password must be at least 8 characters")
+	@Column(nullable = false)
+	private String password;
 
-    @Column(unique = true)
-    private String emailId;
-    
-    private String password;
+	@Column(nullable = false)
+	private String address;
 
+	@Column(nullable = false)
+	private String city;
+
+	@Column(nullable = false)
+	private String state;
+
+	@Column(nullable = false)
+	private String zipcode;
+
+	@Column(nullable = false)
 	private String roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Ticket> ticketList = new ArrayList<>();
+	private Integer age;
 
-    public Integer getId() {
-		return id;
+	@Column(nullable = false)
+	private Boolean isActive;
+
+	private String confirmationToken;
+
+	@Column(nullable = false)
+	private Boolean promotionPreference;
+
+	// Add the resetToken field
+	private String resetToken;
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PaymentCard> paymentCards;
+
+	public void addPaymentCard(PaymentCard card) {
+		if (paymentCards.size() < 4) {
+			paymentCards.add(card);
+			card.setUser(this);
+		} else {
+			throw new RuntimeException("Cannot store more than 4 payment cards");
+		}
 	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Integer getAge() {
-		return age;
-	}
-
-	public void setAge(Integer age) {
-		this.age = age;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public gender getGender() {
-		return gender;
-	}
-
-	public void setGender(gender gender) {
-		this.gender = gender;
-	}
-
-	public String getMobileNo() {
-		return mobileNo;
-	}
-
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getRoles() {
-		return roles;
-	}
-
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-
-	public List<Ticket> getTicketList() {
-		return ticketList;
-	}
-
-	public void setTicketList(List<Ticket> ticketList) {
-		this.ticketList = ticketList;
-	}
-
-	}
-
-
+}
