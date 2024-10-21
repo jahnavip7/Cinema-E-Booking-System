@@ -1,14 +1,30 @@
-<form class="login-form">
-    <div class="login-details">
-        <h2 class="login-heading">Login</h2>
-        <div class="form-group email-group">
-            <input class="form-control email-input" placeholder="Email address">
-        </div>
-        <div class="form-group password-group">
-            <input class="form-control" placeholder="Password">
-        </div>
-        <button class="btn btn-primary login-btn">Log In</button>
-        <a class="forgot-password" href="">Forgot Password?</a>
-        <p class="dont-have-account">Don't have an account? <a routerLink="/register">Register Now</a></p>
+<form class="login-form" (ngSubmit)="onSubmit()">
+  <div class="login-details">
+    <h2 class="login-heading">Login</h2>
+    <div class="form-group email-group">
+      <input
+        class="form-control email-input"
+        [(ngModel)]="email"
+        name="email"
+        placeholder="Email address"
+        required
+      />
     </div>
+    <div class="form-group password-group">
+      <input
+        class="form-control"
+        [(ngModel)]="password"
+        name="password"
+        type="password"
+        placeholder="Password"
+        required
+      />
+    </div>
+    <button class="btn btn-primary login-btn">Log In</button>
+    <a class="forgot-password" routerLink="/forgot-password">Forgot Password?</a>
+    <p class="dont-have-account">
+      Don't have an account?
+      <a routerLink="/register">Register Now</a>
+    </p>
+  </div>
 </form>

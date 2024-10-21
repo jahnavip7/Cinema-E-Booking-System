@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.mail.MessagingException;
-import java.util.Map;
+import org.springframework.security.authentication.BadCredentialsException;
+import java.util.*;
 import java.security.Principal;
-import java.util.Optional;
+
 import com.jts.movie.services.EmailService;
 import com.jts.movie.config.JWTService;
 import com.jts.movie.entities.User;
@@ -22,8 +23,6 @@ import com.jts.movie.services.UserService;
 import com.jts.movie.services.EmailService;
 import com.jts.movie.repositories.UserRepository;
 import com.jts.movie.entities.PaymentCard;
-import java.util.List;
-import java.util.UUID; // <-- For generating reset tokens
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
@@ -49,7 +48,7 @@ public class UserController {
 	private EmailService emailService;
 
 	// User registration endpoint
-	@PostMapping("/register")
+	/*@PostMapping("/register")
 	public ResponseEntity<String> registerUser(@RequestBody @Valid UserRequest userRequest) {
 		try {
 			String message = userService.addUser(userRequest); // `addUser` now handles everything
@@ -57,7 +56,32 @@ public class UserController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
+	}*/
+	@PostMapping("/register")
+	public ResponseEntity<Map<String, Object>> registerUser(@RequestBody @Valid UserRequest userRequest) {
+		Map<String, Object> response = new HashMap<>();
+
+		try {
+			// Call service to add user and get success message
+			String message = userService.addUser(userRequest);
+
+			// Prepare success response
+			response.put("message", message);
+			response.put("statusCode", HttpStatus.CREATED.value());
+
+			// Return HTTP 201 Created status
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+		} catch (Exception e) {
+			// Handle any exceptions and prepare error response
+			response.put("message", e.getMessage());
+			response.put("statusCode", HttpStatus.BAD_REQUEST.value());
+
+			// Return HTTP 400 Bad Request status
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
 	}
+
 
 	// Email confirmation endpoint
 	@GetMapping("/confirmRegistration")
@@ -72,19 +96,43 @@ public class UserController {
 
 	// User login endpoint
 	@PostMapping("/login")
-	public ResponseEntity<String> loginUser(@RequestBody UserRequest userRequest) {
+	public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserRequest userRequest) {
+		Map<String, Object> response = new HashMap<>();
+
 		try {
+			// Authenticate the user using email and password
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(userRequest.getEmailId(), userRequest.getPassword()));
 
+			// Check if authentication is successful
 			if (authentication.isAuthenticated()) {
+				// Generate JWT token
 				String token = jwtService.generateToken(userRequest.getEmailId());
-				return new ResponseEntity<>(token, HttpStatus.OK);
+
+				// Prepare the response with the token and status code
+				response.put("token", token);
+				response.put("statusCode", HttpStatus.OK.value());
+
+				return new ResponseEntity<>(response, HttpStatus.OK);
 			} else {
-				return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+				// Prepare the response for invalid credentials
+				response.put("message", "Invalid credentials");
+				response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+
+				return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 			}
+		} catch (BadCredentialsException e) {
+			// Handle bad credentials specifically
+			response.put("message", "Invalid email or password");
+			response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+
+			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+			// Catch any other exceptions and respond with a generic error message
+			response.put("message", "An error occurred: " + e.getMessage());
+			response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

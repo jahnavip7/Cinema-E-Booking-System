@@ -9,8 +9,8 @@
   </div>
 </nav> -->
 
-  <app-header></app-header>
-  <!-- <app-header-2></app-header-2> -->
+  <app-header *ngIf="!callIsAuthenticated()"></app-header>
+   <app-header-2 *ngIf="callIsAuthenticated()"></app-header-2>
   <!-- <app-login></app-login> -->
   <!-- <app-registration></app-registration> -->
   <!-- <app-edit-profile></app-edit-profile> -->

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -14,25 +14,37 @@ import { VerifyAccountComponent } from './verify-account/verify-account.componen
 import { ManagePromotionsComponent } from './manage-promotions/manage-promotions.component';
 import { ManageMoviesComponent } from './manage-movies/manage-movies.component';
 import { HeaderComponent } from './header/header.component';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { SelectSeatComponent } from './select-seat/select-seat.component';
 import { SelectShowtimeComponent } from './select-showtime/select-showtime.component';
 import { OrderSummaryComponent } from './ordersummary/ordersummary.component';
 import { Header2Component } from './header-2/header-2.component';
-
+import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoginComponent, RegistrationComponent, PaymentInformationComponent, EditProfileComponent, 
-    OrderDetailsComponent, AdminPortalComponent, AddMovieComponent, EditMovieComponent, CheckoutComponent, ChangePasswordComponent, 
-    VerifyAccountComponent, ManagePromotionsComponent, ManageMoviesComponent, HeaderComponent, RouterModule, FormsModule,CommonModule, SelectSeatComponent
-  , SelectShowtimeComponent, OrderSummaryComponent, Header2Component],
+  imports: [
+    RouterOutlet, RouterModule, Router, LoginComponent, RegistrationComponent, PaymentInformationComponent, EditProfileComponent,
+    OrderDetailsComponent, AdminPortalComponent, AddMovieComponent, EditMovieComponent, CheckoutComponent, ChangePasswordComponent,
+    VerifyAccountComponent, ManagePromotionsComponent, ManageMoviesComponent, HeaderComponent, RouterModule, FormsModule, CommonModule,
+    SelectSeatComponent, SelectShowtimeComponent, OrderSummaryComponent, Header2Component, ReactiveFormsModule
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'frontend';
+
+  @ViewChild(LoginComponent) loginComponent!: LoginComponent;
+
+  callLogout(){
+    this.loginComponent.logout();
+  }
+  callIsAuthenticated(): boolean {
+    return this.loginComponent.isAuthenticated();
+  }
+
 }
