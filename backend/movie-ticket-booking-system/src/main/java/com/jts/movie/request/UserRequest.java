@@ -2,6 +2,7 @@ package com.jts.movie.request;
 
 import lombok.Data;
 import jakarta.validation.constraints.*;
+import java.util.List;
 
 @Data
 public class UserRequest {
@@ -50,4 +51,8 @@ public class UserRequest {
 
 	@NotBlank(message = "New password is mandatory")
 	private String newPassword;
+
+	// New field for payment card details (optional)
+	private List<PaymentCardRequest> paymentCards;
+
 }

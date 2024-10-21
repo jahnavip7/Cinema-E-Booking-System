@@ -1,8 +1,12 @@
 package com.jts.movie.services;
 
 import com.jts.movie.entities.User;
+import com.jts.movie.entities.PaymentCard;
 import com.jts.movie.repositories.UserRepository;
+import com.jts.movie.repositories.PaymentCardRepository;
 import com.jts.movie.request.UserRequest;
+import com.jts.movie.request.PaymentCardRequest;
+import com.jts.movie.request.ChangePasswordRequest;
 import com.jts.movie.request.EditProfileRequest;
 import com.jts.movie.response.UserResponse;
 import com.jts.movie.config.JWTService;
@@ -25,6 +29,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private PaymentCardRepository paymentCardRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -66,6 +73,26 @@ public class UserService {
 
 		// Save the user
 		userRepository.save(user);
+
+		// Handle payment cards if provided
+		if (userRequest.getPaymentCards() != null && !userRequest.getPaymentCards().isEmpty()) {
+			if (userRequest.getPaymentCards().size() > 3) {
+				throw new IllegalArgumentException("You can add a maximum of 3 payment cards.");
+			}
+
+			// Loop through each payment card and save it
+			for (PaymentCardRequest cardRequest : userRequest.getPaymentCards()) {
+				PaymentCard paymentCard = new PaymentCard();
+				paymentCard.setCardNumber(cardRequest.getCardNumber());
+				paymentCard.setCardHolderName(cardRequest.getCardHolderName());
+				paymentCard.setExpiryDate(cardRequest.getExpiryDate());
+				paymentCard.setCvv(cardRequest.getCvv());
+				paymentCard.setUser(user);  // Associate the card with the user
+
+				// Save payment card to repository (you need to inject the PaymentCardRepository)
+				paymentCardRepository.save(paymentCard);
+			}
+		}
 
 		// Send confirmation email
 		sendConfirmationEmail(user, token);
@@ -131,56 +158,6 @@ public class UserService {
 		return new UserResponse(user.getEmailId(), token, "Login successful");
 	}
 
-	//forgot password
-	/*public void initiatePasswordReset(String emailId) throws MessagingException {
-		Optional<User> userOptional = userRepository.findByEmailId(emailId);
-		if (userOptional.isEmpty()) {
-			throw new IllegalArgumentException("No account found with that email.");
-		}
-
-		User user = userOptional.get();
-
-		// Generate a reset token
-		String resetToken = UUID.randomUUID().toString();
-		user.setResetToken(resetToken);
-		userRepository.save(user);
-
-		// Send reset password email
-		sendResetPasswordEmail(user, resetToken);
-	}*/
-
-	/*private void sendResetPasswordEmail(User user, String resetToken) throws MessagingException {
-		String resetLink = "http://localhost:4200/resetPassword?token=" + resetToken;  // Ensure it points to resetPassword
-		String subject = "Reset Your Password";
-		String body = "<p>Hello " + user.getFirstName() + ",</p>"
-				+ "<p>Click the link below to reset your password:</p>"
-				+ "<a href=\"" + resetLink + "\">Reset Password</a>";
-
-		sendEmail(user.getEmailId(), subject, body);
-	}*/
-
-
-	/*public void resetPassword(String email, String newPassword, String cnfPassword) {
-		Optional<User> userOptional = userRepository.findByEmailId(email);
-
-		if (userOptional.isEmpty()) {
-			throw new IllegalArgumentException("User with the given email not found.");
-		}
-
-		if (!newPassword.equals(cnfPassword)) {
-			throw new IllegalArgumentException("Passwords do not match.");
-		}
-
-		User user = userOptional.get();
-
-		// Update password
-		String encryptedPassword = passwordEncoder.encode(newPassword);
-		user.setPassword(encryptedPassword);
-		user.setResetToken(null);  // Clear the reset token after successful reset
-
-		userRepository.save(user);
-	}*/
-
 	public void updateUserProfile(String currentUserEmail, EditProfileRequest editProfileRequest) {
 		// Find the user by the current logged-in email
 		Optional<User> userOptional = userRepository.findByEmailId(currentUserEmail);
@@ -203,4 +180,33 @@ public class UserService {
 		// Save the updated user profile
 		userRepository.save(user);
 	}
+
+	public void changePassword(String currentUserEmail, ChangePasswordRequest changePasswordRequest) {
+		// Find the user by the current logged-in email
+		Optional<User> userOptional = userRepository.findByEmailId(currentUserEmail);
+
+		if (userOptional.isEmpty()) {
+			throw new IllegalArgumentException("User not found.");
+		}
+
+		User user = userOptional.get();
+
+		// Check if the current password provided matches the user's existing password
+		if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
+			throw new IllegalArgumentException("Current password is incorrect.");
+		}
+
+		// Ensure new password and confirm password match
+		if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmPassword())) {
+			throw new IllegalArgumentException("New password and confirm password do not match.");
+		}
+
+		// Encrypt the new password and update it
+		String encodedPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
+		user.setPassword(encodedPassword);
+
+		// Save the updated user with the new password
+		userRepository.save(user);
+	}
+
 }

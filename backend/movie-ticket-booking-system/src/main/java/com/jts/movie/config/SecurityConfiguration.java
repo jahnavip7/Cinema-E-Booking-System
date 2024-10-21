@@ -39,7 +39,7 @@ public class SecurityConfiguration {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(c -> c.disable())
 				.authorizeHttpRequests(req ->
-						req.requestMatchers("/user/register", "/user/login","/user/confirmRegistration/**","/user/forgotPassword","/user/resetPassword/**").permitAll() // Allow public access
+						req.requestMatchers("/user/register", "/user/login","/user/confirmRegistration/**","/user/forgotPassword","/user/resetPassword/**","/user/changePassword/**").permitAll() // Allow public access
 								.requestMatchers("/movie/**").permitAll()
 								.requestMatchers("/email/**").permitAll()
 								.requestMatchers("/show/**").hasAnyAuthority("ROLE_ADMIN")

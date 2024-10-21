@@ -1,4 +1,5 @@
 package com.jts.movie.controller;
+import com.jts.movie.request.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -139,6 +140,18 @@ public class UserController {
 			String currentUserEmail = principal.getName();  // Get the logged-in user's email
 			userService.updateUserProfile(currentUserEmail, editProfileRequest);
 			return ResponseEntity.ok("Profile updated successfully.");
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	// Change password endpoint
+	@PostMapping("/changePassword")
+	public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) {
+		try {
+			String currentUserEmail = principal.getName();  // Get the logged-in user's email
+			userService.changePassword(currentUserEmail, changePasswordRequest);
+			return ResponseEntity.ok("Password updated successfully.");
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
