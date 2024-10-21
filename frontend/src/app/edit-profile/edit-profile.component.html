@@ -23,7 +23,6 @@
         <div class="pay-card">
             <label class="form-label">Add Payment</label>
             <app-payment-information></app-payment-information>
-            <button class="btn btn-primary">Add Card</button>
         </div>
         <div class="delete-card">
             <label class="form-label">Delete Payment</label>
@@ -70,7 +69,7 @@
         <!-- <div class="save"> -->
             <button class="btn btn-primary">Save</button>
         <!-- </div> -->
-         <button class="btn btn-primary" style="background-color:blueviolet;">Change Password</button>
+         <button class="btn btn-primary" style="background-color:blueviolet;" (click)="goToChange()">Change Password</button>
         
     </div>
 </form>

@@ -12,22 +12,34 @@ body {
     margin: 0;
     font-family:"Quicksand",sans-serif;
     font-size: 18px;
+    background-image: url('./app/assets/Background-image-2.webp');
+    background-size: cover;       /* Ensures the image covers the entire screen */
+    background-position: center;  /* Centers the image */
+    background-color: rgba(0, 0, 0, 0.8); /* Adds a black overlay with 50% opacity */
+    background-blend-mode: darken; /* Blend the color and image together */
 }
 
 a {
     color: #e95a5a;
-}
-
-a:hover {
-    color: #e72929;
+    text-shadow: 0 0 10px #e95a5a;;
 }
 
 h2 {
+    color: antiquewhite;
     font-family: "Quicksand",sans-serif;
+    text-shadow: 0 0 10px white;
+}
+
+p {
+    color: antiquewhite;
+    font-family: "Quicksand",sans-serif; 
+    text-shadow: 0 0 10px white;
 }
 
 label {
+    color: antiquewhite;
     font-family: "Quicksand",sans-serif;
+    text-shadow: 0 0 10px white;
 }
 
 .btn-primary {
@@ -42,4 +54,19 @@ label {
 .btn-primary:hover {
     background-color: #e72929;
     border-color: #e72929;
+}
+
+button {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.1);  /* Expands the button */
+    box-shadow: 0 0 15px #e95a5a;  /* Glowing white border */
+}
+
+.form-control:focus {
+    border-color: white;  /* Changes the border to white when clicked */
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.5);  /* Optional: Adds a white glow */
+    outline: none;  /* Removes default outline */
 }

@@ -1,89 +1,86 @@
-<!-- <div class="registration"> -->
-    <form class="registration-form">
-        <div class="registration-heading">
-            <h2>Registration</h2>
+  <form [formGroup]="registrationForm" class="registration-form"(ngSubmit)="onSubmit()">
+    <div class="registration-heading">
+      <h2>Registration</h2>
+    </div>
+
+    <div class="registration-inputs-2">
+      <div class="reg-input-label">
+        <label class="form-label">First Name<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="firstName" placeholder="First Name">
+      </div>
+      <div class="reg-input-label">
+        <label class="form-label">Last Name<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="lastName" placeholder="Last Name">
+      </div>
+    </div>
+
+    <div class="registration-inputs-2">
+      <div class="reg-input-label">
+        <label class="form-label">Email<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="email" placeholder="Email">
+      </div>
+      <div class="reg-input-label">
+        <label class="form-label">Phone Number<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="phoneNumber" placeholder="Phone No.">
+      </div>
+    </div>
+
+    <div class="registration-inputs-2">
+      <div class="reg-input-label">
+        <label class="form-label">Password<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" type="password" formControlName="password" placeholder="Password">
+      </div>
+      <div class="reg-input-label">
+        <label class="form-label">Confirm Password<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" type="password" formControlName="confirmPassword" placeholder="Confirm Password">
+      </div>
+    </div>
+
+    <label class="form-label">Payment Information (Optional)</label>
+
+    <div class= "payment" formArrayName="paymentCards">
+      <div *ngFor="let card of paymentCards.controls; let i = index" [formGroupName]="i">
+        <app-payment-information class="pay-card" [paymentForm]="getCardFormGroup(i)"></app-payment-information>
+        <div class="payment-buttons">
+          <button class="btn btn-primary add-card-btn" type="button" (click)="addPaymentCard()" [disabled]="paymentCards.length >= 3">Add Another Card</button>
+          <button class="btn btn-primary remove-card-btn" type="button" (click)="removePaymentCard(i)" [disabled]="paymentCards.length === 1">Remove Card</button>
         </div>
+      </div>
+    </div>
     
-        <div class="registration-inputs-2">
-            <div class="reg-input-label">
-                <label class="form-label">First Name<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="First Name">
-            </div>
-            <div class="reg-input-label">
-                <label class="form-label">Last Name<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="Last Name">
-            </div>
-        </div>
-    
-        <div class="registration-inputs-2"> 
-            <div class="reg-input-label">
-                <label class="form-label">Email<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="Email">
-            </div>
-            <div class="reg-input-label">
-                <label class="form-label">Phone Number<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="Phone No.">
-            </div>
-        </div>
-    
-        <div class="registration-inputs-2"> 
-            <div class="reg-input-label">
-                <label class="form-label">Password<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="Password">
-            </div>
-            <div class="reg-input-label">
-                <label class="form-label">Confirm Password<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="Confirm Password">
-            </div>
-        </div>
-    
-        <label class="form-label">Payment Information (Optional)</label>
-        <div class="payment">
-            <div class="pay-card">
-                <app-payment-information></app-payment-information>
-                <button class="btn btn-primary add-card">Add Card</button>
-            </div>
-            <div class="pay-card">
-                <app-payment-information></app-payment-information>
-                <button class="btn btn-primary add-card">Add Card</button>
-            </div>
-            <div class="pay-card">
-                <app-payment-information></app-payment-information>
-                <button class="btn btn-primary add-card">Add Card</button>
-            </div>
-        </div>
-    
-        <div class="registration-inputs-2"> 
-            <div class="reg-input-label">
-                <label class="form-label">Street Address<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="Address">
-            </div>
-            <div class="reg-input-label">
-                <label class="form-label">City<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="City">
-            </div>
-        </div>
-    
-        <div class="registration-inputs-2"> 
-            <div class="reg-input-label">
-                <label class="form-label">State<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="State">
-            </div>
-            <div class="reg-input-label">
-                <label class="form-label">Zip Code<p style="color: red;">*</p></label>
-                <input class="registration-input form-control" placeholder="00000">
-            </div>
-        </div>
-    
-        <div class="sign-up-promos">
-            <input class="form-check-input promo-checkbox" type="checkbox">
-            <label class="form-check-label">
-              Sign up for promotions
-            </label>
-        </div>
-    
-        <div class="register">
-            <button class="btn btn-primary">Register</button>
-        </div>
-    </form>
-<!-- </div> -->
+    <p *ngIf="paymentCards.length >= 3">You have reached the maximum number of payment cards.</p>
+
+
+    <div class="registration-inputs-2">
+      <div class="reg-input-label">
+        <label class="form-label">Street Address<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="address" placeholder="Address">
+      </div>
+      <div class="reg-input-label">
+        <label class="form-label">City<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="city" placeholder="City">
+      </div>
+    </div>
+
+    <div class="registration-inputs-2">
+      <div class="reg-input-label">
+        <label class="form-label">State<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="state" placeholder="State">
+      </div>
+      <div class="reg-input-label">
+        <label class="form-label">Zip Code<p style="color: red;">*</p></label>
+        <input class="registration-input form-control" formControlName="zipCode" placeholder="00000">
+      </div>
+    </div>
+
+    <div class="sign-up-promos">
+      <input class="form-check-input promo-checkbox" type="checkbox" formControlName="promos">
+      <label class="form-check-label">
+        Sign up for promotions
+      </label>
+    </div>
+
+    <div class="register">
+      <button class="btn btn-primary">Register</button>
+    </div>
+  </form>

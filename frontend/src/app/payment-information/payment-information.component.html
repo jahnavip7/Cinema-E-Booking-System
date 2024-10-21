@@ -1,20 +1,22 @@
-<div class="card">
-    <div class="card-section">
-        <input class="form-input" placeholder="9999 9999 9999 9999">
-        <label class="form-label">Card Number</label>
-    </div>
-    <div class="card-section">
-        <input class="form-input" placeholder="John Doe">
-        <label class="form-label">Cardholder Name</label>
-    </div>
-    <div class="exp-cvv">
+<div [formGroup]="paymentForm">
+    <div class="card">
         <div class="card-section">
-            <input class="form-input" style="width: 60%;" placeholder="MM/YYYY">
-            <label class="form-label" for="typeExp">Expiration</label>
+            <input class="form-input" formControlName="cardNumber" placeholder="9999 9999 9999 9999">
+            <label class="form-label">Card Number</label>
         </div>
         <div class="card-section">
-            <input class="form-input" style="width: 40%;" placeholder="CVV">
-            <label class="form-label" for="typeExp">CVV</label>
+            <input class="form-input" formControlName="cardHolder" placeholder="John Doe">
+            <label class="form-label">Cardholder Name</label>
+        </div>
+        <div class="exp-cvv">
+            <div class="card-section">
+                <input class="form-input" style="width: 60%;" formControlName="expiryDate" placeholder="MM/YYYY">
+                <label class="form-label" for="typeExp">Expiration</label>
+            </div>
+            <div class="card-section">
+                <input class="form-input" style="width: 40%;" formControlName="cvv" placeholder="CVV">
+                <label class="form-label" for="typeExp">CVV</label>
+            </div>
         </div>
     </div>
 </div>

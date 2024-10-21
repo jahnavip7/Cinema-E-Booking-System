@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PaymentInformationComponent } from '../payment-information/payment-information.component';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-edit-profile',
@@ -10,4 +11,13 @@ import { PaymentInformationComponent } from '../payment-information/payment-info
 })
 export class EditProfileComponent {
 
+  constructor(private router: Router) {
+
+  }
+
+  goToChange() {
+    // Add registration logic here if needed
+    // Navigate to the verification page after registration
+    this.router.navigate(['/change']);
+  }
 }

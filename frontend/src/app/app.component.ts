@@ -20,6 +20,7 @@ import { CommonModule } from '@angular/common';
 import { SelectSeatComponent } from './select-seat/select-seat.component';
 import { SelectShowtimeComponent } from './select-showtime/select-showtime.component';
 import { OrderSummaryComponent } from './ordersummary/ordersummary.component';
+import { Header2Component } from './header-2/header-2.component';
 
 
 @Component({
@@ -28,7 +29,7 @@ import { OrderSummaryComponent } from './ordersummary/ordersummary.component';
   imports: [RouterOutlet, LoginComponent, RegistrationComponent, PaymentInformationComponent, EditProfileComponent, 
     OrderDetailsComponent, AdminPortalComponent, AddMovieComponent, EditMovieComponent, CheckoutComponent, ChangePasswordComponent, 
     VerifyAccountComponent, ManagePromotionsComponent, ManageMoviesComponent, HeaderComponent, RouterModule, FormsModule,CommonModule, SelectSeatComponent
-  , SelectShowtimeComponent, OrderSummaryComponent],
+  , SelectShowtimeComponent, OrderSummaryComponent, Header2Component],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

@@ -1,12 +1,18 @@
 header{
     background : white;
-    padding:0;
+    opacity: 0.8;
+    padding: 0;
     border-bottom: 1px solid #e72929;
+    transition: all 0.3s ease;
 
 }
 
+header:hover {
+    opacity: 1;
+}
+
 a{
-    color: #af1313
+    color: #af1313;
 }
 
 a:hover{

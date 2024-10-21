@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-header-2',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  templateUrl: './header-2.component.html',
+  styleUrl: './header-2.component.scss'
 })
-export class LoginComponent {
+export class Header2Component {
 
   constructor(private router: Router) {
 

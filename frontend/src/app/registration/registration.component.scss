@@ -52,6 +52,7 @@
                 flex-direction: column;
                 justify-content: center;
                 gap: 10px;
+                margin-bottom: 20px;
             }
         }
     
@@ -59,7 +60,29 @@
             display: flex;
             justify-content: center;
         }
-    
+
+        .remove-card-btn {
+            background-color: red; 
+            border-color: red;
+
+        }
+        .remove-card-btn:hover {
+            transform: scale(1.1);  /* Expands the button */
+            box-shadow: 0 0 15px red;  /* Glowing white border */
+        }
+
+        .add-card-btn {
+            background-color: blue; 
+            border-color: blue;
+            margin-left: 60px;
+            margin-right: 3%;
+
+        }
+        .add-card-btn:hover {
+            transform: scale(1.1);  /* Expands the button */
+            box-shadow: 0 0 15px blue;  /* Glowing white border */
+        }
+     
     }
 
 

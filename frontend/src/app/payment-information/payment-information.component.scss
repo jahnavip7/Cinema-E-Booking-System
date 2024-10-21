@@ -2,9 +2,10 @@
     width: 425px;
     height: auto;
     border-radius: 15px;
+    border-color: white;
     display: flex;
     flex-direction: column;
-    // align-items: center;
+    background-color: transparent;
     padding: 25px;
 
     .card-section {
@@ -20,4 +21,13 @@
         display: flex;
         gap: 10%;
     }
+
+    // label {
+    //     color: black;
+    // }
+}
+
+.btn {
+    margin-top: 10px;
+    width: 100%;
 }
