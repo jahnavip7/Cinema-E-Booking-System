@@ -25,6 +25,8 @@ import { VerifyAccountComponent } from './verify-account/verify-account.componen
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { LoginComponent } from './login/login.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 export const routes: Routes = [
@@ -37,6 +39,7 @@ export const routes: Routes = [
   { path: 'register', component: RegistrationComponent },  // Registration page
   { path: 'verify', component: VerifyAccountComponent },  // Verification page (should only appear when navigating to '/verify')
   { path: 'edit-profile', component: EditProfileComponent },
+  { path: 'resetPassword', component: ResetPasswordComponent },
   { path: 'change', component: ChangePasswordComponent },  // Verification page (should only appear when navigating to '/verify')
   { path: '**', redirectTo: '' }  // Wildcard route to handle invalid URLs
 

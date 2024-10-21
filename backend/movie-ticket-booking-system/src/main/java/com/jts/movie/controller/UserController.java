@@ -1,4 +1,5 @@
 package com.jts.movie.controller;
+
 import com.jts.movie.request.ChangePasswordRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ import com.jts.movie.services.EmailService;
 import com.jts.movie.repositories.UserRepository;
 import com.jts.movie.entities.PaymentCard;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -48,15 +51,6 @@ public class UserController {
 	private EmailService emailService;
 
 	// User registration endpoint
-	/*@PostMapping("/register")
-	public ResponseEntity<String> registerUser(@RequestBody @Valid UserRequest userRequest) {
-		try {
-			String message = userService.addUser(userRequest); // `addUser` now handles everything
-			return new ResponseEntity<>(message, HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}*/
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, Object>> registerUser(@RequestBody @Valid UserRequest userRequest) {
 		Map<String, Object> response = new HashMap<>();
@@ -81,7 +75,6 @@ public class UserController {
 			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
-
 
 	// Email confirmation endpoint
 	@GetMapping("/confirmRegistration")
@@ -161,9 +154,9 @@ public class UserController {
 		return ResponseEntity.ok("Password reset link has been sent to your email");
 	}
 
-
 	@PostMapping("/resetPassword")
-	public ResponseEntity<String> resetPassword(@RequestBody @Valid UserRequest userRequest, @RequestParam("token") String token) {
+	public ResponseEntity<String> resetPassword(@RequestBody @Valid UserRequest userRequest,
+			@RequestParam("token") String token) {
 		Optional<User> userOptional = userRepository.findByResetToken(token);
 
 		if (!userOptional.isPresent()) {
@@ -174,18 +167,17 @@ public class UserController {
 		// Encrypt the new password and update it
 		String encodedPassword = passwordEncoder.encode(userRequest.getPassword());
 		user.setPassword(encodedPassword);
-		user.setResetToken(null);  // Invalidate the reset token after successful reset
+		user.setResetToken(null); // Invalidate the reset token after successful reset
 		userRepository.save(user);
 
 		return ResponseEntity.ok("Password has been reset successfully");
 	}
 
-
 	// Edit profile endpoint
 	@PutMapping("/editProfile")
 	public ResponseEntity<String> editProfile(@RequestBody EditProfileRequest editProfileRequest, Principal principal) {
 		try {
-			String currentUserEmail = principal.getName();  // Get the logged-in user's email
+			String currentUserEmail = principal.getName(); // Get the logged-in user's email
 			userService.updateUserProfile(currentUserEmail, editProfileRequest);
 			return ResponseEntity.ok("Profile updated successfully.");
 		} catch (Exception e) {
@@ -195,9 +187,10 @@ public class UserController {
 
 	// Change password endpoint
 	@PostMapping("/changePassword")
-	public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, Principal principal) {
+	public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest,
+			Principal principal) {
 		try {
-			String currentUserEmail = principal.getName();  // Get the logged-in user's email
+			String currentUserEmail = principal.getName(); // Get the logged-in user's email
 			userService.changePassword(currentUserEmail, changePasswordRequest);
 			return ResponseEntity.ok("Password updated successfully.");
 		} catch (Exception e) {

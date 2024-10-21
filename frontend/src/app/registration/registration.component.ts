@@ -140,16 +140,18 @@ export class RegistrationComponent implements OnInit {
 
       // Placeholder for API call
       this.http.post('http://localhost:8080/user/register', user).subscribe(
-        response => {
+        (response: any) => {
           console.log('Success:', response);
+          alert(response.message); // This can be the success message
+          this.goToVerify();
         },
-        error => {
-          // console.error('Error:', error);
+        (error: any) => {
+          console.error('Error:', error);
+          alert('Update failed: ' + error.error.message || 'Please try again.');
         }
       );
 
-      alert('Registration successful!');
-      this.goToVerify();
+      // alert('Registration successful!');
     } else {
       this.displayErrorMessages();
     }

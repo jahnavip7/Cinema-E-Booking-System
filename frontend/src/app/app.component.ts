@@ -22,15 +22,18 @@ import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from './services/auth/auth.service';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, RouterModule, Router, LoginComponent, RegistrationComponent, PaymentInformationComponent, EditProfileComponent,
+    RouterOutlet, RouterModule, LoginComponent, RegistrationComponent, PaymentInformationComponent, EditProfileComponent,
     OrderDetailsComponent, AdminPortalComponent, AddMovieComponent, EditMovieComponent, CheckoutComponent, ChangePasswordComponent,
     VerifyAccountComponent, ManagePromotionsComponent, ManageMoviesComponent, HeaderComponent, RouterModule, FormsModule, CommonModule,
-    SelectSeatComponent, SelectShowtimeComponent, OrderSummaryComponent, Header2Component, ReactiveFormsModule
+    SelectSeatComponent, SelectShowtimeComponent, OrderSummaryComponent, Header2Component, ReactiveFormsModule, ForgotPasswordComponent, ResetPasswordComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -38,13 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class AppComponent {
   title = 'frontend';
 
-  @ViewChild(LoginComponent) loginComponent!: LoginComponent;
+  constructor(public authService: AuthService) {}
 
-  callLogout(){
-    this.loginComponent.logout();
-  }
-  callIsAuthenticated(): boolean {
-    return this.loginComponent.isAuthenticated();
-  }
 
 }
