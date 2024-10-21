@@ -13,7 +13,8 @@ public class webConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 // Apply CORS to all endpoints (use "/**" for all endpoints)
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200", "http://localhost:8080") // Allow specific origins (adjust based on where frontend is running)
+                        .allowedOrigins("http://localhost:4200","http://localhost:4200/resetPassword", "http://localhost:8080") // Allow specific origins (adjust based on where frontend is running)
+                        //.allowedOrigins("*") // Allow specific origins (adjust based on where frontend is running)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Specify allowed HTTP methods
                         .allowedHeaders("*") // Allow all headers
                         .allowCredentials(true); // Allow sending credentials (optional)

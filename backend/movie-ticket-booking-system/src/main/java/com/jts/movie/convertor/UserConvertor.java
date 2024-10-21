@@ -6,29 +6,34 @@ import com.jts.movie.response.UserResponse;
 
 public class UserConvertor {
 
-    public static User userDtoToUser(UserRequest userRequest, String password) {
-        User user = User.builder()
-                .name(userRequest.getName())
-                .age(userRequest.getAge())
-                .address(userRequest.getAddress())
-                .gender(userRequest.getGender())
-                .mobileNo(userRequest.getMobileNo())
+    public static User userDtoToUser(UserRequest userRequest, String encryptedPassword) {
+        return User.builder()
+                .firstName(userRequest.getFirstName())
+                .lastName(userRequest.getLastName())
                 .emailId(userRequest.getEmailId())
+                .mobileNo(userRequest.getMobileNo())
+                .address(userRequest.getAddress())
+                .city(userRequest.getCity())
+                .state(userRequest.getState())
+                .zipcode(userRequest.getZipcode())
+                .password(encryptedPassword)
                 .roles(userRequest.getRoles())
-                .password(password)
+                .isActive(false)
+                .promotionPreference(userRequest.isPromotionPreference())
                 .build();
-
-        return user;
     }
 
     public static UserResponse userToUserDto(User user) {
-        UserResponse userDto = UserResponse.builder()
-                .name(user.getName())
-                .age(user.getAge())
+        return UserResponse.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .emailId(user.getEmailId())
+                .mobileNo(user.getMobileNo())
                 .address(user.getAddress())
-                .gender(user.getGender())
+                .city(user.getCity())
+                .state(user.getState())
+                .zipcode(user.getZipcode())
+                .promotionPreference(user.getPromotionPreference())
                 .build();
-
-        return userDto;
     }
 }

@@ -13,7 +13,7 @@ import com.jts.movie.entities.Movie;
 @RestController
 @RequestMapping("/movie")
 @Slf4j
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000","http://localhost:51793"})
 public class MovieController {
 	
 	@Autowired
