@@ -1,5 +1,7 @@
 package com.jts.movie.config;
 
+import com.jts.movie.config.JWTAuthFilter;
+import com.jts.movie.config.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +48,8 @@ public class SecurityConfiguration {
 								.requestMatchers("/theater/**").hasAnyAuthority("ROLE_ADMIN")
 								.requestMatchers("/ticket/**").hasAnyAuthority("ROLE_USER")
 								.anyRequest().authenticated())
+				//.addFilter(new JWTAuthFilter(authenticationManager())) // Add JWT authentication filter
+				//.addFilter(new JWTAuthFilter(authenticationManager(), jwtService))// Add JWT authorization filter
 				.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
 				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
