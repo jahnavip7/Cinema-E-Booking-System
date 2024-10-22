@@ -62,7 +62,7 @@ export class RegistrationComponent implements OnInit {
       state: ['', Validators.required],
       zipcode: ['', Validators.required],
       promotionPreference: [false],
-      paymentCards: this.fb.array([])
+      paymentCards: this.fb.array([this.createPaymentCard()])
     }, {
       validator: MustMatch('password', 'confirmPassword')
     });
@@ -70,6 +70,8 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.addPaymentCard();
+    console.log('Initial Registration Form:', this.registrationForm.value); // Debugging log
+    console.log('PaymentCards FormArray:', this.paymentCards.value);
   }
 
     // Navigate to the verification page
@@ -103,7 +105,7 @@ export class RegistrationComponent implements OnInit {
   validateExpiryDate(control: AbstractControl) {
     const value = control.value;
     const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-  
+
     if (value && !regex.test(value)) {
       return { pattern: true };
     }
@@ -113,7 +115,7 @@ export class RegistrationComponent implements OnInit {
   get paymentCards(): FormArray {
     return this.registrationForm.get('paymentCards') as FormArray;
   }
-  
+
   getCardFormGroup(index: number): FormGroup {
     return this.paymentCards.at(index) as FormGroup;
   }
@@ -160,7 +162,7 @@ export class RegistrationComponent implements OnInit {
   displayErrorMessages(): void {
     const controls = this.registrationForm.controls;
     let hasErrors = false; // Flag to track if any errors are displayed
-  
+
     // Check for errors in main form controls
     if (controls['firstName'].hasError('required') || controls['lastName'].hasError('required') ||
         controls['emailId'].hasError('required') || controls['mobileNo'].hasError('required') ||
@@ -179,16 +181,16 @@ export class RegistrationComponent implements OnInit {
       alert('Passwords do not match.');
       hasErrors = true; // Set flag to true
     }
-  
+
     for (let i = 0; i < this.paymentCards.length; i++) {
       const cardGroup = this.paymentCards.at(i) as FormGroup;
-      
+
       // Card number validation
       if (cardGroup.get('cardNumber')?.hasError('pattern') && cardGroup.get('cardNumber')?.touched) {
         alert(`Card number in card ${i + 1} must be exactly 16 digits if filled.`);
         hasErrors = true; // Set flag to true
       }
-  
+
       // CVV validation
       if (cardGroup.get('cvv')?.hasError('pattern') && cardGroup.get('cvv')?.touched) {
         alert(`CVV in card ${i + 1} must be exactly 3 digits if filled.`);
@@ -208,12 +210,13 @@ export class RegistrationComponent implements OnInit {
       }
 
     }
-  
+
     // Show generic alert only if no other errors were displayed
     if (!hasErrors) {
       alert('Please correct the errors in the form.');
     }
   }
-  
-  
+
+
+  protected readonly FormGroup = FormGroup;
 }

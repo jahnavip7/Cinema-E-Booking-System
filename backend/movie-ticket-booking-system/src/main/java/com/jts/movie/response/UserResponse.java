@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,7 +29,7 @@ public class UserResponse {
     private String token;   // Add token field for login response
     private String message; // Add message field for login response
     private Boolean promotionPreference;
-
+    private List<PaymentCardResponse> paymentCards;
     // Custom constructor for login response
     public UserResponse(String emailId, String token, String message) {
         this.emailId = emailId;

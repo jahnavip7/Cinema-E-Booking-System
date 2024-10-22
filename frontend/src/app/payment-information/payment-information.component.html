@@ -1,25 +1,20 @@
-<div *ngFor="let card of paymentCards.controls; let i = index" [formGroup]="card">
-  <div class="card">
+<div [formGroup]="formGroup" class="card">
+  <div class="card-section">
+    <input class="form-input" formControlName="cardNumber" placeholder="9999 9999 9999 9999">
+    <label class="form-label">Card Number</label>
+  </div>
+  <div class="card-section">
+    <input class="form-input" formControlName="cardHolderName" placeholder="John Doe">
+    <label class="form-label">Cardholder Name</label>
+  </div>
+  <div class="exp-cvv">
     <div class="card-section">
-      <input class="form-input" formControlName="cardNumber" placeholder="9999 9999 9999 9999">
-      <label class="form-label">Card Number</label>
+      <input class="form-input" style="width: 60%;" formControlName="expiryDate" placeholder="MM/YYYY">
+      <label class="form-label">Expiration</label>
     </div>
     <div class="card-section">
-      <input class="form-input" formControlName="cardHolderName" placeholder="John Doe">
-      <label class="form-label">Cardholder Name</label>
+      <input class="form-input" style="width: 40%;" formControlName="cvv" placeholder="CVV">
+      <label class="form-label">CVV</label>
     </div>
-    <div class="exp-cvv">
-      <div class="card-section">
-        <input class="form-input" style="width: 60%;" formControlName="expiryDate" placeholder="MM/YYYY">
-        <label class="form-label">Expiration</label>
-      </div>
-      <div class="card-section">
-        <input class="form-input" style="width: 40%;" formControlName="cvv" placeholder="CVV">
-        <label class="form-label">CVV</label>
-      </div>
-    </div>
-    <button (click)="removePaymentCard(i)" class="btn btn-danger">Remove Card</button>
   </div>
 </div>
-
-<button (click)="addPaymentCard()" class="btn btn-primary">Add Payment Card</button>

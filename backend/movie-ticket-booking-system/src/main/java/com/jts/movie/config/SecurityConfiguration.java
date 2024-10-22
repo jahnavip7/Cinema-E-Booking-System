@@ -1,7 +1,7 @@
 package com.jts.movie.config;
 
 import com.jts.movie.config.JWTAuthFilter;
-import com.jts.movie.config.JWTService;
+import com.jts.movie.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.jts.movie.repositories.UserRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -39,34 +37,32 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf(c -> c.disable())
-				.authorizeHttpRequests(req ->
-						req.requestMatchers("/user/register", "/user/login","/user/confirmRegistration/**","/user/forgotPassword","/user/resetPassword/**","/user/changePassword/**").permitAll() // Allow public access
-								.requestMatchers("/movie/**").permitAll()
-								.requestMatchers("/email/**").permitAll()
-								.requestMatchers("/show/**").hasAnyAuthority("ROLE_ADMIN")
-								.requestMatchers("/theater/**").hasAnyAuthority("ROLE_ADMIN")
-								.requestMatchers("/ticket/**").hasAnyAuthority("ROLE_USER")
-								.anyRequest().authenticated())
-				//.addFilter(new JWTAuthFilter(authenticationManager())) // Add JWT authentication filter
-				//.addFilter(new JWTAuthFilter(authenticationManager(), jwtService))// Add JWT authorization filter
-				.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		http.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/user/register", "/user/login", "/user/confirmRegistration/**", "/user/forgotPassword", "/user/resetPassword/**", "/user/changePassword/**").permitAll()
+						.requestMatchers("/payment-card/**").hasAnyAuthority("ROLE_USER")  // Protect payment card endpoints
+						.requestMatchers("/movie/**").permitAll()
+						.requestMatchers("/show/**", "/theater/**").hasAnyAuthority("ROLE_ADMIN")
+						.anyRequest().authenticated()
+				)
+				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider())
-				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
+				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
 	}
 
 	@Bean
 	AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		authenticationProvider.setUserDetailsService(userDetailsService());
-		authenticationProvider.setPasswordEncoder(passwordEncoder());
-		return authenticationProvider;
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setUserDetailsService(userDetailsService());
+		provider.setPasswordEncoder(passwordEncoder());  // Password encryption
+		return provider;
 	}
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder();  // Use BCrypt for password hashing
 	}
 
 	@Bean

@@ -1,4 +1,4 @@
-  <form [formGroup]="registrationForm" class="registration-form"(ngSubmit)="onSubmit()">
+  <form [formGroup]="registrationForm" class="registration-form" (ngSubmit)="onSubmit()">
     <div class="registration-heading">
       <h2>Registration</h2>
     </div>
@@ -40,14 +40,14 @@
 
     <div class= "payment" formArrayName="paymentCards">
       <div *ngFor="let card of paymentCards.controls; let i = index" [formGroupName]="i">
-        <app-payment-information class="pay-card" [paymentForm]="getCardFormGroup(i)"></app-payment-information>
+        <app-payment-information [formGroup] ="getCardFormGroup(i)"></app-payment-information>
         <div class="payment-buttons">
           <button class="btn btn-primary add-card-btn" type="button" (click)="addPaymentCard()" [disabled]="paymentCards.length >= 3">Add Another Card</button>
           <button class="btn btn-primary remove-card-btn" type="button" (click)="removePaymentCard(i)" [disabled]="paymentCards.length === 1">Remove Card</button>
         </div>
       </div>
     </div>
-    
+
     <p *ngIf="paymentCards.length >= 3">You have reached the maximum number of payment cards.</p>
 
 

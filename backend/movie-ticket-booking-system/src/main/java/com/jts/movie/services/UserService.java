@@ -1,4 +1,6 @@
 package com.jts.movie.services;
+import com.jts.movie.config.EncryptionUtil;
+import com.jts.movie.response.PaymentCardResponse;
 import org.springframework.http.ResponseEntity;
 
 import com.jts.movie.entities.User;
@@ -21,6 +23,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,6 +38,9 @@ public class UserService {
 
 	@Autowired
 	private PaymentCardRepository paymentCardRepository;
+
+	@Autowired
+	private EncryptionUtil encryptionUtil;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -86,13 +92,17 @@ public class UserService {
 			// Loop through each payment card and save it
 			for (PaymentCardRequest cardRequest : userRequest.getPaymentCards()) {
 				PaymentCard paymentCard = new PaymentCard();
-				paymentCard.setCardNumber(cardRequest.getCardNumber());
-				paymentCard.setCardHolderName(cardRequest.getCardHolderName());
-				paymentCard.setExpiryDate(cardRequest.getExpiryDate());
-				paymentCard.setCvv(cardRequest.getCvv());
+				try {
+					paymentCard.setCardNumber(encryptionUtil.encrypt(cardRequest.getCardNumber()));  // Encrypt card number
+					paymentCard.setCardHolderName(cardRequest.getCardHolderName());  // No need to encrypt name
+					paymentCard.setExpiryDate(encryptionUtil.encrypt(cardRequest.getExpiryDate()));  // Encrypt expiry date
+					paymentCard.setCvv(encryptionUtil.encrypt(cardRequest.getCvv()));  // Encrypt CVV
+				} catch (Exception e) {
+					throw new RuntimeException("Error encrypting payment card details", e);
+				}
 				paymentCard.setUser(user);  // Associate the card with the user
 
-				// Save payment card to repository (you need to inject the PaymentCardRepository)
+				// Save payment card to repository
 				paymentCardRepository.save(paymentCard);
 			}
 		}
@@ -225,6 +235,47 @@ public class UserService {
 
 		// Save the updated user with the new password
 		userRepository.save(user);
+	}
+
+	public UserResponse getUserProfile(String email) {
+		// Find the user by their email
+		Optional<User> userOptional = userRepository.findByEmailId(email);
+
+		if (userOptional.isEmpty()) {
+			throw new IllegalArgumentException("User not found.");
+		}
+
+		User user = userOptional.get();
+
+		// Create a response DTO (UserResponse) to send back the profile information
+		UserResponse userResponse = new UserResponse();
+		userResponse.setFirstName(user.getFirstName());
+		userResponse.setLastName(user.getLastName());
+		userResponse.setEmailId(user.getEmailId());
+		userResponse.setMobileNo(user.getMobileNo());
+		userResponse.setAddress(user.getAddress());
+		userResponse.setCity(user.getCity());
+		userResponse.setState(user.getState());
+		userResponse.setZipcode(user.getZipcode());
+		userResponse.setPromotionPreference(user.getPromotionPreference());
+
+		// Fetch payment cards if any
+		List<PaymentCard> paymentCards = user.getPaymentCards();
+		List<PaymentCardResponse> paymentCardResponses = new ArrayList<>();
+
+		for (PaymentCard card : paymentCards) {
+			PaymentCardResponse cardResponse = new PaymentCardResponse(
+					card.getCardNumber(),
+					card.getCardHolderName(),
+					card.getExpiryDate(),
+					card.getCvv()
+			);
+			paymentCardResponses.add(cardResponse);
+		}
+
+		userResponse.setPaymentCards(paymentCardResponses);
+
+		return userResponse;
 	}
 
 }
