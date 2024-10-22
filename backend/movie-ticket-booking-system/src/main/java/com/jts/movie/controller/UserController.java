@@ -1,6 +1,7 @@
 package com.jts.movie.controller;
 
 import com.jts.movie.request.ChangePasswordRequest;
+import com.jts.movie.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -271,7 +272,19 @@ public class UserController {
 		}
 	}
 
-
+	// Get user profile endpoint
+	@GetMapping("/profile")
+	public ResponseEntity<UserResponse> getUserProfile(Principal principal) {
+		try {
+			// Get the logged-in user's email from the Principal
+			String currentUserEmail = principal.getName();
+			// Fetch the user profile using the email
+			UserResponse userResponse = userService.getUserProfile(currentUserEmail);
+			return new ResponseEntity<>(userResponse, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	// Change password endpoint
 	@PostMapping("/changePassword")
 	public ResponseEntity<Map<String, String>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest,
