@@ -99,43 +99,59 @@ public class UserController {
 
 			// Check if authentication is successful
 			if (authentication.isAuthenticated()) {
-				// Generate JWT token
-				String token = jwtService.generateToken(userRequest.getEmailId());
+				// Retrieve user details to check if the account is active
+				Optional<User> userOptional = userRepository.findByEmailId(userRequest.getEmailId());
+				if (userOptional.isPresent()) {
+					User user = userOptional.get();
 
-				// Prepare the response with the token and status code
-				response.put("token", token);
-				response.put("statusCode", HttpStatus.OK.value());
+					// Check if the user is active (has confirmed registration)
+					if (!user.getIsActive()) {
+						response.put("message", "Account not activated. Please confirm your registration via the email sent to you.");
+						response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+						return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+					}
 
-				return new ResponseEntity<>(response, HttpStatus.OK);
+					// Generate JWT token
+					String token = jwtService.generateToken(userRequest.getEmailId());
+
+					// Prepare the response with the token and status code
+					response.put("token", token);
+					response.put("statusCode", HttpStatus.OK.value());
+					return new ResponseEntity<>(response, HttpStatus.OK);
+				} else {
+					// If user is not found in the repository
+					response.put("message", "Invalid credentials");
+					response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+					return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
 			} else {
 				// Prepare the response for invalid credentials
 				response.put("message", "Invalid credentials");
 				response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
-
 				return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 			}
 		} catch (BadCredentialsException e) {
 			// Handle bad credentials specifically
 			response.put("message", "Invalid email or password");
 			response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
-
 			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 		} catch (Exception e) {
 			// Catch any other exceptions and respond with a generic error message
 			response.put("message", "An error occurred: " + e.getMessage());
 			response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
-
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	@PostMapping("/forgotPassword")
-	public ResponseEntity<String> forgotPassword(@RequestBody @Valid UserRequest userRequest) {
+	public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody @Valid UserRequest userRequest) {
 		String email = userRequest.getEmailId(); // Use email from UserRequest
 		Optional<User> userOptional = userRepository.findByEmailId(email);
 
 		if (!userOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email not found");
+			Map<String, String> response = new HashMap<>();
+			response.put("message", "Email not found");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 
 		User user = userOptional.get();
@@ -148,19 +164,28 @@ public class UserController {
 		try {
 			emailService.sendResetPasswordEmail(user.getEmailId(), resetToken); // Send only the reset token
 		} catch (MessagingException e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending email");
+			Map<String, String> response = new HashMap<>();
+			response.put("message", "Error sending email");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
 
-		return ResponseEntity.ok("Password reset link has been sent to your email");
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "Password reset link has been sent to your email");
+		return ResponseEntity.ok(response);
 	}
 
+
 	@PostMapping("/resetPassword")
-	public ResponseEntity<String> resetPassword(@RequestBody @Valid UserRequest userRequest,
+	public ResponseEntity<Map<String, String>> resetPassword(
+			@RequestBody @Valid UserRequest userRequest,
 			@RequestParam("token") String token) {
 		Optional<User> userOptional = userRepository.findByResetToken(token);
 
+		Map<String, String> response = new HashMap<>();
+
 		if (!userOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid or expired token");
+			response.put("message", "Invalid or expired token");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 
 		User user = userOptional.get();
@@ -170,8 +195,10 @@ public class UserController {
 		user.setResetToken(null); // Invalidate the reset token after successful reset
 		userRepository.save(user);
 
-		return ResponseEntity.ok("Password has been reset successfully");
+		response.put("message", "Password has been reset successfully");
+		return ResponseEntity.ok(response);
 	}
+
 
 	// Edit profile endpoint
 	@PutMapping("/editProfile")
@@ -187,14 +214,17 @@ public class UserController {
 
 	// Change password endpoint
 	@PostMapping("/changePassword")
-	public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest,
-			Principal principal) {
+	public ResponseEntity<Map<String, String>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest,
+															  Principal principal) {
+		Map<String, String> response = new HashMap<>();
 		try {
 			String currentUserEmail = principal.getName(); // Get the logged-in user's email
 			userService.changePassword(currentUserEmail, changePasswordRequest);
-			return ResponseEntity.ok("Password updated successfully.");
+			response.put("message", "Password updated successfully.");
+			return ResponseEntity.ok(response);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			response.put("error", e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
 

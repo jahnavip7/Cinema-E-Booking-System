@@ -17,6 +17,7 @@ export class Header2Component {
 
   logout() {
     this.authService.logout();
+    alert("You have been logged out of the system.");
     this.router.navigate(['']);
   }
 

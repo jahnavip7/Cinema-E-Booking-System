@@ -45,6 +45,7 @@ export class AuthService {
           }
 
           // Navigate to home on successful login
+          alert("Login Successful!");
           this.router.navigate(['']);
         },
         error: (error: HttpErrorResponse) => {
@@ -60,6 +61,14 @@ export class AuthService {
   logout() {
     localStorage.removeItem(this.token); // Remove token
     this.router.navigate(['/']); // Redirect to homepage
+  }
+
+  getToken() {
+    localStorage.getItem(this.token);
+  }
+
+  removeToken() {
+    localStorage.removeItem(this.token);
   }
 
   isAuthenticated(): boolean {
