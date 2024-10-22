@@ -20,6 +20,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -177,6 +179,21 @@ public class UserService {
 		user.setCity(editProfileRequest.getCity());
 		user.setState(editProfileRequest.getState());
 		user.setZipcode(editProfileRequest.getZipcode());
+
+		// Handle Payment Information (if any)
+		List<PaymentCard> paymentCards = editProfileRequest.getPaymentCards();
+		if (paymentCards != null && !paymentCards.isEmpty()) {
+			user.getPaymentCards().clear(); // Clear existing payment cards
+			for (PaymentCard paymentCardRequest : paymentCards) {
+				PaymentCard card = new PaymentCard();
+				card.setCardNumber(paymentCardRequest.getCardNumber());
+				card.setCardHolderName(paymentCardRequest.getCardHolderName());
+				card.setExpiryDate(paymentCardRequest.getExpiryDate());
+				card.setCvv(paymentCardRequest.getCvv());
+				card.setUser(user); // Link the card to the user
+				user.getPaymentCards().add(card); // Add new card
+			}
+		}
 
 		// Save the updated user profile
 		userRepository.save(user);

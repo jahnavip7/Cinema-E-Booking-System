@@ -1,37 +1,37 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-
+import { FormGroup, FormArray, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-payment-information',
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './payment-information.component.html',
   styleUrls: ['./payment-information.component.scss']
-  // template: `
-  //   <div [formGroup]="paymentForm">
-  //     <div class="card">
-  //       <div class="card-section">
-  //         <input class="form-input" formControlName="cardNumber" placeholder="9999 9999 9999 9999">
-  //         <label class="form-label">Card Number</label>
-  //       </div>
-  //       <div class="card-section">
-  //         <input class="form-input" formControlName="cardHolder" placeholder="John Doe">
-  //         <label class="form-label">Cardholder Name</label>
-  //       </div>
-  //       <div class="exp-cvv">
-  //         <div class="card-section">
-  //           <input class="form-input" formControlName="expiryDate" style="width: 60%;" placeholder="MM/YYYY">
-  //           <label class="form-label">Expiration</label>
-  //         </div>
-  //         <div class="card-section">
-  //           <input class="form-input" formControlName="cvv" style="width: 40%;" placeholder="CVV">
-  //           <label class="form-label">CVV</label>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // `
 })
 export class PaymentInformationComponent {
-  @Input() paymentForm!: FormGroup;
+  @Input() paymentForm!: FormGroup;  // OLD
+
+  // NEW: Replace paymentForm with paymentCards FormArray
+  @Input() paymentCards!: FormArray;
+
+  constructor() {}
+
+  // Add a new payment card form group to the FormArray
+  addPaymentCard(): void {
+    this.paymentCards.push(this.createPaymentFormGroup());
+  }
+
+  // Create a new payment card form group
+  createPaymentFormGroup(): FormGroup {
+    return new FormGroup({
+      cardNumber: new FormControl('', Validators.required),
+      cardHolderName: new FormControl('', Validators.required),
+      expiryDate: new FormControl('', Validators.required),
+      cvv: new FormControl('', Validators.required),
+    });
+  }
+
+  // Remove a card from the FormArray
+  removePaymentCard(index: number): void {
+    this.paymentCards.removeAt(index);
+  }
 }

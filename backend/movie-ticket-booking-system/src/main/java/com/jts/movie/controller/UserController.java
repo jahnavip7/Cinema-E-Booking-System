@@ -88,6 +88,61 @@ public class UserController {
 	}
 
 	// User login endpoint
+	/*@PostMapping("/login")
+	public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserRequest userRequest) {
+		Map<String, Object> response = new HashMap<>();
+
+		try {
+			// Authenticate the user using email and password
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(userRequest.getEmailId(), userRequest.getPassword()));
+
+			// Check if authentication is successful
+			if (authentication.isAuthenticated()) {
+				// Retrieve user details to check if the account is active
+				Optional<User> userOptional = userRepository.findByEmailId(userRequest.getEmailId());
+				if (userOptional.isPresent()) {
+					User user = userOptional.get();
+
+					// Check if the user is active (has confirmed registration)
+					if (!user.getIsActive()) {
+						response.put("message", "Account not activated. Please confirm your registration via the email sent to you.");
+						response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+						return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+					}
+
+					// Generate JWT token
+					String token = jwtService.generateToken(userRequest.getEmailId());
+
+					// Prepare the response with the token and status code
+					response.put("token", token);
+					response.put("statusCode", HttpStatus.OK.value());
+					return new ResponseEntity<>(response, HttpStatus.OK);
+				} else {
+					// If user is not found in the repository
+					response.put("message", "Invalid credentials");
+					response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+					return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+				}
+			} else {
+				// Prepare the response for invalid credentials
+				response.put("message", "Invalid credentials");
+				response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+				return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+			}
+		} catch (BadCredentialsException e) {
+			// Handle bad credentials specifically
+			response.put("message", "Invalid email or password");
+			response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
+			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			// Catch any other exceptions and respond with a generic error message
+			response.put("message", "An error occurred: " + e.getMessage());
+			response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}*/
+
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserRequest userRequest) {
 		Map<String, Object> response = new HashMap<>();
@@ -142,6 +197,7 @@ public class UserController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 
 	@PostMapping("/forgotPassword")
 	public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody @Valid UserRequest userRequest) {
@@ -202,15 +258,19 @@ public class UserController {
 
 	// Edit profile endpoint
 	@PutMapping("/editProfile")
-	public ResponseEntity<String> editProfile(@RequestBody EditProfileRequest editProfileRequest, Principal principal) {
+	public ResponseEntity<Map<String, String>> editProfile(@RequestBody EditProfileRequest editProfileRequest, Principal principal) {
+		Map<String, String> response = new HashMap<>();
 		try {
 			String currentUserEmail = principal.getName(); // Get the logged-in user's email
 			userService.updateUserProfile(currentUserEmail, editProfileRequest);
-			return ResponseEntity.ok("Profile updated successfully.");
+			response.put("message", "Profile updated successfully.");
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+			response.put("error", e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 		}
 	}
+
 
 	// Change password endpoint
 	@PostMapping("/changePassword")
