@@ -39,7 +39,9 @@ export const routes: Routes = [
   { path: 'register', component: RegistrationComponent },  // Registration page
   { path: 'verify', component: VerifyAccountComponent },  // Verification page (should only appear when navigating to '/verify')
   { path: 'edit-profile', component: EditProfileComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'resetPassword', component: ResetPasswordComponent },
+  { path: 'resetPassword/:userId', component: ResetPasswordComponent },
   { path: 'change', component: ChangePasswordComponent },  // Verification page (should only appear when navigating to '/verify')
   { path: '**', redirectTo: '' }  // Wildcard route to handle invalid URLs
 
