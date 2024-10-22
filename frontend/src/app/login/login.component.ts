@@ -17,11 +17,28 @@ import { AuthService } from '../services/auth/auth.service';
 export class LoginComponent {
   email: string = '';
   password: string = '';
+  rememberMe: boolean = false;
 
   constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private authService: AuthService) {}
 
+  ngOnInit() {
+    if (localStorage.getItem('email') && localStorage.getItem('password')) {
+      this.email = localStorage.getItem('email') as string;
+      this.password = localStorage.getItem('password') as string;
+      this.rememberMe = !!localStorage.getItem('email');
+    }
+  }
+
   onSubmit() {
     // Construct the login data
+
+    if (this.rememberMe) {
+      localStorage.setItem('email', this.email);
+      localStorage.setItem('password', this.password);
+    } else {
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
+    }
     const loginData = {
       emailId: this.email,
       password: this.password

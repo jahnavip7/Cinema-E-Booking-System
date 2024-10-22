@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, HostListener} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -43,5 +43,11 @@ export class AppComponent {
 
   constructor(public authService: AuthService) {}
 
+  @HostListener('window:beforeunload', ['$event'])
+  unloadHandler(event: Event) {
+    if (this.authService.isAuthenticated()) {
+      this.authService.logout();
+    }
+  }
 
 }

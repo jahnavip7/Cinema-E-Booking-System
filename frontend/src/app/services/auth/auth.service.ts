@@ -79,6 +79,23 @@ export class AuthService {
     return false; // If localStorage is not available, return false
   }
 
+  clearSession() {
+    if (this.isLocalStorageAvailable()) {
+      localStorage.removeItem('authToken');
+    }
+  }
+
+  isLocalStorageAvailable(): boolean {
+    try {
+      const test = 'test';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
     // Error handling function
     private handleError(error: HttpErrorResponse) {
       let errorMessage = 'An unknown error occurred!';
