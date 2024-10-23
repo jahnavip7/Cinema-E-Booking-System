@@ -43,11 +43,11 @@ export class AppComponent {
 
   constructor(public authService: AuthService) {}
 
-  @HostListener('window:beforeunload', ['$event'])
-  unloadHandler(event: Event) {
-    if (this.authService.isAuthenticated()) {
-      this.authService.logout();
-    }
-  }
+  // @HostListener('window:beforeunload', ['$event'])
+  // unloadHandler(event: Event) {
+  //   if (this.authService.isAuthenticated()) {
+  //     this.authService.logout();
+  //   }
+  // }
 
 }

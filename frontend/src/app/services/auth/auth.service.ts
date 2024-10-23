@@ -47,20 +47,17 @@ export class AuthService {
 
           // Navigate to home on successful login
           alert("Login Successful!");
-          this.router.navigate(['']);
-          console.log(localStorage.getItem('authToken'));
           const token = localStorage.getItem('authToken');
           const headers = { 'Authorization': `Bearer ${token}` };
-          // this.http.get('http://localhost:8080/user/profile', { headers }).subscribe((data: any) => {
-          //   this.role = data.roles;
-          //   localStorage.setItem('Role', this.role)
-          //   console.log(localStorage.getItem('Role'));
-          // });
           this.http.get('http://localhost:8080/user/profile', { headers }).subscribe(
             (data: any) => {
               this.role = data.roles;
               localStorage.setItem('Role', this.role);
-              console.log(localStorage.getItem('Role'));
+
+              if (localStorage.getItem('Role') === 'USER')
+                this.router.navigate(['']);
+              else
+                this.router.navigate(['/admin-portal']);
             },
             (error) => {
               console.error('Error:', error);

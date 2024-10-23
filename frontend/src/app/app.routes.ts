@@ -27,6 +27,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { AdminPortalComponent } from './admin-portal/admin-portal.component';
 
 
 export const routes: Routes = [
@@ -42,6 +43,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'resetPassword', component: ResetPasswordComponent },
   { path: 'resetPassword/:userId', component: ResetPasswordComponent },
+  { path: 'admin-portal', component: AdminPortalComponent },
   { path: 'change', component: ChangePasswordComponent },  // Verification page (should only appear when navigating to '/verify')
   { path: '**', redirectTo: '' }  // Wildcard route to handle invalid URLs
 

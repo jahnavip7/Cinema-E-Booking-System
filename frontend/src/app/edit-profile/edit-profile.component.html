@@ -1,4 +1,4 @@
-<form class="edit-profile-form" [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+<!-- <form class="edit-profile-form" [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
   <div class="edit-profile-heading">
     <h2>Edit Profile</h2>
   </div>
@@ -70,4 +70,82 @@
     <button type="submit" class="btn btn-primary">Save</button>
     <button type="button" class="btn btn-secondary" (click)="goToChange()">Change Password</button>
   </div>
-</form>
+</form> -->
+<form class="edit-profile-form" [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+  <div class="edit-profile-heading">
+  <h2>Edit Profile</h2>
+  </div>
+   
+    <!-- First Name and Last Name -->
+  <div class="edit-profile-inputs-2">
+  <div class="edit-profile-input-label">
+  <label class="form-label">First Name<p style="color: red;">*</p></label>
+  <input formControlName="firstName" class="edit-profile-input form-control" placeholder="First Name">
+  </div>
+  <div class="edit-profile-input-label">
+  <label class="form-label">Last Name<p style="color: red;">*</p></label>
+  <input formControlName="lastName" class="edit-profile-input form-control" placeholder="Last Name">
+  </div>
+  <div class="edit-profile-input-label">
+  <label class="form-label">Phone Number<p style="color: red;">*</p></label>
+  <input formControlName="mobileNo" class="edit-profile-input form-control" placeholder="Phone No.">
+  </div>
+  </div>
+   
+    <!-- Payment Information -->
+  <div class="edit-profile-inputs-2">
+  <div class="pay-card">
+  <label class="form-label">Add Payment</label>
+   
+        <div formArrayName="paymentCards">
+  <div *ngFor="let card of paymentCards.controls; let i = index" [formGroupName]="i">
+  <app-payment-information [formGroup]="getCardFormGroup(i)"></app-payment-information>
+  <!-- Add and Remove Buttons -->
+  <div class="payment-buttons">
+  <button class="btn btn-primary add-card-btn" type="button" (click)="addPaymentCard()" [disabled]="paymentCards.length >= 3">Add Another Card</button>
+  <button class="btn btn-danger remove-card-btn" type="button" (click)="removePaymentCard(i)" [disabled]="paymentCards.length === 1">Remove Card</button>
+  </div>
+  </div>
+  </div>
+   
+        <p *ngIf="paymentCards.length >= 3">You have reached the maximum number of payment cards.</p>
+  </div>
+  </div>
+   
+
+  <div class="edit-profile-inputs-2">
+  <div class="edit-profile-input-label">
+  <label class="form-label">Street Address<p style="color: red;">*</p></label>
+  <input formControlName="address" class="edit-profile-input form-control" placeholder="Address">
+  </div>
+  <div class="edit-profile-input-label">
+  <label class="form-label">City<p style="color: red;">*</p></label>
+  <input formControlName="city" class="edit-profile-input form-control" placeholder="City">
+  </div>
+  </div>
+   
+    <div class="edit-profile-inputs-2">
+  <div class="edit-profile-input-label">
+  <label class="form-label">State<p style="color: red;">*</p></label>
+  <input formControlName="state" class="edit-profile-input form-control" placeholder="State">
+  </div>
+  <div class="edit-profile-input-label">
+  <label class="form-label">Zip Code<p style="color: red;">*</p></label>
+  <input formControlName="zipcode" class="edit-profile-input form-control" placeholder="00000">
+  </div>
+  </div>
+   
+    <!-- Promotions Checkbox -->
+  <div class="receive-promos">
+  <input formControlName="promotionPreference" class="form-check-input promo-checkbox" type="checkbox">
+  <label class="form-check-label">
+        Receive promotions
+  </label>
+  </div>
+   
+    <!-- Submit and Change Password Buttons -->
+  <div class="edit-profile-inputs-2">
+  <button type="submit" class="btn btn-primary">Save</button>
+  <button type="button" class="btn btn-secondary" (click)="goToChange()">Change Password</button>
+  </div>
+  </form>
