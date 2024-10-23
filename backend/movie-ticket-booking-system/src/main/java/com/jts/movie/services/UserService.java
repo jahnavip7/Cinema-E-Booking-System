@@ -159,7 +159,7 @@ public class UserService {
 	}
 
 	// Login user
-	public UserResponse loginUser(UserRequest userRequest) {
+	/*public UserResponse loginUser(UserRequest userRequest) {
 		Optional<User> userOptional = userRepository.findByEmailId(userRequest.getEmailId());
 		if (userOptional.isEmpty()) {
 			throw new IllegalArgumentException("Invalid email or password");
@@ -180,7 +180,7 @@ public class UserService {
 		String token = jwtService.generateToken(user.getEmailId());
 
 		return new UserResponse(user.getEmailId(), token, "Login successful");
-	}
+	}*/
 
 	public void updateUserProfile(String currentUserEmail, EditProfileRequest editProfileRequest) throws MessagingException {
 		// Find the user by the current logged-in email
