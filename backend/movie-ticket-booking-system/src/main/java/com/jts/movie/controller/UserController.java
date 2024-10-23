@@ -265,6 +265,7 @@ public class UserController {
 			String currentUserEmail = principal.getName(); // Get the logged-in user's email
 			userService.updateUserProfile(currentUserEmail, editProfileRequest);
 			response.put("message", "Profile updated successfully.");
+
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.put("error", e.getMessage());
