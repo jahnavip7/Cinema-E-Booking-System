@@ -45,17 +45,28 @@ export class LoginComponent {
       password: this.password
     };
     this.authService.login(loginData);
-    this.setRole();
+    // this.setRole();
   }
 
   setRole() {
+    console.log(localStorage.getItem('authToken'));
     const token = localStorage.getItem('authToken');
     const headers = { 'Authorization': `Bearer ${token}` };
-    this.http.get('http://localhost:8080/user/profile', { headers }).subscribe((data: any) => {
-      this.role = data.roles;
-      localStorage.setItem('Role', this.role)
-      console.log(localStorage.getItem('Role'));
-    });
+    // this.http.get('http://localhost:8080/user/profile', { headers }).subscribe((data: any) => {
+    //   this.role = data.roles;
+    //   localStorage.setItem('Role', this.role)
+    //   console.log(localStorage.getItem('Role'));
+    // });
+    this.http.get('http://localhost:8080/user/profile', { headers }).subscribe(
+      (data: any) => {
+        this.role = data.roles;
+        localStorage.setItem('Role', this.role);
+        console.log(localStorage.getItem('Role'));
+      },
+      (error) => {
+        console.error('Error:', error);
+      }
+    );
   }
 
 }

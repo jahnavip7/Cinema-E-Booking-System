@@ -25,6 +25,7 @@ import { throwError } from 'rxjs';  // Import throwError for error handling
 export class AuthService {
   private token = 'authToken';  // Key for storing JWT in localStorage
   loginError: string = '';
+  role: string = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -47,6 +48,24 @@ export class AuthService {
           // Navigate to home on successful login
           alert("Login Successful!");
           this.router.navigate(['']);
+          console.log(localStorage.getItem('authToken'));
+          const token = localStorage.getItem('authToken');
+          const headers = { 'Authorization': `Bearer ${token}` };
+          // this.http.get('http://localhost:8080/user/profile', { headers }).subscribe((data: any) => {
+          //   this.role = data.roles;
+          //   localStorage.setItem('Role', this.role)
+          //   console.log(localStorage.getItem('Role'));
+          // });
+          this.http.get('http://localhost:8080/user/profile', { headers }).subscribe(
+            (data: any) => {
+              this.role = data.roles;
+              localStorage.setItem('Role', this.role);
+              console.log(localStorage.getItem('Role'));
+            },
+            (error) => {
+              console.error('Error:', error);
+            }
+          );
         },
         error: (error: HttpErrorResponse) => {
           // Display error message
