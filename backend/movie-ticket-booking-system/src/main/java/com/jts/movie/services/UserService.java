@@ -125,6 +125,17 @@ public class UserService {
 		sendEmail(user.getEmailId(), subject, body);
 	}
 
+
+	private void sendUpdatedEmail(User user) throws MessagingException {
+//		String confirmationLink = "http://localhost:8080/user/confirmRegistration?token=" + token;
+		String subject = "Profile Updated";
+		String body = "<p>Hello " + user.getFirstName() + " " + user.getLastName() + ",</p>"
+				+ "<p>Your Profile updated successfully</p>";
+//				+ "<a href=\"" + confirmationLink + "\">Confirm Registration</a>"
+//				+ "<p>If you did not register, please ignore this email.</p>";
+
+		sendEmail(user.getEmailId(), subject, body);
+	}
 	// Email sending logic
 	private void sendEmail(String to, String subject, String body) throws MessagingException {
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -171,7 +182,7 @@ public class UserService {
 		return new UserResponse(user.getEmailId(), token, "Login successful");
 	}
 
-	public void updateUserProfile(String currentUserEmail, EditProfileRequest editProfileRequest) {
+	public void updateUserProfile(String currentUserEmail, EditProfileRequest editProfileRequest) throws MessagingException {
 		// Find the user by the current logged-in email
 		Optional<User> userOptional = userRepository.findByEmailId(currentUserEmail);
 
@@ -207,6 +218,7 @@ public class UserService {
 
 		// Save the updated user profile
 		userRepository.save(user);
+		sendUpdatedEmail(user);
 	}
 
 	public void changePassword(String currentUserEmail, ChangePasswordRequest changePasswordRequest) {
@@ -255,6 +267,7 @@ public class UserService {
 		userResponse.setMobileNo(user.getMobileNo());
 		userResponse.setAddress(user.getAddress());
 		userResponse.setCity(user.getCity());
+		userResponse.setRoles(user.getRoles());
 		userResponse.setState(user.getState());
 		userResponse.setZipcode(user.getZipcode());
 		userResponse.setPromotionPreference(user.getPromotionPreference());
