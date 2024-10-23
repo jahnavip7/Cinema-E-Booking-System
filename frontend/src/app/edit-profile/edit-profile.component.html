@@ -3,7 +3,6 @@
     <h2>Edit Profile</h2>
   </div>
 
-  <!-- First Name and Last Name -->
   <div class="edit-profile-inputs-2">
     <div class="edit-profile-input-label">
       <label class="form-label">First Name<p style="color: red;">*</p></label>
@@ -19,7 +18,6 @@
     </div>
   </div>
 
-  <!-- Payment Information -->
   <div class="edit-profile-inputs-2">
     <div class="pay-card">
       <label class="form-label">Add Payment</label>
@@ -28,7 +26,6 @@
         <div *ngFor="let card of paymentCards.controls; let i = index" [formGroupName]="i">
           <app-payment-information [formGroup]="getCardFormGroup(i)"></app-payment-information>
 
-          <!-- Add and Remove Buttons -->
           <div class="payment-buttons">
             <button class="btn btn-primary add-card-btn" type="button" (click)="addPaymentCard()" [disabled]="paymentCards.length >= 3">Add Another Card</button>
             <button class="btn btn-danger remove-card-btn" type="button" (click)="removePaymentCard(i)" [disabled]="paymentCards.length === 1">Remove Card</button>
@@ -40,7 +37,6 @@
     </div>
   </div>
 
-  <!-- Address Information -->
   <div class="edit-profile-inputs-2">
     <div class="edit-profile-input-label">
       <label class="form-label">Street Address<p style="color: red;">*</p></label>
@@ -63,7 +59,6 @@
     </div>
   </div>
 
-  <!-- Promotions Checkbox -->
   <div class="receive-promos">
     <input formControlName="receivePromotions" class="form-check-input promo-checkbox" type="checkbox">
     <label class="form-check-label">
@@ -71,7 +66,6 @@
     </label>
   </div>
 
-  <!-- Submit and Change Password Buttons -->
   <div class="edit-profile-inputs-2">
     <button type="submit" class="btn btn-primary">Save</button>
     <button type="button" class="btn btn-secondary" (click)="goToChange()">Change Password</button>

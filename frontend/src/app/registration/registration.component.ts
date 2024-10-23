@@ -63,13 +63,14 @@ export class RegistrationComponent implements OnInit {
       zipcode: ['', Validators.required],
       promotionPreference: [false],
       paymentCards: this.fb.array([this.createPaymentCard()])
+      // paymentCards: this.fb.array([])
     }, {
       validator: MustMatch('password', 'confirmPassword')
     });
   }
 
   ngOnInit(): void {
-    this.addPaymentCard();
+    // this.addPaymentCard();
     console.log('Initial Registration Form:', this.registrationForm.value); // Debugging log
     console.log('PaymentCards FormArray:', this.paymentCards.value);
   }
@@ -83,7 +84,7 @@ export class RegistrationComponent implements OnInit {
     return this.fb.group({
       cardNumber: ['', this.validateCardNumber],
       cardHolderName: [''],
-      expirationDate: ['', this.validateExpiryDate],
+      expiryDate: ['', this.validateExpiryDate],
       cvv: ['', this.validateCVV]
     }, { validators: paymentCardValidator() });
   }
@@ -123,7 +124,9 @@ export class RegistrationComponent implements OnInit {
   addPaymentCard(): void {
     // Check if the number of payment cards is less than 3
     if (this.paymentCards.length < 3) {
+      console.log(this.paymentCards.length);
       this.paymentCards.push(this.createPaymentCard());
+      console.log('PaymentCards FormArray:', this.paymentCards.value);
     } else {
       alert('You can only add up to 3 payment cards.');
     }

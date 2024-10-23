@@ -38,7 +38,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadProfile();
+    console.log(this.editProfileForm);
   }
 
   // Helper method to get the paymentCards FormArray
@@ -138,6 +138,6 @@ export class EditProfileComponent implements OnInit {
 
   // Navigate to the change password route
   goToChange(): void {
-    this.router.navigate(['/change-password']);
+    this.router.navigate(['/change']);
   }
 }

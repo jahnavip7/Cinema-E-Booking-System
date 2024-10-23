@@ -18,6 +18,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
+  role: string = '';
 
   constructor(private fb: FormBuilder, private router: Router, private http: HttpClient, private authService: AuthService) {}
 
@@ -44,6 +45,17 @@ export class LoginComponent {
       password: this.password
     };
     this.authService.login(loginData);
+    this.setRole();
+  }
+
+  setRole() {
+    const token = localStorage.getItem('authToken');
+    const headers = { 'Authorization': `Bearer ${token}` };
+    this.http.get('http://localhost:8080/user/profile', { headers }).subscribe((data: any) => {
+      this.role = data.roles;
+      localStorage.setItem('Role', this.role)
+      console.log(localStorage.getItem('Role'));
+    });
   }
 
 }
