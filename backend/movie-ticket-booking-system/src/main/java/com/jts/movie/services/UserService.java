@@ -199,6 +199,7 @@ public class UserService {
 		user.setAddress(editProfileRequest.getAddress());
 		user.setCity(editProfileRequest.getCity());
 		user.setState(editProfileRequest.getState());
+		user.setPromotionPreference(editProfileRequest.isPromotionPreference());
 		user.setZipcode(editProfileRequest.getZipcode());
 
 		// Handle Payment Information (if any)
