@@ -46,12 +46,38 @@
     //     gap: 5%;
     //     padding-bottom: 5%;
 
+    //     .pay-card {
+    //         display: flex;
+    //         flex-direction: column;
+    //         gap: 10px;
+    //         align-items: center;
+
+    //         .payment-button {
+    //             display: flex;
+    //             justify-content: center;
+    //         }
+    //     }
+    // }
+    .payment{
+        display: flex;
+        gap: auto;
+        justify-content: center;
+        gap: 5%;
+        padding-bottom: 30px;
+
         .pay-card {
             display: flex;
             flex-direction: column;
+            justify-content: center;
             gap: 10px;
+            margin-bottom: 20px;
         }
-    // }
+
+        .payment-button {
+            display: flex;
+            flex-direction: column;
+        }
+    }
 
     .delete-card {
         display: flex;
@@ -65,6 +91,52 @@
     .save {
         display: flex;
         justify-content: center;
+    }
+    // .remove-card-btn {
+    //     background-color: red; 
+    //     border-color: red;
+    //     margin-top: 10px;
+    //     margin-bottom: 10px;
+
+    // }
+    // .remove-card-btn:hover {
+    //     transform: scale(1.1);  /* Expands the button */
+    //     box-shadow: 0 0 15px red;  /* Glowing white border */
+    // }
+
+    // .add-card-btn {
+    //     background-color: blue; 
+    //     border-color: blue;
+    //     margin-left: 60px;
+    //     margin-right: 3%;
+
+    // }
+    // .add-card-btn:hover {
+    //     transform: scale(1.1);  /* Expands the button */
+    //     box-shadow: 0 0 15px blue;  /* Glowing white border */
+    // }
+
+    .remove-card-btn {
+        background-color: red; 
+        border-color: red;
+
+    }
+    .remove-card-btn:hover {
+        transform: scale(1.1);  /* Expands the button */
+        box-shadow: 0 0 15px red;  /* Glowing white border */
+    }
+
+    .add-card-btn {
+        width: 425px;
+        background-color: blue; 
+        border-color: blue;
+        margin-bottom: 30px;
+
+
+    }
+    .add-card-btn:hover {
+        transform: scale(1.1);  /* Expands the button */
+        box-shadow: 0 0 15px blue;  /* Glowing white border */
     }
 
 }

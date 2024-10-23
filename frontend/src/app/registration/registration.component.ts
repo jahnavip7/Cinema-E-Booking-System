@@ -29,11 +29,11 @@ function paymentCardValidator(): ValidatorFn {
   return (formGroup: AbstractControl): { [key: string]: any } | null => {
     const cardNumber = formGroup.get('cardNumber')?.value;
     const cardHolderName = formGroup.get('cardHolderName')?.value;
-    const expirationDate = formGroup.get('expirationDate')?.value;
+    const expiryDate = formGroup.get('expiryDate')?.value;
     const cvv = formGroup.get('cvv')?.value;
 
-    const isAnyFieldFilled = cardNumber || cardHolderName || expirationDate || cvv;
-    const isAllFieldsFilled = cardNumber && cardHolderName && expirationDate && cvv;
+    const isAnyFieldFilled = cardNumber || cardHolderName || expiryDate || cvv;
+    const isAllFieldsFilled = cardNumber && cardHolderName && expiryDate && cvv;
 
     return isAnyFieldFilled && !isAllFieldsFilled ? { fieldsRequired: true } : null;
   };
@@ -89,7 +89,6 @@ export class RegistrationComponent implements OnInit {
     }, { validators: paymentCardValidator() });
   }
 
-
   validateCardNumber(control: AbstractControl) {
     if (control.value && control.value.length !== 16) {
       return { pattern: true };
@@ -139,7 +138,13 @@ export class RegistrationComponent implements OnInit {
   onSubmit(): void {
     if (this.registrationForm.valid) {
       const { confirmPassword, ...user } = this.registrationForm.value;
-      // user.isActive = false;
+
+      const nonEmptyPaymentCards = user.paymentCards.filter((card: any) => {
+        return card.cardNumber && card.cardHolderName && card.expiryDate && card.cvv;
+      });
+  
+      // Add the non-empty payment cards to the user object
+      user.paymentCards = nonEmptyPaymentCards;
       user.roles = "USER";
       console.log('User registered:', user);
 
@@ -155,8 +160,6 @@ export class RegistrationComponent implements OnInit {
           alert('Update failed: ' + error.error.message || 'Please try again.');
         }
       );
-
-      // alert('Registration successful!');
     } else {
       this.displayErrorMessages();
     }
@@ -201,7 +204,7 @@ export class RegistrationComponent implements OnInit {
       }
 
       // Expiry date validation
-      if (cardGroup.get('expirationDate')?.hasError('pattern') && cardGroup.get('expirationDate')?.touched) {
+      if (cardGroup.get('expiryDate')?.hasError('pattern') && cardGroup.get('expiryDate')?.touched) {
         alert(`Expiry date in card ${i + 1} must be in MM/YY format if filled.`);
         hasErrors = true; // Set flag to true
       }
