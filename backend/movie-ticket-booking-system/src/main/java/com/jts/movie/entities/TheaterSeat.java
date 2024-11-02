@@ -1,4 +1,4 @@
-package com.jts.movie.entities;
+/*package com.jts.movie.entities;
 
 import com.jts.movie.enums.SeatType;
 
@@ -29,3 +29,4 @@ public class TheaterSeat {
     @JoinColumn
     private Theater theater;
 }
+ */

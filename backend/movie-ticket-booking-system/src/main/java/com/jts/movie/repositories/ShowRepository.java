@@ -11,13 +11,4 @@ import java.sql.Time;
 import java.util.List;
 
 public interface ShowRepository extends JpaRepository<Show, Integer> {
-
-    @Query(value = "select time from shows where date = :date and movie_id = :movieId and theater_id = :theaterId" , nativeQuery = true)
-    public List<Time> getShowTimingsOnDate(@Param("date")Date date, @Param("theaterId")Integer theaterId, @Param("movieId")Integer movieId);
-
-    @Query(value = "select movie_id from shows group by movie_id order by count(*) desc limit 1" , nativeQuery = true)
-    public Integer getMostShowsMovie();
-
-    @Query(value = "select * from shows where movie_id = :movieId" , nativeQuery = true)
-    public List<Show> getAllShowsOfMovie(@Param("movieId")Integer movieId);
 }

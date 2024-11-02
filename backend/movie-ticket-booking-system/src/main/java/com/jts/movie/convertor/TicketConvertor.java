@@ -4,7 +4,7 @@ import com.jts.movie.entities.Show;
 import com.jts.movie.entities.Ticket;
 import com.jts.movie.response.TicketResponse;
 
-public class TicketConvertor {
+/*public class TicketConvertor {
 
     public static TicketResponse returnTicket(Show show, Ticket ticket) {
         TicketResponse ticketResponseDto = TicketResponse.builder()
@@ -19,4 +19,4 @@ public class TicketConvertor {
 
         return ticketResponseDto;
     }
-}
+}*/

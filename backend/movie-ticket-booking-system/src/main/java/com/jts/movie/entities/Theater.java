@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,14 +20,13 @@ public class Theater {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true)
-    private String address;
+    @Column(nullable = false)
+    private String location;
 
+    // Relationship with Show entity
     @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
-    private List<TheaterSeat> theaterSeatList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
-    private List<Show> showList = new ArrayList<>();
+    private List<Show> shows;
 }

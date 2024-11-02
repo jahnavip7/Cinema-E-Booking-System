@@ -24,17 +24,6 @@ public class MovieController {
         return "Test";
     }
 
-    @PostMapping("/addNew")
-    public ResponseEntity<String> addMovie(@RequestBody MovieRequest movieRequest) {
-        try {
-            log.info("Request received for adding movie: {}", movieRequest.getMovieName());
-            String result = movieService.addMovie(movieRequest);
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (Exception e) {
-            log.error("Error while adding movie", e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 
     // New endpoint to get all movies
     @GetMapping("/all")

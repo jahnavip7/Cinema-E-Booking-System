@@ -1,4 +1,4 @@
-package com.jts.movie.services;
+/*package com.jts.movie.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +19,9 @@ import com.jts.movie.repositories.TicketRepository;
 import com.jts.movie.repositories.UserRepository;
 import com.jts.movie.request.TicketRequest;
 import com.jts.movie.response.TicketResponse;
+*/
 
-@Service
+/*@Service
 public class TicketService {
 
 	@Autowired
@@ -67,8 +68,8 @@ public class TicketService {
 
 		ticket = ticketRepository.save(ticket);
 
-		/*user.getTicketList().add(ticket);
-		show.getTicketList().add(ticket);*/
+		user.getTicketList().add(ticket);
+		show.getTicketList().add(ticket);
 		userRepository.save(user);
 		showRepository.save(show);
 
@@ -111,3 +112,4 @@ public class TicketService {
 	}
 
 }
+*/

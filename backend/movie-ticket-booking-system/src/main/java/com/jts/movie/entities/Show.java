@@ -32,7 +32,6 @@ public class Show {
     private Integer showId;
 
     private Time time;
-
     private Date date;
 
     @ManyToOne
@@ -40,12 +39,6 @@ public class Show {
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "theater_id", nullable = false)
     private Theater theater;
-
-    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
-    private List<ShowSeat> showSeatList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "show", cascade = CascadeType.ALL)
-    private List<Ticket> ticketList = new ArrayList<>();
 }
