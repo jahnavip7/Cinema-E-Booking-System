@@ -24,24 +24,26 @@ public class ShowService {
 	@Autowired
 	private TheaterRepository theaterRepository;
 
-	// Method to schedule a show for an existing movie
 	public Show scheduleShow(Integer movieId, Integer theaterId, Date date, Time time) throws Exception {
-		// Fetch movie by ID
+		// Check if a show already exists at the specified date, time, and theater
+		if (showRepository.existsByDateAndTimeAndTheaterId(date, time, theaterId)) {
+			throw new Exception("A show is already scheduled at this date and time in the specified theater.");
+		}
+
+		// Fetch the movie and theater entities
 		Movie movie = movieRepository.findById(movieId)
 				.orElseThrow(() -> new Exception("Movie not found with ID: " + movieId));
-
-		// Fetch theater by ID
 		Theater theater = theaterRepository.findById(theaterId)
 				.orElseThrow(() -> new Exception("Theater not found with ID: " + theaterId));
 
-		// Create a new show and set its properties
+		// Create and save the new show
 		Show show = new Show();
 		show.setMovie(movie);
 		show.setTheater(theater);
 		show.setDate(date);
 		show.setTime(time);
 
-		// Save the show
 		return showRepository.save(show);
 	}
+
 }

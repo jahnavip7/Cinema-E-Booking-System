@@ -11,4 +11,5 @@ import java.sql.Time;
 import java.util.List;
 
 public interface ShowRepository extends JpaRepository<Show, Integer> {
+    boolean existsByDateAndTimeAndTheaterId(Date date, Time time, Integer theaterId);
 }
