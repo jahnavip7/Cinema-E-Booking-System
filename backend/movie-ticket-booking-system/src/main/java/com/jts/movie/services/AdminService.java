@@ -29,7 +29,7 @@ public class AdminService {
         // Update fields with new values
         existingMovie.setMovieName(movieDetails.getMovieName());
         existingMovie.setDuration(movieDetails.getDuration());
-        existingMovie.setRating(movieDetails.getRating());
+        existingMovie.setMpaaRating(movieDetails.getMpaaRating());
         existingMovie.setReleaseDate(movieDetails.getReleaseDate());
         existingMovie.setDescription(movieDetails.getDescription());
         existingMovie.setImageUrl(movieDetails.getImageUrl());
@@ -42,6 +42,12 @@ public class AdminService {
 
         // Save updated movie
         return movieRepository.save(existingMovie);
+    }
+
+    public void deleteMovie(Integer movieId) throws Exception {
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new Exception("Movie not found with ID: " + movieId));
+        movieRepository.delete(movie);
     }
 
     public User activateUser(Integer userId) throws Exception {

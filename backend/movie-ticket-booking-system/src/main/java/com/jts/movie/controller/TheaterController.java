@@ -24,7 +24,7 @@ public class TheaterController {
     }
 
     // Endpoint to get all theaters
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Theater>> getAllTheaters() {
         return ResponseEntity.ok(theaterService.getAllTheaters());
     }

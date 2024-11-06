@@ -8,6 +8,7 @@ import java.util.List;
 import com.jts.movie.enums.genre;
 import com.jts.movie.enums.language;
 import com.jts.movie.enums.category;
+import com.jts.movie.enums.MPAAUSRating;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,8 +42,8 @@ public class Movie {
 
     private Integer duration;
 
-    @Column(precision = 3, scale = 2)  // Precision for 1 decimal (e.g., 8.5)
-    private BigDecimal rating;
+    @Enumerated(value = EnumType.STRING)
+    private MPAAUSRating mpaaRating;
 
     private Date releaseDate;
     private String description;
@@ -50,6 +51,7 @@ public class Movie {
     private String trailerUrl;
     private String cast;
     private String director;
+    private String producers;
 
     @Enumerated(value = EnumType.STRING)
     private genre genre;

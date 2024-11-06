@@ -14,6 +14,7 @@ import com.jts.movie.services.ShowService;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -49,6 +50,23 @@ public class AdminController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
+    }
+
+    //Endpoint to delete an existing movie
+    @DeleteMapping("/movies/{movieId}")
+    public ResponseEntity<String> deleteMovie(@PathVariable Integer movieId) {
+        try {
+            adminService.deleteMovie(movieId);
+            return ResponseEntity.ok("Movie deleted successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting movie: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/promotions")
+    public ResponseEntity<List<Promotion>> getAllPromotions() {
+        return ResponseEntity.ok(promotionService.getAllPromotions());
     }
 
     // Endpoint to schedule a new show for an existing movie

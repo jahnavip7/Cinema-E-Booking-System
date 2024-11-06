@@ -24,5 +24,8 @@ public class Promotion {
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendDate;
 
+    @Column(nullable = false)
+    private Integer discountPercentage;
+
     private boolean sent = false;  // Tracks if the promotion has been sent
 }
