@@ -26,6 +26,8 @@ public class TheaterController {
     // Endpoint to get all theaters
     @GetMapping("/all")
     public ResponseEntity<List<Theater>> getAllTheaters() {
+//        List<Theater> response = theaterService.getAllTheaters();
+//        ResponseEntity.ok(response.getSh);
         return ResponseEntity.ok(theaterService.getAllTheaters());
     }
 

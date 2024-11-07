@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 @Service
 public class ShowService {
@@ -24,25 +25,29 @@ public class ShowService {
 	@Autowired
 	private TheaterRepository theaterRepository;
 
-	public Show scheduleShow(Integer movieId, Integer theaterId, Date date, Time time) throws Exception {
-		// Check if a show already exists at the specified date, time, and theater
-		if (showRepository.existsByDateAndTimeAndTheaterId(date, time, theaterId)) {
-			throw new Exception("A show is already scheduled at this date and time in the specified theater.");
-		}
 
-		// Fetch the movie and theater entities
+
+	public List<Show> getShowsByMovieId(Integer movieId) {
+		return showRepository.findByMovieId(movieId);
+	}
+
+	public Show scheduleShow(Integer movieId, Integer theaterId, Date date, Time time) throws Exception {
+		// Fetch the Movie entity
 		Movie movie = movieRepository.findById(movieId)
 				.orElseThrow(() -> new Exception("Movie not found with ID: " + movieId));
+
+		// Fetch the Theater entity
 		Theater theater = theaterRepository.findById(theaterId)
 				.orElseThrow(() -> new Exception("Theater not found with ID: " + theaterId));
 
-		// Create and save the new show
+		// Create and set properties for the new Show
 		Show show = new Show();
 		show.setMovie(movie);
 		show.setTheater(theater);
 		show.setDate(date);
 		show.setTime(time);
 
+		// Save the Show entity
 		return showRepository.save(show);
 	}
 
