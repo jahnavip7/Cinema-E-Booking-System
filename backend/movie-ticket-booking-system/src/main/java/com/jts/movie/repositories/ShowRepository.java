@@ -13,4 +13,6 @@ import java.util.List;
 public interface ShowRepository extends JpaRepository<Show, Integer> {
     boolean existsByDateAndTimeAndTheaterId(Date date, Time time, Integer theaterId);
     List<Show> findByMovieId(Integer movieId);
+    // Custom query method to check for scheduling conflict
+    boolean existsByTheaterIdAndDateAndTime(Integer theaterId, Date date, Time time);
 }

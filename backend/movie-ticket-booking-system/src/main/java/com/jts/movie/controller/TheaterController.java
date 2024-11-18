@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/theaters")
@@ -18,49 +20,78 @@ public class TheaterController {
 
     // Endpoint to add a new theater
     @PostMapping
-    public ResponseEntity<Theater> addTheater(@RequestBody Theater theater) {
-        Theater savedTheater = theaterService.addTheater(theater);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedTheater);
+    public ResponseEntity<Map<String, Object>> addTheater(@RequestBody Theater theater) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Theater savedTheater = theaterService.addTheater(theater);
+            response.put("message", "Theater added successfully.");
+            response.put("theater", savedTheater);
+            response.put("statusCode", HttpStatus.CREATED.value());
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            response.put("message", "Error: " + e.getMessage());
+            response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Endpoint to get all theaters
     @GetMapping("/all")
-    public ResponseEntity<List<Theater>> getAllTheaters() {
-//        List<Theater> response = theaterService.getAllTheaters();
-//        ResponseEntity.ok(response.getSh);
-        return ResponseEntity.ok(theaterService.getAllTheaters());
+    public ResponseEntity<Map<String, Object>> getAllTheaters() {
+        Map<String, Object> response = new HashMap<>();
+        List<Theater> theaters = theaterService.getAllTheaters();
+        response.put("theaters", theaters);
+        response.put("statusCode", HttpStatus.OK.value());
+        return ResponseEntity.ok(response);
     }
 
     // Endpoint to get a single theater by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Theater> getTheaterById(@PathVariable Integer id) {
+    public ResponseEntity<Map<String, Object>> getTheaterById(@PathVariable Integer id) {
+        Map<String, Object> response = new HashMap<>();
         try {
             Theater theater = theaterService.getTheaterById(id);
-            return ResponseEntity.ok(theater);
+            response.put("message", "Theater found.");
+            response.put("theater", theater);
+            response.put("statusCode", HttpStatus.OK.value());
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            response.put("message", "Theater not found: " + e.getMessage());
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
     // Endpoint to update theater details
     @PutMapping("/{id}")
-    public ResponseEntity<Theater> updateTheater(@PathVariable Integer id, @RequestBody Theater updatedTheater) {
+    public ResponseEntity<Map<String, Object>> updateTheater(@PathVariable Integer id, @RequestBody Theater updatedTheater) {
+        Map<String, Object> response = new HashMap<>();
         try {
             Theater theater = theaterService.updateTheater(id, updatedTheater);
-            return ResponseEntity.ok(theater);
+            response.put("message", "Theater updated successfully.");
+            response.put("theater", theater);
+            response.put("statusCode", HttpStatus.OK.value());
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            response.put("message", "Error updating theater: " + e.getMessage());
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 
     // Endpoint to delete a theater
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTheater(@PathVariable Integer id) {
+    public ResponseEntity<Map<String, Object>> deleteTheater(@PathVariable Integer id) {
+        Map<String, Object> response = new HashMap<>();
         try {
             theaterService.deleteTheater(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Theater deleted successfully");
+            response.put("message", "Theater deleted successfully.");
+            response.put("statusCode", HttpStatus.NO_CONTENT.value());
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Theater not found");
+            response.put("message", "Error: Theater not found: " + e.getMessage());
+            response.put("statusCode", HttpStatus.NOT_FOUND.value());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
     }
 }
