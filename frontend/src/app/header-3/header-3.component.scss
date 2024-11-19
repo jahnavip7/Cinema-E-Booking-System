@@ -1,0 +1,45 @@
+header {
+    background: white;
+    padding: 0;
+    border-bottom: 1px solid #e72929;
+}
+
+a {
+    color: #af1313;
+    text-decoration: none; /* Ensures there are no underlines */
+}
+
+a:hover {
+    background: #e72929;
+    color: white;
+}
+
+.container {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between; /* Ensures space between Welcome and the nav items */
+    align-items: center; /* Vertically centers items */
+    padding: 0 20px; /* Adds padding on the sides for better alignment */
+}
+
+a.logo {
+    font-weight: bold;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Makes the list items appear in one row */
+    align-items: center; /* Vertically centers the list items */
+}
+
+nav ul li {
+    margin-left: 20px; /* Adds space between "OrderHistory" and "Logout" */
+}
+
+nav ul li a {
+    padding: 1em;
+    display: inline-block;
+}

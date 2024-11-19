@@ -1,33 +1,24 @@
 <div class="promotions">
     <div class="manage-promos">
         <h2 class="heading">Manage Promotions</h2>
-        <div class="promo">
-            <p>promo1</p>
-            <button class="btn btn-primary">Send</button>
-            <button class="btn btn-primary">Delete</button>
+        <div *ngFor="let promo of promos" class="promo">
+          <p>{{ promo.title }}</p>
+          <button class="btn btn-primary">Send</button>
+          <button class="btn btn-primary">Delete</button>
         </div>
-        <div class="promo">
-            <p>promo2</p>
-            <button class="btn btn-primary">Send</button>
-            <button class="btn btn-primary">Delete</button>
-        </div>
-        <div class="promo">
-            <p>promo3</p>
-            <button class="btn btn-primary">Send</button>
-            <button class="btn btn-primary">Delete</button>
-        </div>
-
-    </div>
+      </div>
     <div class="add-promos">
         <h2 class="heading">Add Promotions</h2>
-        <label class="form-label">Code</label>
-        <input class="form-control" placeholder="Code">
+        <label class="form-label" >Code</label>
+        <input class="form-control" placeholder="Code" [(ngModel)]="title">
+        <label class="form-label" >Description</label>
+        <input class="form-control" placeholder="Description (Email body)" [(ngModel)]="description">
         <label class="form-label">Discount %</label>
-        <input class="form-control" placeholder="Discount">
+        <input class="form-control" placeholder="Discount" [(ngModel)]="discountPercentage">
         <label class="form-label">Start Date</label>
-        <input type="date" class="form-control">
+        <input type="date" class="form-control" type="date" [(ngModel)]="startDate">
         <label class="form-label">End Date</label>
-        <input type="date" class="form-control">
-        <button class="btn btn-primary">Add</button>
+        <input type="date" class="form-control" type="date" [(ngModel)]="endDate">
+        <button class="btn btn-primary" (click)="addPromo()">Add</button>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import {Component, ViewChild, HostListener} from '@angular/core';
+import {Component, ViewChild, HostListener, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
@@ -25,29 +25,67 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/auth/auth.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ScheduleMovieComponent } from './schedule-movie/schedule-movie.component';
+import { Header3Component } from './header-3/header-3.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, RouterModule, LoginComponent, RegistrationComponent, PaymentInformationComponent, EditProfileComponent,
-    OrderDetailsComponent, AdminPortalComponent, AddMovieComponent, EditMovieComponent, CheckoutComponent, ChangePasswordComponent,
-    VerifyAccountComponent, ManagePromotionsComponent, ManageMoviesComponent, HeaderComponent, RouterModule, FormsModule, CommonModule,
-    SelectSeatComponent, SelectShowtimeComponent, OrderSummaryComponent, Header2Component, ReactiveFormsModule, ForgotPasswordComponent, ResetPasswordComponent
+    RouterOutlet, 
+    RouterModule, 
+    LoginComponent, 
+    RegistrationComponent, 
+    PaymentInformationComponent, 
+    EditProfileComponent,
+    OrderDetailsComponent, 
+    AdminPortalComponent, 
+    AddMovieComponent, 
+    EditMovieComponent, 
+    CheckoutComponent, 
+    ChangePasswordComponent,
+    VerifyAccountComponent, 
+    ManagePromotionsComponent, 
+    ManageMoviesComponent, 
+    HeaderComponent, 
+    RouterModule, 
+    FormsModule, 
+    CommonModule,
+    SelectSeatComponent, 
+    SelectShowtimeComponent, 
+    OrderSummaryComponent, 
+    Header2Component,
+    Header3Component, 
+    ReactiveFormsModule, 
+    ForgotPasswordComponent, 
+    ResetPasswordComponent,
+    ScheduleMovieComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'frontend';
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, public router: Router) {}
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // unloadHandler(event: Event) {
-  //   if (this.authService.isAuthenticated()) {
-  //     this.authService.logout();
-  //   }
+  ngOnInit(): void {
+  //   if (localStorage.getItem('Role') === 'USER')
+  //     this.router.navigate(['']);
+  //   else
+  //     this.router.navigate(['/admin-portal']);
   // }
+
+      // Check if localStorage is defined
+      if (typeof localStorage !== 'undefined') {
+        const role = localStorage.getItem('Role');
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin-portal']);
+        } else {
+          this.router.navigate(['']);
+        }
+      }
+    }
+
 
 }

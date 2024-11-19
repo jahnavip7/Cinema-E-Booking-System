@@ -31,12 +31,13 @@
     <div class="movie-details">
       <h1>{{ movie.movieName }}</h1> 
       <p><strong>Duration:</strong> {{ movie.duration }} mins</p>
-      <p><strong>Rating:</strong> {{ movie.rating }}/10</p>
+      <p><strong>Rating:</strong> {{ movie.mpaaRating }}</p>
       <p><strong>Release Date:</strong> {{ movie.releaseDate | date }}</p>
       <p><strong>Genre:</strong> {{ movie.genre }}</p> 
       <p><strong>Language:</strong> {{ movie.language }}</p>
       <p><strong>Cast:</strong> {{ movie.cast }}</p>
-      <p><strong>Director:</strong> {{ movie.director }}</p>
+      <p><strong>Director(s):</strong> {{ movie.director }}</p>
+      <p><strong>Producer(s):</strong> {{ movie.director }}</p>
       <p><strong>Description:</strong> {{ movie.description }}</p>
     </div>
   </div>

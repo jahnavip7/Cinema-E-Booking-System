@@ -1,30 +1,45 @@
-<!-- <div class="header">
-  <div class="navbar">
-    <div class="navbar-left">
-      <h1>CineQuest</h1>
-    </div>
-    <div class="navbar-right">
-      <span>Welcome, {{ userName }}</span>
-      <a href="#">Home</a>
-      <a href="#">Logout</a>
-    </div>
+ <!-- <div class="container">
+  <div class="heading">
+    <h2>Select Showtime</h2>
   </div>
+  <label class="form-label" for="showtimeSelect">Choose a showtime:</label>
+  <div class="showtimes" *ngIf="showtimes.length > 0; else noShowtimes">
+    <select class="form-select"id="showtimeSelect" [(ngModel)]="selectedShowtime" (ngModelChange)="onShowtimeChange()" [ngValue]="selectedShowtime">
+      <option [ngValue]="null">Please select a showtime</option>
+      <option *ngFor="let showtime of showtimes" [ngValue]="showtime">
+        {{ showtime.display }}
+      </option>
+    </select>
+    <div class="details">
+      <label class="form-label">You selected:</label>
+      <p>{{ selectedShowtime?.display }}</p>
+    </div>
+    <button class="btn btn-primary" [disabled]="!selectedShowtime">Next</button>
+  </div>
+  <ng-template #noShowtimes>
+    <p>No showtimes available.</p>
+  </ng-template>
 </div> -->
-
-<div class="container">
-  <h2>Select Showtime</h2>
-  <label for="showtimeSelect">Choose a showtime:</label>
-  <select id="showtimeSelect" [(ngModel)]="selectedShowtime">
-    <option *ngFor="let showtime of showtimes" [value]="showtime">
-      {{ showtime }}
-    </option>
-  </select>
-
-  <div class="details">
-    <h3>You selected:</h3>
-    <p>{{ selectedShowtime }}</p>
+<div class="showtime-container">
+  <div class="heading">
+    <h2>Select Showtime</h2>
   </div>
-
-  <button routerLink="/select-seat">Next</button>
+  <label class="form-label" for="showtimeSelect">Choose a showtime:</label>
+  <div class="showtimes" *ngIf="showtimes.length > 0; else noShowtimes">
+    <select class="form-select" id="showtimeSelect" [(ngModel)]="selectedShowtime" (ngModelChange)="onShowtimeChange()">
+      <!-- Default option with explicitly null value -->
+      <option [ngValue]="null" [selected]="selectedShowtime === null">Please select a showtime</option>
+      <option *ngFor="let showtime of showtimes" [ngValue]="showtime">
+        {{ showtime.display }}
+      </option>
+    </select>
+    <div class="details">
+      <label class="form-label">You selected:</label>
+      <p>{{ selectedShowtime?.display }}</p>
+    </div>
+    <button class="btn btn-primary" (click)="onNext()" [disabled]="!selectedShowtime">Next</button> <!-- Button is disabled if no showtime is selected -->
+  </div>
+  <ng-template #noShowtimes>
+    <p>No showtimes available.</p>
+  </ng-template>
 </div>
-

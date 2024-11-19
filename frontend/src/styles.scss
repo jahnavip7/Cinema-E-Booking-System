@@ -30,6 +30,12 @@ h2 {
     text-shadow: 0 0 10px white;
 }
 
+h3 {
+    color: antiquewhite;
+    font-family: "Quicksand",sans-serif;
+    text-shadow: 0 0 10px white;
+}
+
 p {
     color: antiquewhite;
     font-family: "Quicksand",sans-serif; 
@@ -63,6 +69,12 @@ button {
 .btn:hover {
     transform: scale(1.1);  /* Expands the button */
     box-shadow: 0 0 15px #e95a5a;  /* Glowing white border */
+}
+
+.btn-primary:disabled {
+    background-color: #e95a5a;
+    border-color: #e95a5a;
+    opacity: 0.65;
 }
 
 .form-control:focus {

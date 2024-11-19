@@ -1,4 +1,4 @@
-<form class="edit-movie-form">
+<!-- <form class="edit-movie-form">
 
     <h2 class="edit-movie-heading">Edit Movie</h2>
 
@@ -65,7 +65,7 @@
     <div class="edit-movie-inputs">
         <label class="form-label">Select Showtime(s)</label>
         <input type="datetime-local" class="registration-input form-control" style="margin-bottom: 15px;">
-        <button class="btn btn-primary">Add Showtime</button>
+        <button class="btn btn-primary">edit Showtime</button>
     </div>
 
     <div class="edit-movie-inputs">
@@ -78,4 +78,92 @@
     </div>
 
     <button class="btn btn-primary">Save Changes</button>
+</form> -->
+<form [formGroup]="editMovieForm" (ngSubmit)="onSubmit()" class="edit-movie-form">
+
+    <h2 class="edit-movie-heading">edit Movie</h2>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Movie Name<p style="color: red;">*</p></label>
+        <input formControlName="movieName" class="registration-input form-control" placeholder="Name">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Genre<p style="color: red;">*</p></label>
+        <select formControlName="genre" class="form-select registration-input">
+            <option value="DRAMA">Drama</option>
+            <option value="THRILLER">Thriller</option>
+            <option value="ACTION">Action</option>
+            <option value="ROMANTIC">Romantic</option>
+            <option value="COMEDY">Comedy</option>
+            <option value="HISTORICAL">Historical</option>
+            <option value="ANIMATION">Animation</option>
+            <option value="SPORTS">Sports</option>
+            <option value="SOCIAL">Social</option>
+            <option value="WAR">War</option>
+            <option value="SCIFI">Sci-Fi</option>
+        </select>
+        <!-- <input formControlName="genre" class="registration-input form-control" placeholder="Genre"> -->
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Category<p style="color: red;">*</p></label>
+        <select formControlName="category" class="form-select registration-input">
+            <option value="NOW_PLAYING">Now Playing</option>
+            <option value="COMING_SOON">Coming Soon</option>
+        </select>
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Cast</label>
+        <input formControlName="cast" class="registration-input form-control" placeholder="Cast">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Director(s)</label>
+        <input formControlName="director" class="registration-input form-control" placeholder="Director(s)">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Producer(s)</label>
+        <input formControlName="producer" class="registration-input form-control" placeholder="Producer(s)">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Synopsis</label>
+        <input formControlName="description" class="registration-input form-control" placeholder="Synopsis">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Trailer URL<p style="color: red;">*</p></label>
+        <input formControlName="trailerUrl" class="registration-input form-control" placeholder="Trailer URL">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Image URL<p style="color: red;">*</p></label>
+        <input formControlName="imageUrl" class="registration-input form-control" placeholder="Image URL">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">MPAA-US Rating Code<p style="color: red;">*</p></label>
+        <select formControlName="mpaaRating" class="form-select registration-input">
+            <option value="G">G</option>
+            <option value="PG">PG</option>
+            <option value="PG13">PG-13</option>
+            <option value="R">R</option>
+            <option value="NC17">NC-17</option>
+        </select>
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Release Date<p style="color: red;">*</p></label>
+        <input formControlName="releaseDate" type="date" class="registration-input form-control">
+    </div>
+
+    <div class="edit-movie-inputs">
+        <label class="form-label">Duration (Minutes)<p style="color: red;">*</p></label>
+        <input formControlName="duration" class="registration-input form-control" placeholder="Minutes">
+    </div>
+
+    <button class="btn btn-primary" type="submit">Save</button>
 </form>

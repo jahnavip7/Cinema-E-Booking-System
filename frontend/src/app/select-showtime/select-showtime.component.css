@@ -1,6 +1,5 @@
-/* Header styles */
-.header {
-  background-color: #e95a5a; /* Green color */
+/* .header {
+  background-color: #e95a5a;
   color: rgb(0, 0, 0);
   padding: 10px 0;
   text-align: center;
@@ -17,7 +16,7 @@
   color: rgb(0, 0, 0);
   text-decoration: none;
   margin-left: 15px;
-  font-size: 1.2rem; /* Increase font size for links */
+  font-size: 1.2rem;
 }
 
 .navbar a:hover {
@@ -26,32 +25,31 @@
 
 .navbar span {
   margin-right: 20px;
-  font-size: 1.2rem; /* Increase font size for user name */
+  font-size: 1.2rem;
 }
 
-/* Container styles */
+
 .container {
-  background-color:#f8f9fa; /* Changed background color to black */
   color: rgb(0, 0, 0);
   padding: 30px;
   margin: 30px auto;
-  width: 70%; /* Increased width */
+  width: 70%;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   text-align: center;
 }
 
 h2 {
-  font-size: 2rem; /* Increase heading size */
+  font-size: 2rem;
 }
 
 label {
-  font-size: 1.5rem; /* Same size as "Barbie" */
+  font-size: 1.5rem;
 }
 
 select {
   padding: 15px;
-  font-size: 1.5rem; /* Larger font to match "Barbie" */
+  font-size: 1.5rem;
   border: 1px solid #000000;
   border-radius: 5px;
   margin: 10px 0;
@@ -59,26 +57,23 @@ select {
 
 button {
   padding: 15px 25px;
-  background-color: #e95a5a; /* Change button color to green */
+  background-color: #e95a5a;
   color: rgb(0, 0, 0);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 20px;
-  font-size: 1.2rem; /* Increase button font size */
+  font-size: 1.2rem;
 }
 
 button:hover {
-  background-color: #e72929; /* Darker green on hover */
+  background-color: #e72929;
 }
 
 .details h3 {
-  font-size: 1.5rem; /* Increase font size for details section */
+  font-size: 1.5rem;
 }
 
 .details p {
-  font-size: 1.2rem; /* Increase font size for selected showtime */
-}
-
-
-
+  font-size: 1.2rem;
+} */

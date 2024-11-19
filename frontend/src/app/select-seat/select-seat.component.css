@@ -7,6 +7,8 @@
   width: 80%;
   border-radius: 10px;
   text-align: center;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Increased spacing for clarity between screen and first row of seats */
@@ -37,11 +39,15 @@
   gap: 15px; /* Reduced space between seats for compactness - Changed */
   justify-content: center; /* Ensures center alignment of seats */
   margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Flexbox for seat rows to ensure proper layout */
 .seat-row {
   display: contents; /* Allows for content-specific styling */
+  justify-content: center;
+  align-items: center;
 }
 
 /* Styling for individual seat items */
@@ -49,7 +55,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 50px;
+  /* width: 50px; */
+  width: 100%;
 }
 
 /* Label styling within seat items */
@@ -81,7 +88,7 @@ select {
   margin-top: 10px;
   padding: 3px;
   border-radius: 5px;
-  width: 100%;
+  width: 110px;
 }
 
 /* Button styles for actions */

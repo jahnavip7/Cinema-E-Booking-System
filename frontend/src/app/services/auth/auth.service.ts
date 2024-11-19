@@ -76,6 +76,7 @@ export class AuthService {
   // Method to log out the user
   logout() {
     localStorage.removeItem(this.token); // Remove token
+    localStorage.removeItem('Role');
     this.router.navigate(['/']); // Redirect to homepage
   }
 
@@ -93,6 +94,14 @@ export class AuthService {
       return !!token; // Return true if token exists, otherwise false
     }
     return false; // If localStorage is not available, return false
+  }
+
+  isAdmin(): boolean {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const role = localStorage.getItem('Role');
+      return role === 'ADMIN';
+    }
+    return false;
   }
 
   clearSession() {

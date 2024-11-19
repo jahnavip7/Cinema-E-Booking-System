@@ -28,10 +28,16 @@ import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AdminPortalComponent } from './admin-portal/admin-portal.component';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
+import { ManageMoviesComponent } from './manage-movies/manage-movies.component';
+import { ManagePromotionsComponent } from './manage-promotions/manage-promotions.component';
+import { ScheduleMovieComponent } from './schedule-movie/schedule-movie.component';
+import { AddMovieComponent } from './add-movie/add-movie.component';
 
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },  // Home page
+  { path: 'home', component: HomeComponent },  // Home page
   { path: 'movie/:id', component: MovieDetailsComponent },  // Movie details page
   { path: 'book/:id', component: SelectShowtimeComponent },
   { path: 'select-seat', component: SelectSeatComponent },
@@ -44,6 +50,11 @@ export const routes: Routes = [
   { path: 'resetPassword', component: ResetPasswordComponent },
   { path: 'resetPassword/:userId', component: ResetPasswordComponent },
   { path: 'admin-portal', component: AdminPortalComponent },
+  { path: 'manage-movies', component: ManageMoviesComponent },
+  { path: 'manage-promos', component: ManagePromotionsComponent },
+  { path: 'add-movie', component: AddMovieComponent },
+  { path: 'edit-movie/:id', component: EditMovieComponent },
+  { path: 'schedule-movie/:id', component: ScheduleMovieComponent },
   { path: 'change', component: ChangePasswordComponent },  // Verification page (should only appear when navigating to '/verify')
   { path: '**', redirectTo: '' }  // Wildcard route to handle invalid URLs
 

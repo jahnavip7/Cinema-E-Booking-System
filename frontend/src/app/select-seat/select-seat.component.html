@@ -1,18 +1,27 @@
-<!-- Header Section -->
-<!-- <div class="header">
-  <div class="navbar">
-    <div class="navbar-left">
-      <h1 style="font-size: 3rem;">CineQuest</h1>
-    </div>
-    <div class="navbar-right">
-      <span>Welcome, {{ userName }}</span>
-      <a href="#">Home</a>
-      <a href="#">Logout</a>
+<!-- 
+<div class="container">
+  <h2>Select Seat(s) for Barbie!</h2>
+  <div class="screen-label">
+    <div class="screen">Screen</div>
+  </div>
+  <div class="seat-map">
+    <div *ngFor="let row of rows" class="seat-row">
+      <div *ngFor="let seat of row" class="seat-item">
+        <label [ngClass]="seatStatus[seat]">{{ seat }}</label>
+        <select [(ngModel)]="seatType[seat]" (change)="selectSeat(seat)">
+          <option></option>
+          <option value="Adult">Adult</option>
+          <option value="Child">Child</option>
+          <option value="Senior">Senior</option>
+        </select>
+      </div>
     </div>
   </div>
+
+  <p>Selected Seats: {{ selectedSeats | json }}</p>
+
+  <button (click)="proceedToOrderSummary()">Proceed to Order Summary</button>
 </div> -->
-
-
 <!-- Main Container -->
 <div class="container">
   <h2>Select Seat(s) for Barbie!</h2>
@@ -26,8 +35,9 @@
   <div class="seat-map">
     <div *ngFor="let row of rows" class="seat-row">
       <div *ngFor="let seat of row" class="seat-item">
-        <label [ngClass]="seatStatus[seat]">{{ seat }}</label>
-        <select [(ngModel)]="seatType[seat]" (change)="selectSeat(seat)">
+        <label [ngClass]="seatStatus[seat]" [attr.title]="seatType[seat] ? seatType[seat] : 'Select seat type'">{{ seat }}</label>
+        <select [(ngModel)]="seatType[seat]" (change)="selectSeat(seat, seatType[seat])">
+          <option value="">Select Type</option>
           <option value="Adult">Adult</option>
           <option value="Child">Child</option>
           <option value="Senior">Senior</option>
@@ -36,7 +46,7 @@
     </div>
   </div>
 
-  <p>Selected Seats: {{ selectedSeats | json }}</p> <!-- Display seat selection -->
+  <p>Selected Seats: {{ selectedSeatNumbers }}</p> <!-- Display seat selection more clearly -->
 
   <button (click)="proceedToOrderSummary()">Proceed to Order Summary</button>
 </div>

@@ -1,0 +1,24 @@
+<div class="schedule-movies">
+    <div class="schedule-movies-heading">
+        <h2>Schedule Movie</h2>
+    </div>
+    <form class="schedule-showtime" (ngSubmit)="onSubmit()">
+        <label class="form-label">Choose Theater</label>
+        <select class="movie-dropdown form-select" name="theater" [(ngModel)]="theater">
+            <option *ngFor="let theater of theaters" [value]="theater.id">{{ theater.name }}</option>
+        </select>
+        <label class="form-label">Choose Date</label>
+        <input class="movie-dropdown form-control" type="date" [(ngModel)]="date" name="date">
+        <label class="form-label">Choose Time</label>
+        <select class="movie-dropdown form-select" [(ngModel)]="time" name="time">
+             <option value="9:00:00">9:00 AM</option>
+             <option value="12:00:00">12:00 PM</option>
+             <option value="15:00:00">3:00 PM</option>
+             <option value="18:00:00">6:00 PM</option>
+             <option value="21:00:00">9:00 PM</option>
+        </select>
+        <div class="schedule-buttons">
+            <button class="btn btn-primary" type="submit">Add Showtime</button>
+        </div>
+    </form>
+</div>

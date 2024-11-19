@@ -1,4 +1,4 @@
-<div class="manage-movies">
+<!-- <div class="manage-movies">
     <div class="manage-movies-heading">
         <h2>Manage Movies</h2>
     </div>
@@ -17,6 +17,25 @@
         <div class="manage-buttons">
             <button class="btn btn-primary">Edit</button>
             <button class="btn btn-primary" style="background-color: red;">Delete</button>
+        </div>
+    </div>
+</div> -->
+<div class="manage-movies">
+    <div class="manage-movies-heading">
+        <h2>Manage Movies</h2>
+    </div>
+    <div class="add-movie-button">
+        <button class="btn btn-primary" (click)="onAdd()">Add Movie</button>
+    </div>
+    <div class="edit-movie">
+        <label class="form-label">Or, choose a movie to manage</label>
+        <select class="movie-dropdown form-select" (change)="onMovieSelection($event)" name="Choose Movie">
+            <option *ngFor="let movie of movies" [value]="movie.id">{{ movie.movieName }}</option>
+        </select>
+        <div class="manage-buttons">
+            <button class="btn btn-primary" (click)="onSchedule()">Schedule</button>
+            <button class="btn btn-primary" (click)="onEdit()">Edit</button>
+            <button class="btn btn-primary" style="background-color: red;" (click)="onDelete()">Delete</button>
         </div>
     </div>
 </div>

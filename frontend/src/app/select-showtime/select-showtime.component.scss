@@ -1,0 +1,29 @@
+.showtime-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5%;
+
+    .heading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 5%;
+    }
+
+    .showtimes {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .form-select {
+            width: 25%;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            width: 5%;
+        }
+
+    }
+}
