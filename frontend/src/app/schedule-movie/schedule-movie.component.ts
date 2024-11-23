@@ -30,10 +30,14 @@ export class ScheduleMovieComponent {
     this.token = localStorage.getItem('authToken');
   }
 
-  loadTheaters(): void {
-    this.http.get<any[]>('http://localhost:8080/api/theaters/all').subscribe({
-      next: (theaters) => this.theaters = theaters,
-      error: (error) => console.error('Error fetching theaters:', error)
+  loadTheaters() {
+    this.http.get<any>('http://localhost:8080/api/theaters/all').subscribe({
+      next: (response) => {
+        this.theaters = response.theaters;
+      },
+      error: (err) => {
+        console.error('Failed to load theaters:', err);
+      }
     });
   }
 
@@ -43,8 +47,14 @@ export class ScheduleMovieComponent {
     } else {
       const theaterId: number = +this.theater;
       this.moviesService.scheduleMovie(this.movieId, theaterId, this.date, this.time, this.token).subscribe({
-        next: (response) => console.log('Response:', response),
-        error: (error) => console.error('Error:', error)
+        next: (response) => {
+          alert("Show scheduled successfully!")
+          console.log('Response:', response)
+        },
+        error: (error) => {
+          alert("Error: " + error.error.message)
+          console.error('Error:', error)
+        }
       });
     }
   }

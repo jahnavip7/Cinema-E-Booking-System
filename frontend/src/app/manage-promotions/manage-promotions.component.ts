@@ -3,6 +3,7 @@ import { PromotionsService } from '../services/promotions/promotions.service';
 import { Promotion } from '@shared/models/Promotion';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-manage-promotions',
@@ -24,15 +25,13 @@ export class ManagePromotionsComponent implements OnInit {
   constructor(private promoService: PromotionsService) { }
 
   ngOnInit(): void {
-    console.log(this.startDate);
-    console.log(this.endDate);
     this.fetchPromos();
   }
 
   fetchPromos(): void {
     this.promoService.getPromotions().subscribe({
       next: (data) => {
-        this.promos = data;
+        this.promos = data.promotions;
       },
       error: (error) => {
         console.error('Error fetching promos:', error);
@@ -60,6 +59,12 @@ export class ManagePromotionsComponent implements OnInit {
     return;
   }
 
+  // const today = new Date();
+  // if (this.endDate < today) {
+  //   alert('End date cannot be in the past.');
+  //   return;
+  // }
+
   // Check if discountPercentage is not a valid number
   if (isNaN(this.discountPercentage) || this.discountPercentage <= 0 || this.discountPercentage > 100) {
     alert('Please choose a valid percentage number');
@@ -68,6 +73,7 @@ export class ManagePromotionsComponent implements OnInit {
 
     const promo = {
       title: this.title,
+      promoName: this.title,
       description: this.description,
       discountPercentage: this.discountPercentage,
       startDate: this.startDate,
@@ -75,17 +81,17 @@ export class ManagePromotionsComponent implements OnInit {
       sent: false
     };
     console.log(promo);
-    // this.promoService.addPromotion(promo).subscribe({
-    //   next: () => {
-    //     alert('Promo added!');
-    //     // Optionally refresh the list or indicate success to the user
-    //     this.resetForm();
-    //     this.fetchPromos(); // Refresh the promotions list
-    //   },
-    //   error: (error) => {
-    //     alert('Error: ' + error.error)
-    //   }
-    // });
+    this.promoService.addPromotion(promo).subscribe({
+      next: () => {
+        alert('Promo added!');
+        // Optionally refresh the list or indicate success to the user
+        this.resetForm();
+        this.fetchPromos(); // Refresh the promotions list
+      },
+      error: (error) => {
+        alert('Error: ' + error.error)
+      }
+    });
   }
 
 
@@ -93,19 +99,32 @@ private resetForm() {
   this.title = '';
   this.description = '';
   this.discountPercentage = 0;
-  this.startDate = new Date(0); // Reset to the placeholder value
-  this.endDate = new Date(0); // Reset to the placeholder value
+  this.startDate = undefined;
+  this.endDate = undefined;
 }
 
-  // sendPromo(id: number): void {
-  //   this.promoService.sendPromo(id).subscribe({
-  //     next: () => {
-  //       console.log('Promo sent successfully!');
-  //       // Optionally refresh the list or indicate success to the user
-  //     },
-  //     error: (error) => {
-  //       console.error('Error sending promo:', error);
-  //     }
-  //   });
-  // }
+isDateBeforeToday(date: Date): boolean {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const compareDate = new Date(date.getTime());
+  compareDate.setHours(0, 0, 0, 0);
+
+  return compareDate < today;
+}
+
+
+  sendPromo(id: number): void {
+    this.promoService.sendPromotion(id).subscribe({
+      next: () => {
+        alert('Promo sent successfully!');
+        console.log('Promo sent successfully!');
+        // Optionally refresh the list or indicate success to the user
+      },
+      error: (error) => {
+        alert('Error sending promo: ' + error)
+        console.error('Error sending promo:', error);
+      }
+    });
+  }
 }

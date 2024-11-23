@@ -56,11 +56,17 @@
     <div class="add-movie-inputs">
         <label class="form-label">Trailer URL<p style="color: red;">*</p></label>
         <input formControlName="trailerUrl" class="registration-input form-control" placeholder="Trailer URL">
+        <div *ngIf="addMovieForm.get('trailerUrl')?.errors?.['invalidUrl']" class="alert alert-danger invalidLink">
+            Please enter a valid trailer URL.
+        </div>
     </div>
 
     <div class="add-movie-inputs">
         <label class="form-label">Image URL<p style="color: red;">*</p></label>
         <input formControlName="imageUrl" class="registration-input form-control" placeholder="Image URL">
+        <div *ngIf="addMovieForm.get('imageUrl')?.errors?.['invalidUrl']" class="alert alert-danger invalidLink">
+            Please enter a valid image URL.
+        </div>
     </div>
 
     <div class="add-movie-inputs">

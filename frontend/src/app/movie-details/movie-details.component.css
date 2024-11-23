@@ -133,6 +133,16 @@ body {
 /* Highlight for Director, Cast, and Rating */
 strong {
   color: #e72929;
+  text-shadow: 0 0 30px #e72929;
+}
+
+h1 {
+  text-shadow: 0 0 30px black;
+}
+
+p {
+  color: black;
+  text-shadow: 0 0 30px black;
 }
 
 /* Styling for the movie description */

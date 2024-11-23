@@ -31,6 +31,12 @@ public class ShowService {
 		return showRepository.findByMovieId(movieId);
 	}
 
+	public boolean checkScheduleConflict(Integer theaterId, Date date, Time time) {
+		// Query the repository to find any existing show with the same theaterId, date, and time
+		return showRepository.existsByTheaterIdAndDateAndTime(theaterId, date, time);
+	}
+
+
 	public Show scheduleShow(Integer movieId, Integer theaterId, Date date, Time time) throws Exception {
 		// Fetch the Movie entity
 		Movie movie = movieRepository.findById(movieId)

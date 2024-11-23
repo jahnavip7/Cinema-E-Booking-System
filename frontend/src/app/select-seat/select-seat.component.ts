@@ -1,92 +1,3 @@
-
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { RouterModule, Router } from '@angular/router'; // Add Router for navigation
-
-// @Component({
-//   selector: 'app-select-seat',
-//   templateUrl: './select-seat.component.html',
-//   styleUrls: ['./select-seat.component.css'],
-//   standalone: true,
-//   imports: [CommonModule, FormsModule, RouterModule] // Ensure necessary imports are added
-// })
-// export class SelectSeatComponent {
-//   userName = 'User'; // Username placeholder
-
-//   // Configuring 5 seats per row for 8 rows
-//   rows = [
-//     ['A1', 'A2', 'A3', 'A4', 'A5'],
-//     ['B1', 'B2', 'B3', 'B4', 'B5'],
-//     ['C1', 'C2', 'C3', 'C4', 'C5'],
-//     ['D1', 'D2', 'D3', 'D4', 'D5'],
-//     ['E1', 'E2', 'E3', 'E4', 'E5'],
-//     ['F1', 'F2', 'F3', 'F4', 'F5'],
-//     ['G1', 'G2', 'G3', 'G4', 'G5'],
-//     ['H1', 'H2', 'H3', 'H4', 'H5'],
-//   ];
-
-//   seatType: { [key: string]: string } = {}; // Holds seat types like Adult, Child, Senior
-//   seatStatus: { [key: string]: string } = {}; // Tracks seat status (available, selected, booked)
-//   selectedSeats: { seat: string, type: string }[] = []; // Track selected seats and types
-
-//   constructor(private router: Router) {
-//     // Initialize seat statuses - all are available initially
-//     this.rows.forEach(row => {
-//       row.forEach(seat => {
-//         this.seatStatus[seat] = 'available'; // Mark all seats as available initially
-//       });
-//     });
-
-//     // Mark some seats as booked for demonstration purposes
-//     this.seatStatus['A5'] = 'booked';
-//     this.seatStatus['G2'] = 'booked';
-//   }
-
-//   // Getter to map and return selected seat numbers as a string
-//   get selectedSeatNumbers(): string {
-//     return this.selectedSeats.map(s => `${s.seat} (${s.type})`).join(', ') || 'None';
-//   }
-
-//   // Function to select or deselect seats and assign a type (Adult, Child, Senior)
-//   selectSeat(seat: string) {
-//     if (this.seatStatus[seat] === 'booked') {
-//       alert('This seat is already booked!');
-//       return;
-//     }
-
-//     const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
-//     if (existingIndex !== -1) {
-//       // Deselect seat if already selected
-//       this.selectedSeats.splice(existingIndex, 1);
-//       this.seatStatus[seat] = 'available';
-//     } else {
-//       // Select seat and mark as selected, assign the type of seat (default to Adult if not selected)
-//       const seatType = this.seatType[seat] || 'Adult'; 
-//       this.selectedSeats.push({ seat, type: seatType });
-//       this.seatStatus[seat] = 'selected';
-//     }
-//   }
-
-//   // Function to handle order summary navigation
-//   proceedToOrderSummary() {
-//     if (this.selectedSeats.length === 0) {
-//       alert('Please select at least one seat to proceed.');
-//       return;
-//     }
-
-//     console.log('Proceeding to order summary with seats: ', this.selectedSeats);
-//     // Navigate to the order-summary page with seat data
-//     this.router.navigate(['/order-summary'], { 
-//       state: { 
-//         selectedSeats: this.selectedSeats,
-//         movieTitle: 'Barbie', // Replace this with the actual movie title dynamically
-//         showTime: new Date(2023, 11, 1) // Example showtime, replace dynamically
-//       }
-//     });
-//   }
-// }
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -95,7 +6,7 @@ import { RouterModule, Router } from '@angular/router';
 @Component({
   selector: 'app-select-seat',
   templateUrl: './select-seat.component.html',
-  styleUrls: ['./select-seat.component.css'],
+  styleUrls: ['./select-seat.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule]
 })
@@ -113,11 +24,23 @@ export class SelectSeatComponent {
     ['H1', 'H2', 'H3', 'H4', 'H5'],
   ];
 
+  movie: any;
+  movieId: number = 0;
+  movieName: string = '';
+  show: any;
+  showId: number = 0;
+  childCount: number = 0;
+  adultCount: number = 0;
+  seniorCount: number = 0;
+  timeString: string = '';
+
   seatType: { [key: string]: string } = {};
   seatStatus: { [key: string]: string } = {};
   selectedSeats: { seat: string, type: string }[] = [];
 
   constructor(private router: Router) {
+
+
     this.rows.forEach(row => {
       row.forEach(seat => {
         this.seatStatus[seat] = 'available';
@@ -125,20 +48,67 @@ export class SelectSeatComponent {
       });
     });
 
+    // Change when backend is done
     this.seatStatus['A5'] = 'booked';
     this.seatStatus['G2'] = 'booked';
+
+    // Retrieve navigation state passed from previous component
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation && navigation.extras && navigation.extras.state) {
+      this.movie = navigation.extras.state['movie'];
+      this.movieId = navigation.extras.state['movieId'];
+      this.movieName = navigation.extras.state['movieName'];
+      this.show = navigation.extras.state['show'];
+      this.showId = navigation.extras.state['showId'];
+      this.timeString = navigation.extras.state['timeString'];
+      this.selectedSeats = navigation.extras.state['selectedSeats'];
+    }
+
+  }
+
+  ngOnInit() {
+    this.initializeSelectedSeats();
+    console.log(this.selectedSeats);
   }
 
   get selectedSeatNumbers(): string {
     return this.selectedSeats.map(s => `${s.seat} (${s.type})`).join(', ') || 'None';
   }
 
-  selectSeat(seat: string, type: string) {
+  // selectSeat(seat: string, type: string) {
+  //   if (this.seatStatus[seat] === 'booked') {
+  //     alert('This seat is already booked!');
+  //     return;
+  //   }
+    
+  //   if (type === '') {
+  //     // Handle deselection only if type is the blank option
+  //     const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
+  //     if (existingIndex !== -1) {
+  //       this.selectedSeats.splice(existingIndex, 1);
+  //       this.seatStatus[seat] = 'available';
+  //     }
+  //     this.seatType[seat] = ''; // Reset to blank when deselected
+  //   } else {
+  //     // Update or add the seat with the new type
+  //     const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
+  //     if (existingIndex !== -1) {
+  //       // Update the existing seat type
+  //       this.selectedSeats[existingIndex].type = type;
+  //     } else {
+  //       // Add new seat if not already selected
+  //       this.selectedSeats.push({ seat, type });
+  //       this.seatStatus[seat] = 'selected';
+  //     }
+  //     this.seatType[seat] = type; // Ensure the type is updated
+  //   }
+  // }
+  selectSeat(seat: string, type: string, initializing: boolean = false) {
     if (this.seatStatus[seat] === 'booked') {
       alert('This seat is already booked!');
       return;
     }
-    
+  
     if (type === '') {
       // Handle deselection only if type is the blank option
       const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
@@ -148,17 +118,28 @@ export class SelectSeatComponent {
       }
       this.seatType[seat] = ''; // Reset to blank when deselected
     } else {
-      // Update or add the seat with the new type
-      const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
-      if (existingIndex !== -1) {
-        // Update the existing seat type
-        this.selectedSeats[existingIndex].type = type;
-      } else {
-        // Add new seat if not already selected
-        this.selectedSeats.push({ seat, type });
-        this.seatStatus[seat] = 'selected';
+      // Update or add the seat with the new type only if not initializing
+      if (!initializing) {
+        const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
+        if (existingIndex !== -1) {
+          // Update the existing seat type
+          this.selectedSeats[existingIndex].type = type;
+        } else {
+          // Add new seat if not already selected
+          this.selectedSeats.push({ seat, type });
+        }
       }
+      this.seatStatus[seat] = 'selected';
       this.seatType[seat] = type; // Ensure the type is updated
+    }
+  }
+  initializeSelectedSeats() {
+    // Check if selectedSeats array is not empty before proceeding
+    if (this.selectedSeats && this.selectedSeats.length > 0) {
+      // Apply the existing selected seats setup without duplicating entries
+      this.selectedSeats.forEach((seat) => {
+        this.selectSeat(seat.seat, seat.type, true);
+      });
     }
   }
   
@@ -169,12 +150,33 @@ export class SelectSeatComponent {
       return;
     }
 
-    console.log('Proceeding to order summary with seats: ', this.selectedSeats);
+    // Loop through selectedSeats and count each type
+    for (let seat of this.selectedSeats) {
+      switch (seat.type) {
+        case 'Child':
+          this.childCount++;
+          break;
+        case 'Adult':
+          this.adultCount++;
+          break;
+        case 'Senior':
+          this.seniorCount++;
+          break;
+      }
+    }
+
     this.router.navigate(['/order-summary'], {
       state: {
         selectedSeats: this.selectedSeats,
-        movieTitle: 'Barbie',
-        showTime: new Date(2023, 11, 1)
+        movieName: this.movieName,
+        movie: this.movie,
+        movieId: this.movieId,
+        showId: this.showId,
+        show: this.show,
+        childCount: this.childCount,
+        adultCount: this.adultCount,
+        seniorCount: this.seniorCount,
+        timeString: this.timeString
       }
     });
   }

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MoviesService } from '../services/movies/movies.service';
 import { Movie } from '@shared/models/Movie';
+
 
 @Component({
   selector: 'app-select-showtime',
@@ -17,10 +18,19 @@ export class SelectShowtimeComponent {
   movieId: number = 0;
   movieName: string = '';
   showtimes: any[] = [];
-  selectedShowtime: any;  // Changed to any to hold the full object
+  selectedShowtime: any;
   showId: number = 0;
+  timeString: string = '';
+  selectedSeats: { seat: string, type: string }[] = [];
 
-  constructor(private route: ActivatedRoute, private moviesService: MoviesService) {}
+  constructor(private route: ActivatedRoute, private moviesService: MoviesService, private router: Router) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation && navigation.extras && navigation.extras.state) {
+      this.selectedShowtime = navigation.extras.state['show'];
+      this.showId = navigation.extras.state['showId'];
+      this.selectedSeats = navigation.extras.state['selectedSeats'];
+    }
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -34,14 +44,16 @@ export class SelectShowtimeComponent {
         this.movieName = movie.movieName;
         this.moviesService.getShowtimes(this.movieId).subscribe({
           next: (data) => {
-            console.log(data);
             this.showtimes = data.map(show => ({
               id: show.showId,
+              theaterName: show.theaterName,
               theaterId: show.theaterId,
               date: show.date,
               time: show.time,
-              display: `${this.movieName}, Auditorium '${show.theaterId}', ${show.date}, ${show.time}`
+              display: `${this.movieName}, ${show.theaterName}, ${show.date}, ${show.time}`
             }));
+
+            if (this.showId != 0) this.selectedShowtime = this.showtimes.find(st => st.id === this.showId);
           },
           error: (err) => {
             alert("Error:" + err.error);
@@ -54,14 +66,36 @@ export class SelectShowtimeComponent {
         console.error('Error fetching movie details:', err);
       }
     });
+    
+  }
+
+  getTime(show: any) {
+    if (show.time === '9:00:00') this.timeString = '9 AM';
+    else if (show.time === '12:00:00') this.timeString = '12 PM';
+    else if (show.time === '15:00:00') this.timeString = '3 PM';
+    else if (show.time === '18:00:00') this.timeString = '6 PM';
+    else if (show.time === '21:00:00') this.timeString = '9 PM';
+    else this.timeString = 'No time available!';
   }
 
   onShowtimeChange() {
-    this.showId = this.selectedShowtime.id; 
+    this.showId = this.selectedShowtime.id;
+    this.selectedSeats = [];
   }
 
   onNext(){
-    console.log(this.selectedShowtime);
+    this.getTime(this.selectedShowtime);
+    this.router.navigate(['/select-seat'], {
+      state: {
+        movie: this.movie,
+        movieId: this.movieId,
+        movieName: this.movieName,
+        show: this.selectedShowtime,
+        showId: this.showId,
+        timeString: this.timeString,
+        selectedSeats: this.selectedSeats
+      }
+    });
   }
 
 }

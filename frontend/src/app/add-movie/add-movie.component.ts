@@ -11,14 +11,15 @@
 
 // }
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidationErrors, FormsModule } from '@angular/forms';
 import { MoviesService } from '../services/movies/movies.service';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-movie',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './add-movie.component.html',
   styleUrl: './add-movie.component.scss'
 })
@@ -40,8 +41,8 @@ export class AddMovieComponent {
       director: [''],
       producer: [''],
       description: [''],
-      trailerUrl: ['', Validators.required],
-      imageUrl: ['', Validators.required],
+      trailerUrl: ['', [Validators.required, this.urlValidator]],
+      imageUrl: ['', [Validators.required, this.urlValidator]],
       mpaaRating: ['', Validators.required],
       releaseDate: ['', Validators.required],
       duration: ['', [Validators.required, this.numberValidator]]
@@ -50,8 +51,17 @@ export class AddMovieComponent {
 
   numberValidator(control: AbstractControl): ValidationErrors | null {
     const value = control.value;
-    if (value === null || value === '') return null;  // Allow empty value if the field is not required
+    if (value === null || value === '') return null;
     return !isNaN(parseFloat(value)) && isFinite(value) ? null : { 'numberRequired': true };
+  }
+
+  urlValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) {
+      return null; // consider empty value as valid
+    }
+    // Extended regular expression for URL validation
+    const pattern = /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?$/;
+    return pattern.test(control.value) ? null : { 'invalidUrl': true };
   }
 
   onSubmit() {
@@ -71,7 +81,7 @@ export class AddMovieComponent {
         }
       });
     } else {
-      alert('Please fill all required fields.');
+      alert('Please fill all required fields, or enter valid inputs.');
     }
   }
 }

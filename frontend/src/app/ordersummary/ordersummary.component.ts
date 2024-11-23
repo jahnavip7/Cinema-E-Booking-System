@@ -5,25 +5,27 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-order-summary',
   templateUrl: './ordersummary.component.html',
-  styleUrls: ['./ordersummary.component.css'],
+  styleUrls: ['./ordersummary.component.scss'],
   standalone: true,
   imports: [CommonModule]
 })
 export class OrderSummaryComponent {
-  userName = 'User';  // Placeholder for the user's name
 
-  // Initializations with defaults or empty values
   selectedSeats: { seat: string, type: string }[] = [];
-  movieTitle: string = '';
-  showTime: Date = new Date();
+  movie?: any;
+  movieId?: number;
+  movieName: string = '';
+  show?: any;
+  showId?: number;
+  timeString: string = '';
 
-  // Ticket and Pricing Information
   ticketInfo = {
-    children: 1,
-    adult: 2,
+    children: 0,
+    adult: 0,
     senior: 0
   };
 
+  // NEED TO CHANGE
   prices = {
     child: 5.5,
     adult: 8.5,
@@ -34,23 +36,34 @@ export class OrderSummaryComponent {
   get ticketTotal() {
     return this.getTotalCost();
   }
-  onlineFee = 3.00;
+
+  //NEED TO CHANGE
+  bookingFee = 3.00;
+
   get salesTax() {
     return this.getSalesTax();
   }
   get totalCost() {
-    return this.ticketTotal + this.onlineFee + this.salesTax;
+    return this.ticketTotal + this.bookingFee + this.salesTax;
   }
 
 
   constructor(private router: Router) {
-    // Retrieve navigation state passed from previous component
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras && navigation.extras.state) {
-      this.selectedSeats = navigation.extras.state['selectedSeats'] || [];
-      this.movieTitle = navigation.extras.state['movieTitle'] || 'Unknown Movie';
-      this.showTime = navigation.extras.state['showTime'] ? new Date(navigation.extras.state['showTime']) : new Date();
+      this.selectedSeats = navigation.extras.state['selectedSeats'];
+      this.movie = navigation.extras.state['movie'];
+      this.movieId = navigation.extras.state['movieId'];
+      this.movieName = navigation.extras.state['movieName'];
+      this.show = navigation.extras.state['show'];
+      this.showId = navigation.extras.state['showId'];
+      this.timeString = navigation.extras.state['timeString'];
+      this.ticketInfo.children = navigation.extras.state['childCount'];
+      this.ticketInfo.adult = navigation.extras.state['adultCount'];
+      this.ticketInfo.senior = navigation.extras.state['seniorCount'];
     }
+
+
   }
   
 
@@ -60,14 +73,27 @@ export class OrderSummaryComponent {
            (this.ticketInfo.senior * this.prices.senior);
   }
 
+  // NEED TO CHANGE
   getSalesTax() {
-    return this.ticketTotal * 0.07;  // Assuming 7% tax
+    return this.ticketTotal * 0.07;
   }
 
   // Function stubs for button actions
-  addTicket() { console.log('Adding a ticket...'); }
-  deleteTicket() { console.log('Deleting a ticket...'); }
-  editBooking() { console.log('Editing the booking...'); }
-  proceedToCheckout() { console.log('Proceeding to checkout...'); }
-  cancelOrder() { console.log('Cancelling the order...'); }
+  // addTicket() { console.log('Adding a ticket...'); }
+  // deleteTicket() { console.log('Deleting a ticket...'); }
+  editBooking() { 
+    this.router.navigate([`/book/${this.movieId}`], {
+      state: {
+        selectedSeats: this.selectedSeats,
+        showId: this.showId,
+        show: this.show,
+      }
+    });
+  }
+  proceedToCheckout() { 
+    
+  }
+  cancelOrder() { 
+    
+  }
 }

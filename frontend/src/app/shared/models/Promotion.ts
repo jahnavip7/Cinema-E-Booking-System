@@ -1,6 +1,7 @@
 export interface Promotion {
-    id: number;
+    promoId: number;
     title: string;
+    promoName: string,
     description: string;
     discountPercentage: number;
     startDate: Date;

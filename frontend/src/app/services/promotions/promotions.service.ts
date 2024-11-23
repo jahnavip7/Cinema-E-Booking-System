@@ -9,19 +9,19 @@ import { Promotion } from '@shared/models/Promotion';
 export class PromotionsService {
 
   private getAllUrl = 'http://localhost:8080/api/admin/promotions';
-  private addPromoUrl = 'http://localhost:8080/api/admin/Addpromo';
-  private sendPromoUrl = 'http://localhost:8080/api/admin/SendPromo';
+  private addPromoUrl = 'http://localhost:8080/api/admin/AddPromo';
+  private sendPromoUrl = 'http://localhost:8080/api/admin/sendPromo';
 
   constructor(private http: HttpClient) { }
 
-  getPromotions(): Observable<Promotion[]> {
-    return this.http.get<Promotion[]>(this.getAllUrl);
+  getPromotions(): Observable<any> {
+    return this.http.get<any>(this.getAllUrl);
   }
   addPromotion(promotion: any): Observable<any> {
     return this.http.post<any>(this.addPromoUrl, promotion);
   }
 
-  // sendpromotion(id: number): Observable<any> {
-  //   return this.http.post(`${this.sendPromoUrl}/${id}`, {});
-  // }
+  sendPromotion(id: number): Observable<any> {
+    return this.http.post(`${this.sendPromoUrl}/${id}`, {});
+  }
 }
