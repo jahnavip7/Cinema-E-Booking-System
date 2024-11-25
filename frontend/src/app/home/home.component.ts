@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MoviesService } from '../services/movies/movies.service'; // Adjust the path if necessary
 import { Movie } from '@shared/models/Movie'; // Adjust the path if necessary
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,7 @@ export class HomeComponent implements OnInit {
   filteredComingSoonMovies: Movie[] = [];
   searchTerm: string = '';
 
-  constructor(private moviesService: MoviesService) {}
+  constructor(private moviesService: MoviesService, public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.fetchMovies();
@@ -48,5 +49,12 @@ export class HomeComponent implements OnInit {
     this.filteredComingSoonMovies = this.comingSoonMovies.filter(movie =>
       movie.movieName.toLowerCase().includes(searchTermLower)
     );
+  }
+
+  bookMovie(movieId: number) {
+    if (this.authService.isAuthenticated()) {
+      console.log(this.authService.isAuthenticated());
+      this.router.navigate(['/book', movieId]);
+    }
   }
 }

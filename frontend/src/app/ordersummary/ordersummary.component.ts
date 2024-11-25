@@ -94,6 +94,6 @@ export class OrderSummaryComponent {
     
   }
   cancelOrder() { 
-    
+    this.router.navigate(['']);
   }
 }

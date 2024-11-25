@@ -29,22 +29,7 @@
     margin-bottom: 15px;
     font-size: 1.5rem;
   }
-  
-  /* Button styles */
-  button {
-    padding: 10px 20px;
-    background-color: #e95a5a;
-    color: rgb(0, 0, 0);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    margin: 5px;
-  }
-  
-  button:hover {
-    background-color: #e72929;
-  }
+
   
   /* Button group for action buttons */
   .button-group {
@@ -60,20 +45,6 @@
     gap: 10%;
     padding-top: 10px; /* Padding above the button row */
   }
-  
-  .ticket-actions button {
-    padding: 10px 20px;
-    background-color: #e95a5a;
-    color: rgb(0, 0, 0);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .ticket-actions button:hover {
-    background-color: #e72929;
-  }
-  
   
   
   /* Header styles */

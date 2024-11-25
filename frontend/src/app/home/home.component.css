@@ -125,6 +125,12 @@ h2 {
   box-shadow: 0 0 15px #218838;  /* Glowing white border */
 }
 
+.no-results-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .row {
