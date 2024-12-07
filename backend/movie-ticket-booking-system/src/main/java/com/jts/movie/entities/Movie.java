@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.jts.movie.enums.genre;
 import com.jts.movie.enums.language;
 import com.jts.movie.enums.category;
@@ -25,6 +26,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@JsonIgnoreProperties({"shows"})
 @Entity
 @Table(name = "MOVIES")
 @Data
@@ -64,4 +66,7 @@ public class Movie {
 
 //    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
 //    private List<Show> shows = new ArrayList<>();
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Show> shows = new ArrayList<>();
+
 }

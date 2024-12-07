@@ -47,7 +47,7 @@ public class TheaterController {
 
     // Endpoint to get a single theater by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getTheaterById(@PathVariable Integer id) {
+    public ResponseEntity<Map<String, Object>> getTheaterById(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
             Theater theater = theaterService.getTheaterById(id);
@@ -64,7 +64,7 @@ public class TheaterController {
 
     // Endpoint to update theater details
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> updateTheater(@PathVariable Integer id, @RequestBody Theater updatedTheater) {
+    public ResponseEntity<Map<String, Object>> updateTheater(@PathVariable Long id, @RequestBody Theater updatedTheater) {
         Map<String, Object> response = new HashMap<>();
         try {
             Theater theater = theaterService.updateTheater(id, updatedTheater);
@@ -80,8 +80,9 @@ public class TheaterController {
     }
 
     // Endpoint to delete a theater
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> deleteTheater(@PathVariable Integer id) {
+    public ResponseEntity<Map<String, Object>> deleteTheater(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
             theaterService.deleteTheater(id);

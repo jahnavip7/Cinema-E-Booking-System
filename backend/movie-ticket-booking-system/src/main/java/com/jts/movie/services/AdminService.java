@@ -21,7 +21,7 @@ public class AdminService {
     }
 
     // Method to update an existing movie
-    public Movie updateMovie(Integer id, Movie movieDetails) throws Exception {
+    public Movie updateMovie(Long id, Movie movieDetails) throws Exception {
         // Find the movie by ID
         Movie existingMovie = movieRepository.findById(id)
                 .orElseThrow(() -> new Exception("Movie not found with ID: " + id));
@@ -44,20 +44,20 @@ public class AdminService {
         return movieRepository.save(existingMovie);
     }
 
-    public void deleteMovie(Integer movieId) throws Exception {
+    public void deleteMovie(Long movieId) throws Exception {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new Exception("Movie not found with ID: " + movieId));
         movieRepository.delete(movie);
     }
 
-    public User activateUser(Integer userId) throws Exception {
+    public User activateUser(long userId) throws Exception {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("User not found with ID: " + userId));
         user.setIsActive(true);
         return userRepository.save(user);
     }
 
-    public User suspendUser(Integer userId) throws Exception {
+    public User suspendUser(Long userId) throws Exception {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("User not found with ID: " + userId));
         user.setIsActive(false);

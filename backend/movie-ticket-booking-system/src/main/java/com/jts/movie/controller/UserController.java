@@ -2,6 +2,7 @@ package com.jts.movie.controller;
 
 import com.jts.movie.request.ChangePasswordRequest;
 import com.jts.movie.response.UserResponse;
+import com.jts.movie.services.PaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,9 @@ public class UserController {
 
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	private PaymentCardService paymentCardService;
 
 	// User registration endpoint
 	@PostMapping("/register")
@@ -199,7 +203,11 @@ public class UserController {
 		}
 	}
 
-
+	@GetMapping("/cards")
+	public ResponseEntity<List<PaymentCard>> getAllPaymentCards(@RequestHeader("Authorization") String token) {
+		List<PaymentCard> cards = paymentCardService.getCardsForUser(token);
+		return ResponseEntity.ok(cards);
+	}
 	@PostMapping("/forgotPassword")
 	public ResponseEntity<Map<String, String>> forgotPassword(@RequestBody @Valid UserRequest userRequest) {
 		String email = userRequest.getEmailId(); // Use email from UserRequest

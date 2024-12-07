@@ -21,19 +21,19 @@ public class TheaterService {
         return theaterRepository.findAll();
     }
 
-    public Theater getTheaterById(Integer theaterId) throws Exception {
+    public Theater getTheaterById(Long theaterId) throws Exception {
         return theaterRepository.findById(theaterId)
                 .orElseThrow(() -> new Exception("Theater not found with ID: " + theaterId));
     }
 
-    public Theater updateTheater(Integer theaterId, Theater updatedTheater) throws Exception {
+    public Theater updateTheater(Long theaterId, Theater updatedTheater) throws Exception {
         Theater theater = getTheaterById(theaterId);
         theater.setName(updatedTheater.getName());
         theater.setLocation(updatedTheater.getLocation());
         return theaterRepository.save(theater);
     }
 
-    public void deleteTheater(Integer theaterId) throws Exception {
+    public void deleteTheater(Long theaterId) throws Exception {
         Theater theater = getTheaterById(theaterId);
         theaterRepository.delete(theater);
     }

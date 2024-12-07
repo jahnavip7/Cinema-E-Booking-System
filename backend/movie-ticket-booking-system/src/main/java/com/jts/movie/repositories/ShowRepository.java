@@ -1,18 +1,20 @@
 package com.jts.movie.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
+import com.jts.movie.entities.Movie;
 import com.jts.movie.entities.Show;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Optional;
 
-public interface ShowRepository extends JpaRepository<Show, Integer> {
-    boolean existsByDateAndTimeAndTheaterId(Date date, Time time, Integer theaterId);
-    List<Show> findByMovieId(Integer movieId);
-    // Custom query method to check for scheduling conflict
-    boolean existsByTheaterIdAndDateAndTime(Integer theaterId, Date date, Time time);
+@Repository
+public interface ShowRepository extends JpaRepository<Show, Long> {
+    Optional<Show> findByMovieAndDateAndTime(Movie movie, Date date, Time time);
+    List<Show> findByMovieId(Integer movie_id);
+    boolean existsByDateAndTimeAndTheaterId(java.util.Date date, Time time, Long theater_id);
+    List<Show> findByMovieIdAndDate(Integer movie_id, java.util.Date date);
+    Show getShowById(long id);
 }

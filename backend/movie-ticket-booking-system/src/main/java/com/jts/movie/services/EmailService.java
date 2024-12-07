@@ -2,6 +2,7 @@ package com.jts.movie.services;
 
 
 
+import com.jts.movie.entities.Booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -47,6 +48,41 @@ public class EmailService {
 
         sendEmail(to, subject, body);
     }
+
+    public void sendBookingConfirmation(String userEmail, Booking booking) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(userEmail);
+            helper.setSubject("Booking Confirmation - CineQuest");
+            helper.setText(buildEmailContent(booking), true);
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send booking confirmation email", e);
+        }
+    }
+
+    private String buildEmailContent(Booking booking) {
+        StringBuilder content = new StringBuilder();
+        content.append("<h1>Booking Confirmation</h1>")
+                .append("<p>Thank you for booking with CineQuest!</p>")
+                .append("<p><b>Movie:</b> ").append(booking.getMovieName()).append("</p>")
+                .append("<p><b>Show Date:</b> ").append(booking.getShow().getDate()).append("</p>")
+                .append("<p><b>Show Time:</b> ").append(booking.getShow().getTime()).append("</p>")
+                .append("<p><b>Seats:</b> ");
+
+
+        booking.getShow().getBookedSeats().forEach(seat -> content.append(seat).append(" "));
+
+        content.append("</p>")
+                .append("<p><b>Total Amount:</b> $").append(booking.getOrderTotal()).append("</p>")
+                .append("<p>Enjoy your movie!</p>");
+
+        return content.toString();
+    }
+
 
 }
 

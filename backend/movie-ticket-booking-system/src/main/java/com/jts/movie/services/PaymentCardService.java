@@ -24,8 +24,11 @@ public class PaymentCardService {
     @Autowired
     private EncryptionUtil encryptionUtil;
 
+    @Autowired
+    private UserService userService;
+
     // Save payment card with encryption
-    public void savePaymentCard(Integer userId, PaymentCardRequest cardRequest) throws Exception {
+    public void savePaymentCard(Long userId, PaymentCardRequest cardRequest) throws Exception {
         PaymentCard paymentCard = new PaymentCard();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("User not found"));
@@ -102,5 +105,16 @@ public class PaymentCardService {
             return "****";  // Too short to mask, return as is
         }
         return "****-****-****-" + cardNumber.substring(cardNumber.length() - 4);
+    }
+
+    public List<PaymentCard> getCardsForUser(String token) {
+        Long userId = userService.getUserIdFromToken(token);
+        return paymentCardRepository.findByUserId(userId);
+    }
+    public boolean validatePayment(PaymentCard card) {
+        return card.getCardNumber().matches("\\d{16}")
+                && card.getCvv().matches("\\d{3}")
+                && card.getExpiryDate().matches("\\d{2}/\\d{2}")
+                && card.getCardHolderName() != null;
     }
 }

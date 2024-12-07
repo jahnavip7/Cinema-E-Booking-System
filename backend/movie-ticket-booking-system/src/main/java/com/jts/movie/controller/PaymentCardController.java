@@ -1,10 +1,13 @@
 package com.jts.movie.controller;
 
+import com.jts.movie.entities.PaymentCard;
 import com.jts.movie.response.PaymentCardResponse;
 import com.jts.movie.services.PaymentCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/payment-card")

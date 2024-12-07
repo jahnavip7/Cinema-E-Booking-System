@@ -1,6 +1,8 @@
 package com.jts.movie.services;
 import com.jts.movie.config.EncryptionUtil;
 import com.jts.movie.response.PaymentCardResponse;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.http.ResponseEntity;
 
 import com.jts.movie.entities.User;
@@ -290,6 +292,26 @@ public class UserService {
 		userResponse.setPaymentCards(paymentCardResponses);
 
 		return userResponse;
+	}
+
+	private static final String SECRET_KEY = "your_secret_key"; // Replace with your actual secret key
+
+	// Method to get user ID from JWT token
+	public Long getUserIdFromToken(String token) {
+		// Parse the JWT token to extract the claims
+		Claims claims = Jwts.parser()
+				.setSigningKey(SECRET_KEY) // Set the signing key to verify the token
+				.parseClaimsJws(token) // Parse the JWT
+				.getBody();
+
+		// Extract the user ID from the claims (assuming it's stored as a claim)
+		return Long.parseLong(claims.get("userId").toString()); // Adjust based on how user ID is stored in the token
+	}
+
+	public String getUserEmailById(Long userId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+		return user.getEmailId();
 	}
 
 }

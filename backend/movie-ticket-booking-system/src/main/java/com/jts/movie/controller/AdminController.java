@@ -14,6 +14,10 @@ import com.jts.movie.services.ShowService;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +53,7 @@ public class AdminController {
     }
 
     @PutMapping("/editMovies/{id}")
-    public ResponseEntity<Map<String, Object>> editMovie(@PathVariable Integer id, @RequestBody Movie movie) {
+    public ResponseEntity<Map<String, Object>> editMovie(@PathVariable Long id, @RequestBody Movie movie) {
         Map<String, Object> response = new HashMap<>();
         try {
             Movie updatedMovie = adminService.updateMovie(id, movie);
@@ -65,7 +69,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/movies/{movieId}")
-    public ResponseEntity<Map<String, Object>> deleteMovie(@PathVariable Integer movieId) {
+    public ResponseEntity<Map<String, Object>> deleteMovie(@PathVariable Long movieId) {
         Map<String, Object> response = new HashMap<>();
         try {
             adminService.deleteMovie(movieId);
@@ -81,30 +85,58 @@ public class AdminController {
 
     @PostMapping("/scheduleMovies")
     public ResponseEntity<Map<String, Object>> scheduleShow(
-            @RequestParam Integer movieId,
-            @RequestParam Integer theaterId,
-            @RequestParam Date date,
-            @RequestParam Time time) {
+            @RequestParam Long movieId,
+            @RequestParam String date, // Using String to parse to LocalDate
+            @RequestParam String time, // Using String to parse to LocalTime
+            @RequestParam Long theaterId) {
+
         Map<String, Object> response = new HashMap<>();
         try {
-            boolean isConflict = showService.checkScheduleConflict(theaterId, date, time);
+            // Validate input parameters
+            if (movieId == null || theaterId == null || date == null || time == null) {
+                response.put("message", "Missing required parameters.");
+                response.put("statusCode", HttpStatus.BAD_REQUEST.value());
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+            // Parse date and time parameters
+            java.sql.Date showDate;
+            java.sql.Time showTime;
+            try {
+                showDate = java.sql.Date.valueOf(date); // Convert String to java.sql.Date
+                showTime = java.sql.Time.valueOf(time); // Convert String to java.sql.Time
+            } catch (IllegalArgumentException ex) {
+                response.put("message", "Invalid date or time format. Use 'yyyy-MM-dd' for date and 'HH:mm:ss' for time.");
+                response.put("statusCode", HttpStatus.BAD_REQUEST.value());
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+            // Check for scheduling conflicts
+            boolean isConflict = showService.checkScheduleConflict(theaterId, showDate, showTime);
             if (isConflict) {
                 response.put("message", "A show is already scheduled at the same time, date, and theater.");
                 response.put("statusCode", HttpStatus.CONFLICT.value());
                 return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
+            // Schedule the show
+            Show scheduledShow = showService.scheduleShow(movieId, theaterId, showDate, showTime);
 
-            Show scheduledShow = showService.scheduleShow(movieId, theaterId, date, time);
             response.put("message", "Show scheduled successfully.");
-            response.put("showId", scheduledShow.getShowId());
+            response.put("showId", scheduledShow.getId());
             response.put("statusCode", HttpStatus.CREATED.value());
             return new ResponseEntity<>(response, HttpStatus.CREATED);
+
         } catch (Exception e) {
+            // Log the error for debugging purposes
+            e.printStackTrace();
+
             response.put("message", "Error scheduling show: " + e.getMessage());
             response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
     // Add Promotion Endpoint
     @PostMapping("/AddPromo")
@@ -210,7 +242,7 @@ public class AdminController {
     }
 
     @PutMapping("/SuspendUser/{userId}")
-    public ResponseEntity<Map<String, Object>> suspendUser(@PathVariable Integer userId) {
+    public ResponseEntity<Map<String, Object>> suspendUser(@PathVariable Long userId) {
         Map<String, Object> response = new HashMap<>();
         try {
             User updatedUser = adminService.suspendUser(userId);
