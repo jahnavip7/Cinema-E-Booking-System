@@ -35,7 +35,7 @@ public class MovieController {
     // New endpoint to get all movies by id
     // Endpoint to get movie by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Movie> getMovieById(@PathVariable("id") Long id) throws Exception {
         Movie movie = movieService.getMovieById(id);
         if (movie != null) {
             return new ResponseEntity<>(movie, HttpStatus.OK);
@@ -43,6 +43,4 @@ public class MovieController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Return 404 if the movie is not found
         }
     }
-
-
 }

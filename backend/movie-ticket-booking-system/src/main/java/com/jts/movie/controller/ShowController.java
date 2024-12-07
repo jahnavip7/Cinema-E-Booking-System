@@ -1,14 +1,13 @@
 package com.jts.movie.controller;
 
 import com.jts.movie.entities.Show;
+import com.jts.movie.enums.SeatNumber;
+import com.jts.movie.enums.SeatStatus;
 import com.jts.movie.services.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +34,12 @@ public class ShowController {
 		// Iterate through the list of shows and build the response
 		for (Show show : shows) {
 			Map<String, Object> showDetails = new HashMap<>();
-			showDetails.put("showId", show.getShowId());
-			showDetails.put("time", show.getTime());
-			showDetails.put("date", show.getDate());
-			showDetails.put("movieId", show.getMovie().getId());
-			showDetails.put("theaterId", show.getTheater().getId());
-			showDetails.put("theaterName", show.getTheater().getName());
+			showDetails.put("showId", show.getId());
+			showDetails.put("time", show.getTime()); // Use time directly
+			showDetails.put("date", show.getDate()); // Use date directly
+			showDetails.put("movieId", show.getMovie() != null ? show.getMovie().getId() : null);
+			showDetails.put("theaterId", show.getTheater() != null ? show.getTheater().getId() : null);
+			showDetails.put("theaterName", show.getTheater() != null ? show.getTheater().getName() : "N/A");
 
 			// Add the show details to the response list
 			responseList.add(showDetails);
@@ -51,5 +50,18 @@ public class ShowController {
 
 
 
+
+
+
+	@GetMapping("/bookedSeats/{showId}")
+	public ResponseEntity<Map<String, Object>> getBookedSeats(@PathVariable Long showId) {
+		Map<String, Object> response = showService.getBookedSeatsByShowId(showId);
+		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/showInfo")
+	public Show getShowInfo(@PathVariable Integer id) throws Exception {
+		return showService.getShowById(id);
+	}
 }
 

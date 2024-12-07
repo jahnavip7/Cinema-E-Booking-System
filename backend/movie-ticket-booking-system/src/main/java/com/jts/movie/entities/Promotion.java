@@ -7,8 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.Date;
 
-import java.sql.Date;
+
 
 @Entity
 @Table(name = "PROMOTIONS")
@@ -54,7 +55,11 @@ public class Promotion {
 
     // Method to update validity based on the current date
     public void updateValidity() {
-        Date currentDate = new Date(System.currentTimeMillis());
-        this.isValid = currentDate.after(startDate) && currentDate.before(endDate);
+        Date currentDate = new Date();
+        if (startDate != null && endDate != null) {
+            this.isValid = currentDate.after(startDate) && currentDate.before(endDate);
+        } else {
+            this.isValid = false;
+        }
     }
 }

@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/email")
 public class sendTestEmail {
 
-    private static final Logger logger = LoggerFactory.getLogger(sendTestEmail.class);
+    public static final Logger logger = LoggerFactory.getLogger(sendTestEmail.class);
 
     @Autowired
     private JavaMailSender mailSender;
