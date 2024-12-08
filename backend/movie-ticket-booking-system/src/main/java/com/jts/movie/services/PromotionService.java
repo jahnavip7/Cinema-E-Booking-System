@@ -129,12 +129,17 @@ public class PromotionService {
         Promotion promotion = promoOptional.get();
 
         // Fetch user promo details
-        UserPromo userPromo = userPromoRepository.findByUserTokenAndPromoCode(userToken, promoCode);
-        if (userPromo != null && userPromo.getIsUsed()) {
-            response.put("isValid", false);
-            response.put("message", "Promo code has already been used by this user.");
-            return response;
+        Optional<UserPromo> userPromo = userPromoRepository.findByUserTokenAndPromoName(userToken, promoCode);
+
+        if (userPromo.isPresent()) {
+            UserPromo promo = userPromo.get(); // Get the UserPromo object from Optional
+            if (Boolean.TRUE.equals(promo.getIsUsed())) {  // Check if the promo has already been used
+                response.put("isValid", false);
+                response.put("message", "Promo code has already been used by this user.");
+                return response;
+            }
         }
+
 
         // Valid promo code
         response.put("isValid", true);
@@ -143,4 +148,27 @@ public class PromotionService {
         return response;
     }
 
+    public void syncPromotionsToUserPromo() {
+        // Fetch all promotions from the Promotion table
+        List<Promotion> promotions = promotionRepository.findAll();
+
+        for (Promotion promotion : promotions) {
+            // Check if the promo already exists in UserPromo, if not, create a new one
+            List<UserPromo> existingUserPromos = userPromoRepository.findByPromoName(promotion.getPromoName());
+
+            if (existingUserPromos.isEmpty()) {
+                // Create new UserPromo for each user (assuming promo applies to all users initially)
+                List<User> users = userRepository.findAll(); // Assuming a UserRepository exists
+
+                for (User user : users) {
+                    UserPromo userPromo = new UserPromo();
+                    userPromo.setPromoName(promotion.getPromoName());
+                    userPromo.setUserToken(user.getEmailId()); // Assuming emailId as user token
+                    userPromo.setPromoName(promotion.getPromoName());
+                    userPromo.setIsUsed(false);  // Initially promo code is not used
+                    userPromoRepository.save(userPromo); // Save to the UserPromo table
+                }
+            }
+        }
+    }
 }

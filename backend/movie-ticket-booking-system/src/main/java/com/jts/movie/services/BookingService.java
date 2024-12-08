@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
-
 import java.time.LocalDateTime;
-import java.util.stream.Collectors;
+
+import static java.lang.Boolean.TRUE;
 
 @Service
 public class BookingService {
@@ -34,8 +34,11 @@ public class BookingService {
 
     @Autowired
     private TicketRepository ticketRepository;
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
+    @Autowired
+    private UserPromoRepository userPromoRepository; // Repository for UserPromo entity
+
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @Transactional
     public Map<String, Object> createBooking(BookingRequest request) {
@@ -46,6 +49,22 @@ public class BookingService {
 
         Show show = showRepository.findById(request.getShowId())
                 .orElseThrow(() -> new RuntimeException("Show not found with ID: " + request.getShowId()));
+
+        // Validate Promo Code if provided
+        if (request.getPromoName() != null && !request.getPromoName().isEmpty()) {
+            // Fetch UserPromo for the given promo code and user email
+            UserPromo userPromo = userPromoRepository.findByUserTokenAndPromoName(request.getPromoName(), user.getEmailId())
+                    .orElseThrow(() -> new RuntimeException("Promo code not found or invalid for user: " + request.getPromoName()));
+
+            // Check if the promo code has already been used
+            if (Boolean.TRUE.equals(userPromo.getIsUsed())) {
+                throw new RuntimeException("Promo code has already been used.");
+            }
+
+            // Set the promo code as used after successful booking
+            userPromo.setIsUsed(TRUE);
+            userPromoRepository.save(userPromo);
+        }
 
         // Validate and process tickets
         for (TicketRequest ticket : request.getTickets()) {
@@ -151,5 +170,4 @@ public class BookingService {
             return bookingData;
         }).collect(Collectors.toList());
     }
-
 }
