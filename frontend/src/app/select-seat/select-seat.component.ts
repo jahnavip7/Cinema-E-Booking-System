@@ -38,29 +38,9 @@ export class SelectSeatComponent {
 
   seatType: { [key: string]: string } = {};
   seatStatus: { [key: string]: string } = {};
-  selectedSeats: { seat: string, type: string }[] = [];
+  selectedSeats: { seatNumber: string, category: string, price: number, seatStatus: string }[] = [];
 
   constructor(private router: Router, private http: HttpClient) {
-
-
-    // this.rows.forEach(row => {
-    //   row.forEach(seat => {
-    //     this.seatStatus[seat] = 'available';
-    //     this.seatType[seat] = '';
-    //   });
-    // });
-
-    this.rows.forEach(row => {
-      row.forEach(seat => {
-        if (this.bookedSeats.includes(seat) && this.bookedSeats.length != 0) {
-          this.seatStatus[seat] = 'booked';
-        } else {
-          this.seatStatus[seat] = 'available';
-        }
-        this.seatType[seat] = '';
-      });
-    });
-
     // Retrieve navigation state passed from previous component
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras && navigation.extras.state) {
@@ -76,78 +56,61 @@ export class SelectSeatComponent {
   }
 
   ngOnInit() {
-    this.initializeSelectedSeats();
     this.http.get<any>(`http://localhost:8080/api/shows/bookedSeats/${this.showId}`).subscribe({
       next: (response) => {
         this.bookedSeats = response.bookedSeats;
+        this.rows.forEach(row => {
+          row.forEach(seat => {
+            if (this.bookedSeats.includes(seat) && this.bookedSeats.length != 0) {
+              this.seatStatus[seat] = 'booked';
+            } else {
+              this.seatStatus[seat] = 'available';
+            }
+            this.seatType[seat] = '';
+          });
+        });
         console.log('Booked Seats:', this.bookedSeats);
       },
       error: (error) => {
         alert('Error fetching booked seats: ' + error.message);
       }
     });
+
+    this.initializeSelectedSeats();
   }
 
   get selectedSeatNumbers(): string {
-    return this.selectedSeats.map(s => `${s.seat} (${s.type})`).join(', ') || 'None';
+    return this.selectedSeats.map(s => `${s.seatNumber} (${s.category})`).join(', ') || 'None';
   }
 
-  // selectSeat(seat: string, type: string) {
-  //   if (this.seatStatus[seat] === 'booked') {
-  //     alert('This seat is already booked!');
-  //     return;
-  //   }
-    
-  //   if (type === '') {
-  //     // Handle deselection only if type is the blank option
-  //     const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
-  //     if (existingIndex !== -1) {
-  //       this.selectedSeats.splice(existingIndex, 1);
-  //       this.seatStatus[seat] = 'available';
-  //     }
-  //     this.seatType[seat] = ''; // Reset to blank when deselected
-  //   } else {
-  //     // Update or add the seat with the new type
-  //     const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
-  //     if (existingIndex !== -1) {
-  //       // Update the existing seat type
-  //       this.selectedSeats[existingIndex].type = type;
-  //     } else {
-  //       // Add new seat if not already selected
-  //       this.selectedSeats.push({ seat, type });
-  //       this.seatStatus[seat] = 'selected';
-  //     }
-  //     this.seatType[seat] = type; // Ensure the type is updated
-  //   }
-  // }
-  selectSeat(seat: string, type: string, initializing: boolean = false) {
-    if (this.seatStatus[seat] === 'booked') {
+  selectSeat(seatNumber: string, category: string, initializing: boolean = false, price: number = 0, seatStatus: string = "BOOKED") {
+    if (this.seatStatus[seatNumber] === 'booked') {
       alert('This seat is already booked!');
       return;
     }
   
-    if (type === '') {
+    if (category === '') {
       // Handle deselection only if type is the blank option
-      const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
+      const existingIndex = this.selectedSeats.findIndex(s => s.seatNumber === seatNumber);
       if (existingIndex !== -1) {
         this.selectedSeats.splice(existingIndex, 1);
-        this.seatStatus[seat] = 'available';
+        this.seatStatus[seatNumber] = 'available';
       }
-      this.seatType[seat] = ''; // Reset to blank when deselected
+      this.seatType[seatNumber] = ''; // Reset to blank when deselected
     } else {
       // Update or add the seat with the new type only if not initializing
       if (!initializing) {
-        const existingIndex = this.selectedSeats.findIndex(s => s.seat === seat);
+        const existingIndex = this.selectedSeats.findIndex(s => s.seatNumber === seatNumber);
         if (existingIndex !== -1) {
           // Update the existing seat type
-          this.selectedSeats[existingIndex].type = type;
+          this.selectedSeats[existingIndex].category = category;
         } else {
           // Add new seat if not already selected
-          this.selectedSeats.push({ seat, type });
+          this.selectedSeats.push({ seatNumber, category, price, seatStatus });
         }
       }
-      this.seatStatus[seat] = 'selected';
-      this.seatType[seat] = type; // Ensure the type is updated
+      this.seatStatus[seatNumber] = 'selected';
+      this.seatType[seatNumber] = category;
     }
   }
   initializeSelectedSeats() {
@@ -155,21 +118,21 @@ export class SelectSeatComponent {
     if (this.selectedSeats && this.selectedSeats.length > 0) {
       // Apply the existing selected seats setup without duplicating entries
       this.selectedSeats.forEach((seat) => {
-        this.selectSeat(seat.seat, seat.type, true);
+        this.selectSeat(seat.seatNumber, seat.category, true);
       });
     }
   }
   
 
   proceedToOrderSummary() {
-    if (this.selectedSeats.length === 0 || this.selectedSeats.some(s => s.type === '')) {
+    if (this.selectedSeats.length === 0 || this.selectedSeats.some(s => s.category === '')) {
       alert('Please select at least one seat and specify the type to proceed.');
       return;
     }
 
     // Loop through selectedSeats and count each type
     for (let seat of this.selectedSeats) {
-      switch (seat.type) {
+      switch (seat.category) {
         case 'Child':
           this.childCount++;
           break;

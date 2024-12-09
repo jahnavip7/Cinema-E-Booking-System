@@ -187,10 +187,14 @@ public class UserService {
 			user.getPaymentCards().clear(); // Clear existing payment cards
 			for (PaymentCard paymentCardRequest : paymentCards) {
 				PaymentCard card = new PaymentCard();
-				card.setCardNumber(paymentCardRequest.getCardNumber());
-				card.setCardHolderName(paymentCardRequest.getCardHolderName());
-				card.setExpiryDate(paymentCardRequest.getExpiryDate());
-				card.setCvv(paymentCardRequest.getCvv());
+				try {
+					card.setCardNumber(encryptionUtil.encrypt(paymentCardRequest.getCardNumber()));  // Encrypt card number
+					card.setCardHolderName(paymentCardRequest.getCardHolderName());  // No need to encrypt name
+					card.setExpiryDate(encryptionUtil.encrypt(paymentCardRequest.getExpiryDate()));  // Encrypt expiry date
+					card.setCvv(encryptionUtil.encrypt(paymentCardRequest.getCvv()));  // Encrypt CVV
+				} catch (Exception e) {
+					throw new RuntimeException("Error encrypting payment card details", e);
+				}
 				card.setUser(user); // Link the card to the user
 				user.getPaymentCards().add(card); // Add new card
 			}
@@ -241,6 +245,7 @@ public class UserService {
 
 		// Create a response DTO (UserResponse) to send back the profile information
 		UserResponse userResponse = new UserResponse();
+		userResponse.setId(user.getId());
 		userResponse.setFirstName(user.getFirstName());
 		userResponse.setLastName(user.getLastName());
 		userResponse.setEmailId(user.getEmailId());

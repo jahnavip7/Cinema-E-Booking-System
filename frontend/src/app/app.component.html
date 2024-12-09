@@ -12,6 +12,4 @@
   <app-header *ngIf="!authService.isAuthenticated()"></app-header>
    <app-header-2 *ngIf="authService.isAuthenticated() && !authService.isAdmin()"></app-header-2>
    <app-header-3 *ngIf="authService.isAuthenticated() && authService.isAdmin()"></app-header-3>
-  <!-- <app-order-details></app-order-details> -->
-  <!-- <app-checkout></app-checkout> -->
   <router-outlet/>

@@ -21,7 +21,7 @@ export class SelectShowtimeComponent {
   selectedShowtime: any;
   showId: number = 0;
   timeString: string = '';
-  selectedSeats: { seat: string, type: string }[] = [];
+  selectedSeats: { seatNumber: string, category: string, price: number, seatStatus: string}[] = [];
 
   constructor(private route: ActivatedRoute, private moviesService: MoviesService, private router: Router) {
     const navigation = this.router.getCurrentNavigation();

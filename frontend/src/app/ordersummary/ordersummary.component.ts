@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class OrderSummaryComponent {
 
-  selectedSeats: { seat: string, type: string }[] = [];
+  selectedSeats: { seatNumber: string, category: string, price: number, seatStatus: string }[] = [];
   movie?: any;
   movieId?: number;
   movieName: string = '';
@@ -46,7 +46,6 @@ export class OrderSummaryComponent {
   get totalCost() {
     return this.ticketTotal + this.prices.bookingFee + this.salesTax;
   }
-
 
   constructor(private router: Router, private http: HttpClient) {
     const navigation = this.router.getCurrentNavigation();
@@ -93,7 +92,6 @@ export class OrderSummaryComponent {
     return this.ticketTotal * 0.07;
   }
 
-
   editBooking() { 
     this.router.navigate([`/book/${this.movieId}`], {
       state: {
@@ -104,11 +102,25 @@ export class OrderSummaryComponent {
     });
   }
   proceedToCheckout() { 
+
+      for (let seat of this.selectedSeats) {
+        switch (seat.category) {
+          case 'Child':
+            seat.price = this.prices.child;
+            break;
+          case 'Adult':
+            seat.price = this.prices.adult;
+            break;
+          case 'Senior':
+            seat.price = this.prices.senior;
+            break;
+        }
+      }
+
     this.router.navigate(['/checkout'], {
       state: {
-        movie: this.movie,
+
         movieName: this.movieName,
-        movieId: this.movieId,
 
         selectedSeats: this.selectedSeats,
         showId: this.showId,
