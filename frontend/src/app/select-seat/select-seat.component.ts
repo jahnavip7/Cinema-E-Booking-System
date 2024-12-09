@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-select-seat',
@@ -33,24 +34,32 @@ export class SelectSeatComponent {
   adultCount: number = 0;
   seniorCount: number = 0;
   timeString: string = '';
+  bookedSeats: any = [];
 
   seatType: { [key: string]: string } = {};
   seatStatus: { [key: string]: string } = {};
   selectedSeats: { seat: string, type: string }[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
 
+
+    // this.rows.forEach(row => {
+    //   row.forEach(seat => {
+    //     this.seatStatus[seat] = 'available';
+    //     this.seatType[seat] = '';
+    //   });
+    // });
 
     this.rows.forEach(row => {
       row.forEach(seat => {
-        this.seatStatus[seat] = 'available';
+        if (this.bookedSeats.includes(seat) && this.bookedSeats.length != 0) {
+          this.seatStatus[seat] = 'booked';
+        } else {
+          this.seatStatus[seat] = 'available';
+        }
         this.seatType[seat] = '';
       });
     });
-
-    // Change when backend is done
-    this.seatStatus['A5'] = 'booked';
-    this.seatStatus['G2'] = 'booked';
 
     // Retrieve navigation state passed from previous component
     const navigation = this.router.getCurrentNavigation();
@@ -68,7 +77,15 @@ export class SelectSeatComponent {
 
   ngOnInit() {
     this.initializeSelectedSeats();
-    console.log(this.selectedSeats);
+    this.http.get<any>(`http://localhost:8080/api/shows/bookedSeats/${this.showId}`).subscribe({
+      next: (response) => {
+        this.bookedSeats = response.bookedSeats;
+        console.log('Booked Seats:', this.bookedSeats);
+      },
+      error: (error) => {
+        alert('Error fetching booked seats: ' + error.message);
+      }
+    });
   }
 
   get selectedSeatNumbers(): string {

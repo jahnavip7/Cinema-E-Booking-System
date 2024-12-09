@@ -24,7 +24,7 @@
                     <p class="price-text">Booking Fees:</p>
                     <p class="price-text">Tax:</p>
                     <div class="promo-div">
-                        <input class="form-control promo-input" placeholder="Promo Code">
+                        <input class="form-control promo-input" placeholder="Promo Code" [(ngModel)]="promoCode">
                     </div>
                     <p class="price-text">Discount:</p>
                     <p class="price-text">Total:</p>
@@ -36,7 +36,7 @@
                     <p class="price-text">$1</p>
                     <p class="price-text">$2</p>
                     <div class="promo-div">
-                        <button class="btn btn-primary apply-btn">Apply</button>
+                        <button [disabled]="this.disabled" class="btn btn-primary apply-btn" (click)="applyPromo()">Apply</button>
                     </div>
                     <p class="price-text">$0</p>
                     <p class="price-text">$17</p>

@@ -33,6 +33,7 @@ import { ManageMoviesComponent } from './manage-movies/manage-movies.component';
 import { ManagePromotionsComponent } from './manage-promotions/manage-promotions.component';
 import { ScheduleMovieComponent } from './schedule-movie/schedule-movie.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 export const routes: Routes = [
@@ -42,6 +43,7 @@ export const routes: Routes = [
   { path: 'book/:id', component: SelectShowtimeComponent },
   { path: 'select-seat', component: SelectSeatComponent },
   { path: 'order-summary', component: OrderSummaryComponent },
+  { path: 'checkout', component: CheckoutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },  // Registration page
   { path: 'verify', component: VerifyAccountComponent },  // Verification page (should only appear when navigating to '/verify')

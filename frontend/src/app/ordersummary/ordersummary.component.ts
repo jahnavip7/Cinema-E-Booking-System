@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-order-summary',
@@ -27,9 +28,10 @@ export class OrderSummaryComponent {
 
   // NEED TO CHANGE
   prices = {
-    child: 5.5,
-    adult: 8.5,
-    senior: 6.5
+    child: 0,
+    adult: 0,
+    senior: 0,
+    bookingFee: 0
   };
 
   // Calculated properties for total costs
@@ -37,18 +39,16 @@ export class OrderSummaryComponent {
     return this.getTotalCost();
   }
 
-  //NEED TO CHANGE
-  bookingFee = 3.00;
 
   get salesTax() {
     return this.getSalesTax();
   }
   get totalCost() {
-    return this.ticketTotal + this.bookingFee + this.salesTax;
+    return this.ticketTotal + this.prices.bookingFee + this.salesTax;
   }
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private http: HttpClient) {
     const navigation = this.router.getCurrentNavigation();
     if (navigation && navigation.extras && navigation.extras.state) {
       this.selectedSeats = navigation.extras.state['selectedSeats'];
@@ -62,10 +62,25 @@ export class OrderSummaryComponent {
       this.ticketInfo.adult = navigation.extras.state['adultCount'];
       this.ticketInfo.senior = navigation.extras.state['seniorCount'];
     }
+  }
 
-
+  ngOnInit() {
+    this.fetchPrices();
   }
   
+  fetchPrices(): void {
+    this.http.get<any>('http://localhost:8080/api/prices').subscribe({
+      next: (data) => {
+        this.prices.child = data.childPrice;
+        this.prices.adult = data.adultPrice;
+        this.prices.senior = data.seniorPrice;
+        this.prices.bookingFee = data.onlineBookingFee;
+      },
+      error: (error) => {
+        alert('Error fetching prices: ' + (error.error.message || error.message));
+      }
+    });
+  }
 
   getTotalCost() {
     return (this.ticketInfo.children * this.prices.child) +
@@ -78,9 +93,7 @@ export class OrderSummaryComponent {
     return this.ticketTotal * 0.07;
   }
 
-  // Function stubs for button actions
-  // addTicket() { console.log('Adding a ticket...'); }
-  // deleteTicket() { console.log('Deleting a ticket...'); }
+
   editBooking() { 
     this.router.navigate([`/book/${this.movieId}`], {
       state: {
@@ -91,8 +104,30 @@ export class OrderSummaryComponent {
     });
   }
   proceedToCheckout() { 
-    
+    this.router.navigate(['/checkout'], {
+      state: {
+        movie: this.movie,
+        movieName: this.movieName,
+        movieId: this.movieId,
+
+        selectedSeats: this.selectedSeats,
+        showId: this.showId,
+        show: this.show,
+        timeString: this.timeString,
+
+        childCount: this.ticketInfo.children,
+        adultCount: this.ticketInfo.adult,
+        seniorCount: this.ticketInfo.senior,
+
+        ticketTotal: this.ticketTotal,
+        bookingFee: this.prices.bookingFee,
+        tax: this.salesTax,
+        totalCost: this.totalCost
+
+      }
+    });
   }
+
   cancelOrder() { 
     this.router.navigate(['']);
   }
