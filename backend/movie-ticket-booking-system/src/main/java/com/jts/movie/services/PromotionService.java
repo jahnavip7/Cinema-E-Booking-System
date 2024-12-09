@@ -40,23 +40,6 @@ public class PromotionService {
         // Save the promotion to the database
         Promotion savedPromotion = promotionRepository.save(promotion);
 
-        // Fetch all active users with promotion preference set to true
-        List<User> eligibleUsers = userRepository.findByIsActive(true).stream()
-                .filter(User::getPromotionPreference) // Only users who opted in for promotions
-                .collect(Collectors.toList());
-
-        // Create a `UserPromo` entry for each eligible user
-        List<UserPromo> userPromos = eligibleUsers.stream().map(user ->
-                UserPromo.builder()
-                        .userToken(user.getEmailId()) // Use email ID as user token
-                        .promo(savedPromotion) // Link the promo
-                        .isUsed(false) // Promo starts as unused
-                        .build()
-        ).collect(Collectors.toList());
-
-        // Save all UserPromo entries in bulk
-        userPromoRepository.saveAll(userPromos);
-
         // Return the saved promotion
         return savedPromotion;
     }
@@ -89,6 +72,24 @@ public class PromotionService {
 
         // Save the updated promotion to the database
         promotionRepository.save(promotion);
+
+        // Fetch all active users with promotion preference set to true
+        List<User> eligibleUsers = userRepository.findByIsActive(true).stream()
+                .filter(User::getPromotionPreference) // Only users who opted in for promotions
+                .collect(Collectors.toList());
+
+        // Create a `UserPromo` entry for each eligible user
+        List<UserPromo> userPromos = eligibleUsers.stream().map(user ->
+                UserPromo.builder()
+                        .userToken(user.getEmailId()) // Use email ID as user token
+                        .promo(promotion) // Link the promo
+                        .isUsed(false)
+                        .promoName(promotion.getPromoName())// Promo starts as unused
+                        .build()
+        ).collect(Collectors.toList());
+
+        // Save all UserPromo entries in bulk
+        userPromoRepository.saveAll(userPromos);
     }
 
     // Method to get all promotions with updated validity

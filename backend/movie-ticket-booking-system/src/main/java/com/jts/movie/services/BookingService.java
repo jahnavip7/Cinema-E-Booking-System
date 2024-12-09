@@ -6,9 +6,14 @@ import com.jts.movie.enums.SeatNumber;
 import com.jts.movie.enums.SeatStatus;
 import com.jts.movie.repositories.*;
 import com.jts.movie.request.TicketRequest;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -34,6 +39,9 @@ public class BookingService {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     @Autowired
     private UserPromoRepository userPromoRepository; // Repository for UserPromo entity
@@ -119,6 +127,12 @@ public class BookingService {
             booking.getTickets().add(ticket);
             ticketRepository.save(ticket);
         }
+        // Send the booking confirmation email
+        try {
+            sendBookingConfirmationEmail(user, booking, show);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error sending booking confirmation email: " + e.getMessage());
+        }
 
         // Construct the API response
         Map<String, Object> response = new HashMap<>();
@@ -142,6 +156,37 @@ public class BookingService {
         return response;
     }
 
+    private void sendBookingConfirmationEmail(User user, Booking booking, Show show) throws MessagingException {
+        // Prepare email content
+        String subject = "Booking Confirmation - " + booking.getMovieName();
+        String body = "<p>Dear " + user.getFirstName() + " " + user.getLastName() + ",</p>"
+                + "<p>Thank you for your booking! Here are your booking details:</p>"
+                + "<p><strong>Movie:</strong> " + booking.getMovieName() + "</p>"
+                + "<p><strong>Theater:</strong> " + show.getTheater().getName() + "</p>"
+                + "<p><strong>Show Date:</strong> " + show.getDate() + "</p>"
+                + "<p><strong>Show Time:</strong> " + show.getTime().format(TIME_FORMATTER) + "</p>"
+                + "<p><strong>Booking Date:</strong> " + booking.getBookingDateTime() + "</p>"
+                + "<p><strong>Total Cost:</strong> " + booking.getOrderTotal() + "</p>"
+                + "<p><strong>Tickets:</strong></p><ul>";
+
+        for (Ticket ticket : booking.getTickets()) {
+            body += "<li>Seat: " + ticket.getSeatNumber().name() + " - Category: " + ticket.getCategory() + " - Price: " + ticket.getPrice() + "</li>";
+        }
+
+        body += "</ul><p>We hope you enjoy your movie experience!</p>";
+
+        // Send email
+        sendEmail(user.getEmailId(), subject, body);
+    }
+
+    private void sendEmail(String to, String subject, String body) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(body, true); // true means HTML email
+        mailSender.send(mimeMessage);
+    }
 
     public List<Map<String, Object>> getBookingsByUserId(Long userId) {
         // Check if user exists
