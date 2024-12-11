@@ -100,12 +100,12 @@ public class AdminController {
             }
 
             // Parse date and time parameters
-            java.sql.Date showDate;
-            java.sql.Time showTime;
+            LocalDate showDate;
+            LocalTime showTime;
             try {
-                showDate = java.sql.Date.valueOf(date); // Convert String to java.sql.Date
-                showTime = java.sql.Time.valueOf(time); // Convert String to java.sql.Time
-            } catch (IllegalArgumentException ex) {
+                showDate = LocalDate.parse(date); // Convert String to LocalDate
+                showTime = LocalTime.parse(time); // Convert String to LocalTime
+            } catch (DateTimeParseException ex) {
                 response.put("message", "Invalid date or time format. Use 'yyyy-MM-dd' for date and 'HH:mm:ss' for time.");
                 response.put("statusCode", HttpStatus.BAD_REQUEST.value());
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -118,6 +118,7 @@ public class AdminController {
                 response.put("statusCode", HttpStatus.CONFLICT.value());
                 return new ResponseEntity<>(response, HttpStatus.CONFLICT);
             }
+
             // Schedule the show
             Show scheduledShow = showService.scheduleShow(movieId, theaterId, showDate, showTime);
 
@@ -135,6 +136,9 @@ public class AdminController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
 
 
 

@@ -33,7 +33,7 @@ public class ShowService {
 		return showRepository.findByMovieId(movieId);
 	}
 
-	public boolean checkScheduleConflict(Long theaterId, java.sql.Date showDate, java.sql.Time showTime) {
+	public boolean checkScheduleConflict(Long theaterId, LocalDate showDate, LocalTime showTime) {
 		return showRepository.existsByDateAndTimeAndTheaterId(showDate, showTime, theaterId);
 	}
 
@@ -41,7 +41,7 @@ public class ShowService {
 		return showRepository.findByMovieIdAndDate(movieId, selectedDate);
 	}
 
-	public Show scheduleShow(long movieId, Long theaterId, java.sql.Date Date, java.sql.Time Time) throws Exception {
+	public Show scheduleShow(long movieId, Long theaterId, LocalDate date, LocalTime time) throws Exception {
 		// Fetch the Movie entity
 		Movie movie = movieRepository.findById(movieId)
 				.orElseThrow(() -> new Exception("Movie not found with ID: " + movieId));
@@ -50,21 +50,17 @@ public class ShowService {
 		Theater theater = theaterRepository.findById(theaterId)
 				.orElseThrow(() -> new Exception("Theater not found with ID: " + theaterId));
 
-		// Convert java.sql.Date and java.sql.Time to LocalDate and LocalTime
-		LocalDate localDate = Date.toLocalDate();
-		LocalTime localTime = Time.toLocalTime();
-
 		// Create a new Show entity
 		Show show = new Show();
 		show.setMovie(movie);
 		show.setTheater(theater);
-		show.setDate(localDate);
-		show.setTime(localTime);
-
+		show.setDate(date);
+		show.setTime(time);
 
 		// Save and return the Show entity
 		return showRepository.save(show);
 	}
+
 	// Method to fetch a Show by ID
 	public Show getShowById(long id) throws Exception {
 		return showRepository.findById(id)
