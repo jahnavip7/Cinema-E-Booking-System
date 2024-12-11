@@ -1,6 +1,4 @@
-
 <div class="container">
-  <!-- Search Bar -->
   <div class="row">
     <div class="col-md-12">
       <input
@@ -8,14 +6,19 @@
         class="form-control"
         placeholder="Search for movies..."
         [(ngModel)]="searchTerm"
-        (input)="filterMovies()"
       />
     </div>
   </div>
 
-  <!-- No Movies Found Message -->
+  <div class="buttons">
+      <button class="btn btn-primary" (click)="searchByTitle()">Search by Title</button>
+      <button class="btn btn-primary" (click)="searchByGenre()">Search by Genre</button>
+      <button class="btn btn-primary" (click)="clearSearch()">Clear</button>
+  </div>
+
+
   <div *ngIf="filteredNowPlayingMovies.length === 0 && filteredComingSoonMovies.length === 0" class="no-results-message">
-    <p>No movies found.</p>
+    <p>No Movies Found.</p>
   </div>
 
   <h2 *ngIf="filteredNowPlayingMovies.length > 0">Now Playing</h2>
@@ -25,7 +28,8 @@
         <img [src]="movie.imageUrl" class="card-img-top" alt="{{ movie.movieName }}">
         <div class="card-body">
           <h5 class="card-title">{{ movie.movieName }}</h5>
-          <a [routerLink]="['/movie', movie.id]" class="btn btn-primary">View Details</a>
+          <p class="card-text">{{ movie.description }}</p>
+          <a [routerLink]="['/movie', movie.id]" class="btn btn-view">View Details</a>
           <button [disabled]="!authService.isAuthenticated()" (click)="bookMovie(movie.id)" class="btn btn-success">Book Now</button>
         </div>
       </div>
@@ -39,7 +43,8 @@
         <img [src]="movie.imageUrl" class="card-img-top" alt="{{ movie.movieName }}">
         <div class="card-body">
           <h5 class="card-title">{{ movie.movieName }}</h5>
-          <a [routerLink]="['/movie', movie.id]" class="btn btn-primary">View Details</a>
+          <p class="card-text">{{ movie.description }}</p>
+          <a [routerLink]="['/movie', movie.id]" class="btn btn-view">View Details</a>
           <button [disabled]="!authService.isAuthenticated()" (click)="bookMovie(movie.id)" class="btn btn-success">Book Now</button>
         </div>
       </div>
