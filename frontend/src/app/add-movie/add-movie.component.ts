@@ -39,7 +39,7 @@ export class AddMovieComponent {
       category: ['', Validators.required],
       cast: [''],
       director: [''],
-      producer: [''],
+      producers: [''],
       description: [''],
       trailerUrl: ['', [Validators.required, this.urlValidator]],
       imageUrl: ['', [Validators.required, this.urlValidator]],

@@ -74,7 +74,7 @@ export class EditMovieComponent {
           category: movie.category,
           cast: movie.cast,
           director: movie.director,
-          producer: movie.producer,
+          producers: movie.producers,
           description: movie.description,
           trailerUrl: movie.trailerUrl,
           imageUrl: movie.imageUrl,
@@ -90,8 +90,8 @@ export class EditMovieComponent {
   }
 
   onSubmit() {
-    if (this.addMovieForm.valid) {
-      const formData = {...this.addMovieForm.value};
+    if (this.editMovieForm.valid) {
+      const formData = {...this.editMovieForm.value};
       formData.category = formData.category === 'Now Playing' ? 'NOW_PLAYING' : 'COMING_SOON';
       console.log(formData);
 

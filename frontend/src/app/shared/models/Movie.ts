@@ -9,7 +9,7 @@ export interface Movie {
   trailerUrl: string;
   cast: string;
   director: string;
-  producer: string;
+  producers: string;
   genre: string;
   category: string;
   language: string;
