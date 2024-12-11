@@ -35,8 +35,7 @@ export class OrderHistoryComponent implements OnInit {
     const headers = { 'Authorization': `Bearer ${token}` };
  
     this.http.get('http://localhost:8080/user/profile', { headers }).subscribe((data: any) => {
-      this.userId = data.userId;
-      console.log(data.userId);
+      this.userId = data.id;
       this.http.get<any[]>(`http://localhost:8080/api/bookings/user/${this.userId}`).subscribe({
         next: (data) => {
           this.orders = data; // Assign the response to the orders array

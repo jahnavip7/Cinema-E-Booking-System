@@ -26,6 +26,7 @@ import { Movie } from '@shared/models/Movie';
 })
 
 export class EditMovieComponent {
+  id: number = -1;
   editMovieForm: FormGroup;
 
   constructor(
@@ -42,7 +43,7 @@ export class EditMovieComponent {
       category: ['', Validators.required],
       cast: [''],
       director: [''],
-      producer: [''],
+      producers: [''],
       description: [''],
       trailerUrl: ['', Validators.required],
       imageUrl: ['', Validators.required],
@@ -55,6 +56,7 @@ export class EditMovieComponent {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const movieId = +params['id']; // '+' operator converts string to number
+      this.id = movieId
       this.loadMovie(movieId);
     });
   }
@@ -84,7 +86,7 @@ export class EditMovieComponent {
         });
       },
       error: (err) => {
-        console.error('Error fetching movie details:', err);
+        alert('Error fetching movie details:' + err.message);
       }
     });
   }
@@ -96,15 +98,14 @@ export class EditMovieComponent {
       console.log(formData);
 
 
-      // this.moviesService.addMovie(formData).subscribe({
-      //   next: () => {
-      //     alert('Movie added successfully!');
-      //   },
-      //   error: (error) => {
-      //     console.error('Error adding movie:', error);
-      //     alert('There was an error adding the movie.');
-      //   }
-      // });
+      this.moviesService.editMovie(formData, this.id).subscribe({
+        next: () => {
+          alert('Movie edited successfully!');
+        },
+        error: (error) => {
+          alert('There was an error editing the movie.');
+        }
+      });
     } else {
       alert('Please fill all required fields.');
     }

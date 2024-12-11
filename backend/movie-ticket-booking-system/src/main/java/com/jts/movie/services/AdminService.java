@@ -36,6 +36,7 @@ public class AdminService {
         existingMovie.setTrailerUrl(movieDetails.getTrailerUrl());
         existingMovie.setCast(movieDetails.getCast());
         existingMovie.setDirector(movieDetails.getDirector());
+        existingMovie.setProducers(movieDetails.getProducers());
         existingMovie.setGenre(movieDetails.getGenre());
         existingMovie.setCategory(movieDetails.getCategory());
         existingMovie.setLanguage(movieDetails.getLanguage());

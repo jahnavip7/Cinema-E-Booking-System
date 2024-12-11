@@ -166,13 +166,15 @@ export class CheckoutComponent implements OnInit {
     this.http.post<any>('http://localhost:8080/api/promo/checkPromo', payload).subscribe(
       (data) => {
         if (data.isValid) {
-          // Apply the promo discount
           if(!data.isUsed){
             this.discountPercentage = data.discountPercentage;
             this.discount = (this.ticketTotal * this.discountPercentage) / 100;
             this.newTicketTotal = this.ticketTotal - this.discount;
+            this.checkoutForm.get('ticketTotal')!.setValue(this.newTicketTotal);
             this.tax = this.newTicketTotal * 0.07; // Assuming a 7% tax rate
+            this.checkoutForm.get('tax')!.setValue(this.tax);
             this.orderTotal = this.newTicketTotal + this.tax + this.bookingFee;
+            this.checkoutForm.get('orderTotal')!.setValue(this.orderTotal);
 
             // Disable the promo code input field after successful application
             this.checkoutForm.get('promoCode')?.disable();
@@ -201,6 +203,8 @@ export class CheckoutComponent implements OnInit {
       alert('Please select a payment method.');
       return;
     }
+
+
     this.http.post('http://localhost:8080/api/bookings', this.checkoutForm.value).subscribe(
       (response) => {
         alert('Booking successful!');

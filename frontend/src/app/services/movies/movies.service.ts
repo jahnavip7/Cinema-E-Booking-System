@@ -28,6 +28,10 @@ export class MoviesService {
     return this.http.post<any>(this.addMovieUrl, movieData);
   }
 
+  editMovie(movieData: any, id: number): Observable<any> {
+    return this.http.post<any>(`http://localhost:8080/api/admin/editMovies/${id}`, movieData);
+  }
+
   deleteMovie(movieId: string): Observable<any> {
     return this.http.delete(`http://localhost:8080/api/admin/movies/${movieId}`);
   }
