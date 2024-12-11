@@ -27,4 +27,5 @@ public class MovieRequest {
 	private String cast;
 	private String director;
 	private category category;
+	private String producer;
 }

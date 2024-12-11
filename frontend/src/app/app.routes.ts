@@ -35,6 +35,7 @@ import { ScheduleMovieComponent } from './schedule-movie/schedule-movie.componen
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import {OrderHistoryComponent} from "./order-history/order-history.component";
 
 
 export const routes: Routes = [
@@ -46,6 +47,7 @@ export const routes: Routes = [
   { path: 'order-summary', component: OrderSummaryComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'order-details', component: OrderDetailsComponent },
+  { path: 'order-history', component: OrderHistoryComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegistrationComponent },  // Registration page
   { path: 'verify', component: VerifyAccountComponent },  // Verification page (should only appear when navigating to '/verify')

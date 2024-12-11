@@ -43,6 +43,7 @@ public class SecurityConfiguration {
 						.requestMatchers("/api/admin/**", "/api/theaters/**","/api/shows/**","/api/bookings/**","/api/prices","/api/promo/**").permitAll()
 						.requestMatchers("/payment-card/**").hasAnyAuthority("ROLE_USER")  // Protect payment card endpoints
 						.requestMatchers("/movie/**").permitAll()
+						.requestMatchers("/user/profile").authenticated()
 						.requestMatchers("/show/**", "/theater/**").hasAnyAuthority("ROLE_ADMIN")
 						.anyRequest().authenticated()
 				)

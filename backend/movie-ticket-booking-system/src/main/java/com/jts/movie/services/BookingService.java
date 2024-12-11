@@ -212,6 +212,9 @@ public class BookingService {
                     ))
                     .collect(Collectors.toList()));
             bookingData.put("totalCost", booking.getOrderTotal());
+            bookingData.put("ticketTotal", booking.getTicketTotal());
+            bookingData.put("tax", booking.getTax());
+            bookingData.put("bookingFee", booking.getBookingFee());
             return bookingData;
         }).collect(Collectors.toList());
     }

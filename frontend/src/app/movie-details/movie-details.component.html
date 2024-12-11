@@ -27,13 +27,13 @@
   <div class="movie-details-container">
     <div class ="movie-poster">
       <img *ngIf="movie.imageUrl" [src]="movie.imageUrl" alt="{{ movie.movieName }} Poster">
-    </div>  
+    </div>
     <div class="movie-details">
-      <h1>{{ movie.movieName }}</h1> 
+      <h1>{{ movie.movieName }}</h1>
       <p><strong>Duration:</strong> {{ movie.duration }} mins</p>
       <p><strong>Rating:</strong> {{ movie.mpaaRating }}</p>
       <p><strong>Release Date:</strong> {{ movie.releaseDate | date }}</p>
-      <p><strong>Genre:</strong> {{ movie.genre }}</p> 
+      <p><strong>Genre:</strong> {{ movie.genre }}</p>
       <p><strong>Language:</strong> {{ movie.language }}</p>
       <p><strong>Cast:</strong> {{ movie.cast }}</p>
       <p><strong>Director(s):</strong> {{ movie.director }}</p>
@@ -42,14 +42,14 @@
     </div>
   </div>
   <div class="movie-trailer" *ngIf="movie.trailerUrl">
-        <!-- <iframe 
-        width="560" 
-        height="315" 
-        [src]="movie.trailerUrl ? (movie.trailerUrl | safeUrl) : ''"  
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        <!-- <iframe
+        width="560"
+        height="315"
+        [src]="movie.trailerUrl ? (movie.trailerUrl | safeUrl) : ''"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen></iframe> -->
         <iframe *ngIf="trailerUrl" width="560" height="315" [src]="trailerUrl" frameborder="0" allowfullscreen></iframe>
-  
+
   </div>
 </div>

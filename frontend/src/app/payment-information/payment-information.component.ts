@@ -1,22 +1,28 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { NgForOf } from '@angular/common';
-import { CommonModule } from '@angular/common';
+import {FormGroup, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-payment-information',
-  standalone: true,
-  imports: [ReactiveFormsModule, NgForOf, CommonModule],
-  templateUrl: './payment-information.component.html',
-  styleUrls: ['./payment-information.component.scss']
+  template: `
+    <div [formGroup]="formGroup">
+      <label>Card Number</label>
+      <input type="text" formControlName="cardNumber"/>
+
+      <label>Card Holder Name</label>
+      <input type="text" formControlName="cardHolderName"/>
+
+      <label>Expiry Date (MM/YY)</label>
+      <input type="text" formControlName="expiryDate"/>
+
+      <label>CVV</label>
+      <input type="text" formControlName="cvv"/>
+    </div>
+  `,
+  imports: [
+    ReactiveFormsModule
+  ],
+  standalone: true
 })
 export class PaymentInformationComponent {
-  @Input() formGroup!: FormGroup;  // Each payment card is a FormGroup
-
-  constructor() { }
-
-  // Remove a payment card
-  removePaymentCard(index: number): void {
-    // Notify the parent component to remove the card from FormArray
-  }
+  @Input() formGroup!: FormGroup;
 }

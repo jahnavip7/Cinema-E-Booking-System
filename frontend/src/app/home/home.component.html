@@ -25,7 +25,6 @@
         <img [src]="movie.imageUrl" class="card-img-top" alt="{{ movie.movieName }}">
         <div class="card-body">
           <h5 class="card-title">{{ movie.movieName }}</h5>
-          <p class="card-text">{{ movie.description }}</p>
           <a [routerLink]="['/movie', movie.id]" class="btn btn-primary">View Details</a>
           <button [disabled]="!authService.isAuthenticated()" (click)="bookMovie(movie.id)" class="btn btn-success">Book Now</button>
         </div>
@@ -40,7 +39,6 @@
         <img [src]="movie.imageUrl" class="card-img-top" alt="{{ movie.movieName }}">
         <div class="card-body">
           <h5 class="card-title">{{ movie.movieName }}</h5>
-          <p class="card-text">{{ movie.description }}</p>
           <a [routerLink]="['/movie', movie.id]" class="btn btn-primary">View Details</a>
           <button [disabled]="!authService.isAuthenticated()" (click)="bookMovie(movie.id)" class="btn btn-success">Book Now</button>
         </div>

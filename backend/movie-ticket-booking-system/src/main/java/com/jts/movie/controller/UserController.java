@@ -92,61 +92,7 @@ public class UserController {
 		}
 	}
 
-	// User login endpoint
-	/*@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserRequest userRequest) {
-		Map<String, Object> response = new HashMap<>();
 
-		try {
-			// Authenticate the user using email and password
-			Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(userRequest.getEmailId(), userRequest.getPassword()));
-
-			// Check if authentication is successful
-			if (authentication.isAuthenticated()) {
-				// Retrieve user details to check if the account is active
-				Optional<User> userOptional = userRepository.findByEmailId(userRequest.getEmailId());
-				if (userOptional.isPresent()) {
-					User user = userOptional.get();
-
-					// Check if the user is active (has confirmed registration)
-					if (!user.getIsActive()) {
-						response.put("message", "Account not activated. Please confirm your registration via the email sent to you.");
-						response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
-						return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-					}
-
-					// Generate JWT token
-					String token = jwtService.generateToken(userRequest.getEmailId());
-
-					// Prepare the response with the token and status code
-					response.put("token", token);
-					response.put("statusCode", HttpStatus.OK.value());
-					return new ResponseEntity<>(response, HttpStatus.OK);
-				} else {
-					// If user is not found in the repository
-					response.put("message", "Invalid credentials");
-					response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
-					return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-				}
-			} else {
-				// Prepare the response for invalid credentials
-				response.put("message", "Invalid credentials");
-				response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
-				return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-			}
-		} catch (BadCredentialsException e) {
-			// Handle bad credentials specifically
-			response.put("message", "Invalid email or password");
-			response.put("statusCode", HttpStatus.UNAUTHORIZED.value());
-			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-		} catch (Exception e) {
-			// Catch any other exceptions and respond with a generic error message
-			response.put("message", "An error occurred: " + e.getMessage());
-			response.put("statusCode", HttpStatus.INTERNAL_SERVER_ERROR.value());
-			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}*/
 
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> loginUser(@RequestBody UserRequest userRequest) {
@@ -285,15 +231,20 @@ public class UserController {
 	@GetMapping("/profile")
 	public ResponseEntity<UserResponse> getUserProfile(Principal principal) {
 		try {
-			// Get the logged-in user's email from the Principal
+			if (principal == null) {
+				return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // Add this check
+			}
 			String currentUserEmail = principal.getName();
-			// Fetch the user profile using the email
+			System.out.println("Principal Name (Email): " + currentUserEmail); // Debug log
+
 			UserResponse userResponse = userService.getUserProfile(currentUserEmail);
 			return new ResponseEntity<>(userResponse, HttpStatus.OK);
 		} catch (Exception e) {
+			e.printStackTrace(); // Log the error
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 	// Change password endpoint
 	@PostMapping("/changePassword")
 	public ResponseEntity<Map<String, String>> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest,

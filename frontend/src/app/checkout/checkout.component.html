@@ -1,52 +1,103 @@
 <form [formGroup]="checkoutForm" class="checkout-container">
-    <div class="checkout-heading">
-        <h2>Checkout</h2>
-    </div>
-    <div class="checkout">
-        <div class="payment-info">
-            <h3 class="heading">Add Payment Information</h3>
-            <app-payment-information [formGroup]="checkoutForm.get('paymentCard')"></app-payment-information>
-            <button [disabled]="this.used" class="btn btn-primary" (click)="useCard()">Use Card</button>
-            <label class="form-label">Or, use existing card:</label>
-            <!-- <select class="form-select card-dropdown" [(ngModel)]="selectedCard" (change)="onCardSelected()" name="Existing Card(s)">
-                <option value="false">Select card</option>
-                <option *ngFor="let card of userPaymentCards" value="true">
-                  {{ card.cardNumber }}
-                </option>
-              </select> -->
-              <select class="form-select card-dropdown" (change)="onCardSelected()"formControlName="selectedCard">
-                <option value="">Select card</option>
-                <option *ngFor="let card of userPaymentCards" [value]="card.cardNumber">
-                  {{ card.cardNumber }}
-                </option>
-            </select>
-        </div>
+  <div class="checkout-heading">
+    <h2>Checkout</h2>
+  </div>
+  <div class="checkout">
+    <!-- Order Details Section -->
 
-        <div class="order-total">
-            <h3 class="heading">Order</h3>
-            <div class="prices">
-                <div class="price-category">
-                    <p class="price-text">Ticket Total:</p>
-                    <p class="price-text">Booking Fees:</p>
-                    <p class="price-text">Tax:</p>
-                    <div class="promo-div">
-                        <input class="form-control promo-input" placeholder="Promo Code" formControlName="promoCode">
-                    </div>
-                    <p class="price-text">Discount:</p>
-                    <p class="price-text">Total:</p>
-                </div>
-                <div class="price">
-                    <p class="price-text">${{this.newTicketTotal}}</p>
-                    <p class="price-text">${{this.bookingFee}}</p>
-                    <p class="price-text">${{this.tax}}</p>
-                    <div class="promo-div">
-                        <button [disabled]="this.disabled" class="btn btn-primary apply-btn" (click)="applyPromo()">Apply</button>
-                    </div>
-                    <p class="price-text">${{this.discount}}</p>
-                    <p class="price-text">${{this.orderTotal}}</p>
-                </div>
-            </div>
-            <button class="btn btn-primary" (click)="confirmPurchase()">Confirm Purchase</button>
+    <div class="order-total">
+      <h3 class="heading">Order Details</h3>
+      <div class="prices">
+        <div class="price-row">
+          <p class="price-text">Ticket Total:</p>
+          <p class="price-value">{{ ticketTotal | currency }}</p>
         </div>
+        <div class="price-row">
+          <p class="price-text">Booking Fees:</p>
+          <p class="price-value">{{ bookingFee | currency }}</p>
+        </div>
+        <div class="price-row">
+          <p class="price-text">Tax:</p>
+          <p class="price-value">{{ tax | currency }}</p>
+        </div>
+        <div class="promo-div">
+          <input
+            class="form-control promo-input"
+            placeholder="Enter Promo Code"
+            [(ngModel)]="promoCode"
+            [disabled]="disabled"
+            formControlName="promoCode"
+          />
+          <button
+            [disabled]="disabled"
+            class="btn btn-primary apply-btn"
+            (click)="applyPromo()"
+          >
+            Apply
+          </button>
+        </div>
+        <div class="price-row">
+          <p class="price-text">Discount:</p>
+          <p class="price-value">-{{ discount | currency }}</p>
+        </div>
+        <div class="price-row total-row">
+          <p class="price-text">Total:</p>
+          <p class="price-value">{{ orderTotal | currency }}</p>
+        </div>
+      </div>
     </div>
+
+
+    <!-- Payment Information Section -->
+    <div class="payment-info">
+      <h3 class="heading">Add Payment Information</h3>
+      <div class="payment-fields" formGroupName="paymentCard">
+        <input
+          type="text"
+          placeholder="Card Number"
+          formControlName="cardNumber"
+          class="form-control"
+        />
+        <input
+          type="text"
+          placeholder="Card Holder Name"
+          formControlName="cardHolderName"
+          class="form-control"
+        />
+        <input
+          type="text"
+          placeholder="Expiry Date (MM/YY)"
+          formControlName="expiryDate"
+          class="form-control"
+        />
+        <input
+          type="text"
+          placeholder="CVV"
+          formControlName="cvv"
+          class="form-control"
+        />
+      </div>
+      <button
+        [disabled]="used"
+        class="btn btn-primary"
+        (click)="useCard()"
+      >
+        Use Card
+      </button>
+      <label class="form-label">Or, use existing card:</label>
+      <select
+        class="form-select card-dropdown"
+        (change)="onCardSelected($event)"
+        formControlName="selectedCard"
+      >
+        <option value="">Select card</option>
+        <option *ngFor="let card of userPaymentCards" [value]="card.cardNumber">
+          {{ card.cardNumber | hideCard }}
+        </option>
+      </select>
+    </div>
+    <button class="btn btn-primary confirm-btn" (click)="confirmPurchase()">
+      Confirm Purchase
+    </button>
+  </div>
 </form>

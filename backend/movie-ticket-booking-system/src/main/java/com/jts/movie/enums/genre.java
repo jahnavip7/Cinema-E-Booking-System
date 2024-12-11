@@ -11,5 +11,5 @@ public enum genre {
     SPORTS,
     SOCIAL,
     WAR,
-    SCIFI
+    SCIENCE
 }

@@ -1,28 +1,28 @@
 <div class="order-details">
-    <div class="order-container">
-        <h2 class="thank-you">Thank you!</h2>
-        <h4 class="order-headings">Order Details</h4>
-        <p>Booking Number: {{this.booking.bookingId}}</p>
-        <p>Ordered on: {{ booking.bookingDate | date: 'MM/dd/yyyy' }}</p>
-        <p>Movie: {{this.booking.movieName}}</p>
-        <p>{{this.formattedSeats}}</p>
-        <p>Date and Time: {{this.booking.showDate}}, {{this.timeString}}</p>
-        <p>Theater: {{this.booking.theaterName}}</p>
-        <h4 class="order-headings">Order Total</h4>
-        <div class="prices">
-            <div class="price-category">
-                <p class="price-text">Ticket Total:</p>
-                <p class="price-text">Booking Fees:</p>
-                <p class="price-text">Tax:</p>
-                <p class="price-text">Total:</p>
-            </div>
-            <div class="price">
-                <p class="price-text">${{this.booking.ticketTotal}}</p>
-                <p class="price-text">${{this.booking.bookingFee}}</p>
-                <p class="price-text">${{this.booking.tax}}</p>
-                <p class="price-text">${{this.booking.totalCost}}</p>
-            </div>
-        </div>
+  <div class="order-container">
+    <h2 class="thank-you">Thank you!</h2>
+    <h4 class="order-headings">Order Details</h4>
+    <p>Booking Number: {{ booking.bookingId }}</p>
+    <p>Ordered on: {{ booking.bookingDate | date: 'MM/dd/yyyy' }}</p>
+    <p>Movie: {{ booking.movieName }}</p>
+    <p>{{ formattedSeats }}</p>
+    <p>Date and Time: {{ booking.showDate }}, {{ timeString }}</p>
+    <p>Theater: {{ booking.theaterName }}</p>
+    <h4 class="order-headings">Order Total</h4>
+    <div class="prices">
+      <div class="price-category">
+        <p class="price-text">Ticket Total:</p>
+        <p class="price-text">Booking Fees:</p>
+        <p class="price-text">Tax:</p>
+        <p class="price-text">Total:</p>
+      </div>
+      <div class="price">
+        <p class="price-text">${{ booking.ticketTotal }}</p>
+        <p class="price-text">${{ booking.bookingFee }}</p>
+        <p class="price-text">${{ booking.tax | number: '1.2-2' }}</p>
+        <p class="price-text">${{ booking.totalCost }}</p>
+      </div>
     </div>
-    <p>Please check your email for Order Confirmation details.</p>
+  </div>
+  <p>Please check your email for Order Confirmation details.</p>
 </div>

@@ -1,96 +1,107 @@
 .checkout-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    padding: 5%;
-
-    .checkout-heading {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 5%;
-    }
-
-    .checkout {
-        display: flex;
-        gap: 5%;
-        width: 100%;
-        justify-content: space-evenly;
-
-        .heading {
-            padding-bottom: 5%;
-        }
-
-        .payment-info {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-
- 
-
-            .card-dropdown {
-                width: 25%;
-            }
-        }
-        .order-total {
-            display: flex;
-            width: 100%;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            
-
-            .prices{
-                display: flex;
-                flex-direction: row;
-                width: 75%;
-
-                .promo-div {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-    
-                .price-text {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 2rem;
-                }
-    
-                .price-category{
-                    display: flex;
-                    flex-direction: column;
-                    width: 50%;
-                    gap: 1rem;
-
-                    .promo-input {
-                        width: 50%;
-                        display: flex;
-                        justify-content: center;
-                    }
-                }
-    
-                .price{
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    width: 50%;
-                    gap: 1rem;
-
-                    .apply-btn {
-                        width: 25%;
-                    }
-    
-                }
-            }
-        }
-    }
-
-
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  color: white;
 }
+
+.checkout-heading h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.payment-info,
+.order-total {
+  padding: 20px;
+}
+
+.payment-fields input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.btn-primary {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.promo-div {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.promo-input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.card-dropdown {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.order-total {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.prices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between rows */
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between; /* Align text and value on opposite sides */
+}
+
+.price-text {
+  font-size: 16px;
+  color: #fff;
+  margin: 0;
+}
+
+.price-value {
+  font-size: 16px;
+  color: #fff;
+  margin: 0;
+}
+
+.promo-div {
+  display: flex;
+  gap: 10px;
+}
+
+.promo-input {
+  flex: 1;
+}
+
+.apply-btn {
+  padding: 5px 10px;
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.total-row {
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 18px;
+}
+

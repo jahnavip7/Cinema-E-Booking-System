@@ -9,7 +9,9 @@ import com.jts.movie.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,59 +119,50 @@ public class PromotionService {
         Map<String, Object> response = new HashMap<>();
 
         // Fetch promo by title
-        Optional<Promotion> promoOptional = promotionRepository.findByTitle(promoCode);
+        Optional<Promotion> promoOptional = promotionRepository.findByPromoName(promoCode);
 
-        // Check if promo exists and is valid
-        if (promoOptional.isEmpty() || !promoOptional.get().getIsValid()) {
+        // Check if promo exists
+        if (promoOptional.isEmpty()) {
             response.put("isValid", false);
-            response.put("message", "Promo code is not valid or expired.");
+            response.put("message", "Promo code does not exist.");
+            response.put("isUsed", false);
             return response;
         }
 
         // Retrieve the promotion object
         Promotion promotion = promoOptional.get();
 
-        // Fetch user promo details
-        Optional<UserPromo> userPromo = userPromoRepository.findByUserTokenAndPromoName(userToken, promoCode);
-
-        if (userPromo.isPresent()) {
-            UserPromo promo = userPromo.get(); // Get the UserPromo object from Optional
-            if (Boolean.TRUE.equals(promo.getIsUsed())) {  // Check if the promo has already been used
-                response.put("isValid", false);
-                response.put("message", "Promo code has already been used by this user.");
-                return response;
-            }
+        // Check if promo is expired
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate = promotion.getStartDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = promotion.getEndDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        if (startDate.isAfter(currentDate) || endDate.isBefore(currentDate)) {
+            response.put("isValid", false);
+            response.put("message", "Promo code is expired.");
+            response.put("isUsed", false);
+            return response;
         }
 
+        // Check if user has already used the promo
+        Optional<UserPromo> userPromoOptional = userPromoRepository.findByUserTokenAndPromoName(promoCode,userToken);
+        Boolean isUsed = userPromoOptional.map(UserPromo::getIsUsed).orElse(false);
+        response.put("isUsed", isUsed);
 
-        // Valid promo code
+        if (Boolean.TRUE.equals(isUsed)) {
+            response.put("isValid", false);
+            response.put("message", "Promo code has already been used by this user.");
+            return response;
+        }
+
+        // Promo code is valid and has not been used by the user
         response.put("isValid", true);
         response.put("discountPercentage", promotion.getDiscountPercentage());
         response.put("message", "Promo code is valid.");
         return response;
     }
 
-    public void syncPromotionsToUserPromo() {
-        // Fetch all promotions from the Promotion table
-        List<Promotion> promotions = promotionRepository.findAll();
 
-        for (Promotion promotion : promotions) {
-            // Check if the promo already exists in UserPromo, if not, create a new one
-            List<UserPromo> existingUserPromos = userPromoRepository.findByPromoName(promotion.getPromoName());
 
-            if (existingUserPromos.isEmpty()) {
-                // Create new UserPromo for each user (assuming promo applies to all users initially)
-                List<User> users = userRepository.findAll(); // Assuming a UserRepository exists
 
-                for (User user : users) {
-                    UserPromo userPromo = new UserPromo();
-                    userPromo.setPromoName(promotion.getPromoName());
-                    userPromo.setUserToken(user.getEmailId()); // Assuming emailId as user token
-                    userPromo.setPromoName(promotion.getPromoName());
-                    userPromo.setIsUsed(false);  // Initially promo code is not used
-                    userPromoRepository.save(userPromo); // Save to the UserPromo table
-                }
-            }
-        }
-    }
+
 }
