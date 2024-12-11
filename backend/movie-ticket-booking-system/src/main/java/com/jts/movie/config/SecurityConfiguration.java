@@ -40,7 +40,7 @@ public class SecurityConfiguration {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/user/register", "/user/login", "/user/confirmRegistration/**", "/user/forgotPassword", "/user/resetPassword/**", "/user/changePassword/**","/user/profile","/user/editProfile").permitAll()
-						.requestMatchers("/api/admin/**", "/api/theaters/**","/api/shows/**","/api/bookings/**","/api/prices","/api/promo/**").permitAll()
+						.requestMatchers("/api/admin/**", "/api/theaters/**","/api/shows/**","/api/bookings/**","/api/prices","/api/promo/**","/api/admin/editMovies").permitAll()
 						.requestMatchers("/payment-card/**").hasAnyAuthority("ROLE_USER")  // Protect payment card endpoints
 						.requestMatchers("/movie/**").permitAll()
 						.requestMatchers("/user/profile").authenticated()
