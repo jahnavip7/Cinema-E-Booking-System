@@ -90,23 +90,23 @@ export class EditMovieComponent {
   }
 
   onSubmit() {
-    // if (this.addMovieForm.valid) {
-    //   const formData = {...this.addMovieForm.value};
-    //   formData.category = formData.category === 'Now Playing' ? 'NOW_PLAYING' : 'COMING_SOON';
-    //   console.log(formData);
+    if (this.addMovieForm.valid) {
+      const formData = {...this.addMovieForm.value};
+      formData.category = formData.category === 'Now Playing' ? 'NOW_PLAYING' : 'COMING_SOON';
+      console.log(formData);
 
 
-    //   // this.moviesService.addMovie(formData).subscribe({
-    //   //   next: () => {
-    //   //     alert('Movie added successfully!');
-    //   //   },
-    //   //   error: (error) => {
-    //   //     console.error('Error adding movie:', error);
-    //   //     alert('There was an error adding the movie.');
-    //   //   }
-    //   // });
-    // } else {
-    //   alert('Please fill all required fields.');
-    // }
+      // this.moviesService.addMovie(formData).subscribe({
+      //   next: () => {
+      //     alert('Movie added successfully!');
+      //   },
+      //   error: (error) => {
+      //     console.error('Error adding movie:', error);
+      //     alert('There was an error adding the movie.');
+      //   }
+      // });
+    } else {
+      alert('Please fill all required fields.');
+    }
   }
 }

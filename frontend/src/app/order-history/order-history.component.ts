@@ -17,7 +17,7 @@ import {CurrencyPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 })
 export class OrderHistoryComponent implements OnInit {
   orders: any[] = []; // Array to store order history
-  userId: number = 27; // Replace with dynamic user ID if needed
+  userId: number = -1; // Replace with dynamic user ID if needed
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -25,19 +25,27 @@ export class OrderHistoryComponent implements OnInit {
     this.fetchOrderHistory();
   }
 
-  fetchOrderHistory(): void {
-    this.http.get<any[]>(`http://localhost:8080/api/bookings/user/${this.userId}`).subscribe({
-      next: (data) => {
-        this.orders = data; // Assign the response to the orders array
-      },
-      error: (error) => {
-        console.error('Error fetching order history:', error);
-        alert('Failed to fetch order history.');
-      },
-    });
-  }
 
   viewOrderDetails(order: any): void {
     this.router.navigate(['/order-details'], { state: { booking: order } });
+  }
+
+  fetchOrderHistory(): void {
+    const token = localStorage.getItem('authToken');
+    const headers = { 'Authorization': `Bearer ${token}` };
+ 
+    this.http.get('http://localhost:8080/user/profile', { headers }).subscribe((data: any) => {
+      this.userId = data.userId;
+      console.log(data.userId);
+      this.http.get<any[]>(`http://localhost:8080/api/bookings/user/${this.userId}`).subscribe({
+        next: (data) => {
+          this.orders = data; // Assign the response to the orders array
+        },
+        error: (error) => {
+          console.error('Error fetching order history:', error);
+          alert('Failed to fetch order history.');
+        },
+      });
+    });
   }
 }

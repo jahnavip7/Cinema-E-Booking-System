@@ -167,7 +167,7 @@ export class CheckoutComponent implements OnInit {
       (data) => {
         if (data.isValid) {
           // Apply the promo discount
-          if(!data.isUsed()){
+          if(!data.isUsed){
             this.discountPercentage = data.discountPercentage;
             this.discount = (this.ticketTotal * this.discountPercentage) / 100;
             this.newTicketTotal = this.ticketTotal - this.discount;
