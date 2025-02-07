@@ -2,6 +2,14 @@
 
 CineQuest is a cinema ticket booking system built using **Spring Boot** for the backend and **Angular** for the frontend. This application allows users to book movie tickets conveniently, choose seat categories, and ensure a seamless experience with dynamic pricing and seat availability checks.
 
+**##Team Members:**
+This is a group project as part of our course Software Engineering.
+Team Members are: 1.Jahnavi Priya Bommareddy
+2.Sai Akshitha Reddy Kota
+3.Gowthami Pollumuri
+4.Akil Mir
+5.Jacob Kruise
+
 ## Features
 
 - **User-Friendly Booking Interface:** 
